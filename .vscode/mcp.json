@@ -1,0 +1,32 @@
+{
+  "servers": {
+    "Framelink Figma MCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--figma-api-key=${FIGMA_API_KEY}",
+        "--stdio"
+      ],
+      "type": "stdio"
+    },
+    "shadcn": {
+      "url": "https://www.shadcn.io/api/mcp",
+      "type": "http"
+    },
+    "postman-api-http-server": {
+      "type": "sse",
+      "url": "https://mcp.postman.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${input:postman-api-key}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "postman-api-key",
+      "type": "promptString",
+      "description": "${POSTMAN_API_KEY}"
+    }
+  ]
+}
