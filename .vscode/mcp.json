@@ -16,17 +16,10 @@
     },
     "postman-api-http-server": {
       "type": "sse",
-      "url": "https://mcp.postman.com/mcp",
+      "url": "https://mcp.postman.com/minimal",
       "headers": {
-        "Authorization": "Bearer ${input:postman-api-key}"
+        "Authorization": "Bearer ${POSTMAN_API_KEY}"
       }
     }
-  },
-  "inputs": [
-    {
-      "id": "postman-api-key",
-      "type": "promptString",
-      "description": "${POSTMAN_API_KEY}"
-    }
-  ]
+  }
 }

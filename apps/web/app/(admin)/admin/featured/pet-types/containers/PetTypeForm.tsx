@@ -1,0 +1,257 @@
+"use client";
+
+import { Button } from "@furever/ui/components/button";
+import { Label } from "@furever/ui/components/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@furever/ui/components/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Image as ImageIcon, Save, Upload, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import {
+  getPetTypeDefaults,
+  PetTypeFormValues,
+  petTypeSchema,
+} from "../../../(routes)/api/pet-types/schema";
+import { TextAreaInput } from "../../../shared/components/TextAreaInput/TextAreaInput";
+import { TextInput } from "../../../shared/components/TextInput/TextInput";
+import { PetType } from "../types";
+import {
+  useMediaUpload,
+  getMediaId,
+} from "../../../shared/hooks/use-media-upload";
+
+type PetTypeFormProps = {
+  onSubmit: (data: PetTypeFormValues) => void;
+  isLoading?: boolean;
+  petType?: PetType;
+};
+
+export function PetTypeForm({
+  onSubmit,
+  isLoading = false,
+  petType,
+}: PetTypeFormProps) {
+  const router = useRouter();
+  const uploadMedia = useMediaUpload();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    petType?.media_object?.file_path
+      ? process.env.NEXT_PUBLIC_IMAGE_URL + petType.media_object.file_path
+      : null
+  );
+  const [uploadedMediaId, setUploadedMediaId] = useState<number | null>(
+    petType?.media_object_id || null
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const defaultValues = getPetTypeDefaults(petType);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<PetTypeFormValues>({
+    resolver: zodResolver(petTypeSchema),
+    defaultValues,
+  });
+
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+
+      // Upload the file using the media upload hook
+      try {
+        const result = await uploadMedia.mutateAsync({ file });
+        const mediaId = getMediaId(result);
+        setUploadedMediaId(mediaId);
+        setValue("media_object_id", mediaId);
+      } catch (error) {
+        console.error("File upload failed:", error);
+        // Reset the file selection on error
+        setSelectedFile(null);
+        setPreviewUrl(null);
+      }
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const removeImage = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setUploadedMediaId(null);
+    setValue("media_object_id", 0);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const onFormSubmit = (data: PetTypeFormValues) => {
+    onSubmit(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
+      <div className="space-y-2">
+        <Label htmlFor="name">Pet Type Name</Label>
+        <TextInput<PetTypeFormValues>
+          control={control}
+          name="name"
+          placeholder="Enter pet type name"
+          disabled={isLoading}
+        />
+        {errors.name && (
+          <p className="text-sm text-red-600">{errors.name.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="description">Description</Label>
+        <TextAreaInput<PetTypeFormValues>
+          control={control}
+          name="description"
+          placeholder="Enter pet type description"
+          disabled={isLoading}
+          rows={4}
+        />
+        {errors.description && (
+          <p className="text-sm text-red-600">{errors.description.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="is_active">Status</Label>
+        <Controller
+          control={control}
+          name="is_active"
+          render={({ field }) => (
+            <Select
+              value={field.value ? "active" : "inactive"}
+              onValueChange={(value) => field.onChange(value === "active")}
+              disabled={isLoading}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="inactive">Inactive</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+        />
+        {errors.is_active && (
+          <p className="text-sm text-red-600">{errors.is_active.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label>Pet Type Image (Optional)</Label>
+        <div className="flex flex-col gap-4">
+          {/* File Input */}
+          <div className="flex items-center gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={triggerFileInput}
+              className="flex items-center gap-2"
+              disabled={uploadMedia.isPending || isLoading}
+            >
+              <Upload className="h-4 w-4" />
+              {uploadMedia.isPending ? "Uploading..." : "Choose Image"}
+            </Button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            {selectedFile && (
+              <span className="text-sm text-muted-foreground">
+                {selectedFile.name}
+              </span>
+            )}
+          </div>
+
+          {/* Image Preview */}
+          {previewUrl && (
+            <div className="relative inline-block">
+              <div className="relative w-32 h-32 border rounded-lg overflow-hidden">
+                <img
+                  src={previewUrl}
+                  alt="Pet type preview"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                onClick={removeImage}
+                className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                disabled={isLoading}
+              >
+                <X className="h-3 w-3" />
+              </Button>
+            </div>
+          )}
+
+          {/* Hidden input for form submission */}
+          <Controller
+            control={control}
+            name="media_object_id"
+            render={({ field }) => <input type="hidden" {...field} />}
+          />
+        </div>
+        {errors.media_object_id && (
+          <p className="text-sm text-red-600">
+            {errors.media_object_id.message}
+          </p>
+        )}
+      </div>
+
+      <div className="flex gap-4 pt-6">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.back()}
+          className="flex-1"
+          disabled={isLoading}
+        >
+          <X className="mr-2 h-4 w-4" />
+          Cancel
+        </Button>
+        <Button type="submit" disabled={isLoading} className="flex-1">
+          <Save className="mr-2 h-4 w-4" />
+          {isLoading
+            ? petType
+              ? "Updating..."
+              : "Creating..."
+            : petType
+              ? "Update Pet Type"
+              : "Create Pet Type"}
+        </Button>
+      </div>
+    </form>
+  );
+}
