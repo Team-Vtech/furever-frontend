@@ -1,0 +1,1 @@
+export { AddonsSection } from "./AddonsSection";

@@ -5,11 +5,11 @@ import {
   JsonResponse,
   PaginatedJsonResponse,
 } from "@/app/shared/types/general";
-import { CreateServiceSchema } from "../../../(routes)/api/services/schema";
+import { ServiceFormValues } from "../../../(routes)/api/services/services.schema";
 import { z } from "zod";
 
-type CreateServiceInput = z.infer<typeof CreateServiceSchema>;
-type UpdateServiceInput = Partial<CreateServiceInput>;
+type CreateServiceInput = ServiceFormValues;
+type UpdateServiceInput = Partial<ServiceFormValues>;
 
 interface GetServicesParams {
   page?: number;
@@ -69,7 +69,7 @@ export const ServicesClient = {
     return response.data;
   },
 
-  async deleteService(id: string) {
+  async deleteService(id: number) {
     const response = await client().delete<JsonResponse<void>>(
       `${ENDPOINTS.getServices.url}/${id}`
     );

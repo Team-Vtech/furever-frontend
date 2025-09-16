@@ -46,9 +46,7 @@ export function PetTypeForm({
       ? process.env.NEXT_PUBLIC_IMAGE_URL + petType.media_object.file_path
       : null
   );
-  const [uploadedMediaId, setUploadedMediaId] = useState<number | null>(
-    petType?.media_object_id || null
-  );
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const defaultValues = getPetTypeDefaults(petType);
   const {
@@ -80,7 +78,6 @@ export function PetTypeForm({
       try {
         const result = await uploadMedia.mutateAsync({ file });
         const mediaId = getMediaId(result);
-        setUploadedMediaId(mediaId);
         setValue("media_object_id", mediaId);
       } catch (error) {
         console.error("File upload failed:", error);
@@ -98,7 +95,6 @@ export function PetTypeForm({
   const removeImage = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
-    setUploadedMediaId(null);
     setValue("media_object_id", 0);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -112,8 +108,8 @@ export function PetTypeForm({
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="name">Pet Type Name</Label>
-        <TextInput<PetTypeFormValues>
+        <Label htmlFor="name"> Name</Label>
+        <TextInput
           control={control}
           name="name"
           placeholder="Enter pet type name"
@@ -126,7 +122,7 @@ export function PetTypeForm({
 
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
-        <TextAreaInput<PetTypeFormValues>
+        <TextAreaInput
           control={control}
           name="description"
           placeholder="Enter pet type description"
@@ -165,7 +161,7 @@ export function PetTypeForm({
       </div>
 
       <div className="space-y-2">
-        <Label>Pet Type Image (Optional)</Label>
+        <Label>Image</Label>
         <div className="flex flex-col gap-4">
           {/* File Input */}
           <div className="flex items-center gap-4">
@@ -230,18 +226,8 @@ export function PetTypeForm({
         )}
       </div>
 
-      <div className="flex gap-4 pt-6">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => router.back()}
-          className="flex-1"
-          disabled={isLoading}
-        >
-          <X className="mr-2 h-4 w-4" />
-          Cancel
-        </Button>
-        <Button type="submit" disabled={isLoading} className="flex-1">
+      <div className="flex gap-4 pt-6 justify-end">
+        <Button type="submit" disabled={isLoading}>
           <Save className="mr-2 h-4 w-4" />
           {isLoading
             ? petType

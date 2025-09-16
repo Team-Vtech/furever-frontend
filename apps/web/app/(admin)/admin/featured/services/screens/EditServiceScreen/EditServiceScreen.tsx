@@ -1,31 +1,29 @@
 "use client";
 
-import {
-  useServiceQuery,
-  useUpdateServiceMutation,
-  useDeleteServiceMutation,
-} from "../../hooks/useServiceQueries";
-import { ServiceForm } from "../../components/ServiceForm/ServiceForm";
-import { CreateServiceSchema } from "../../../../(routes)/api/services/schema";
+import { ServiceFormValues } from "@/app/(admin)/admin/(routes)/api/services/services.schema";
+import { PageLayout } from "@/app/(admin)/admin/shared/components/PageLayout/PageLayout";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
+import { toast } from "sonner";
 import { DeleteRecordDialog } from "../../../../shared/components/DeleteRecordDialog/DeleteRecordDialog";
-
-type CreateServiceInput = z.infer<typeof CreateServiceSchema>;
+import { ServiceForm } from "../../containers/ServiceForm";
+import {
+  useDeleteServiceMutation,
+  useUpdateServiceMutation,
+} from "../../hooks/useServiceQueries";
+import { Service } from "../../types";
 
 type EditServiceScreenProps = {
-  serviceId: string;
+  service: Service;
 };
 
-export function EditServiceScreen({ serviceId }: EditServiceScreenProps) {
+export function EditServiceScreen({ service }: EditServiceScreenProps) {
   const router = useRouter();
-  const { data: service, isLoading, isError } = useServiceQuery(serviceId);
   const updateServiceMutation = useUpdateServiceMutation();
   const deleteServiceMutation = useDeleteServiceMutation();
 
-  const handleSubmit = (data: CreateServiceInput) => {
+  const handleSubmit = (data: ServiceFormValues) => {
     updateServiceMutation.mutate(
-      { id: serviceId, data },
+      { id: service.id, data },
       {
         onSuccess: () => {
           router.push("/admin/services");
@@ -34,7 +32,7 @@ export function EditServiceScreen({ serviceId }: EditServiceScreenProps) {
     );
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: number) => {
     deleteServiceMutation.mutate(id, {
       onSuccess: () => {
         router.push("/admin/services");
@@ -42,71 +40,41 @@ export function EditServiceScreen({ serviceId }: EditServiceScreenProps) {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-lg text-gray-600">Loading service...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError || !service) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <h2 className="text-lg font-semibold text-red-600">
-            Error loading service
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            The service could not be found or there was an error loading it.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Transform service data to match form expectations
-  const initialData = {
-    name: service.data.name,
-    description: service.data.description,
-    price: parseFloat(service.data.price),
-    duration: service.data.duration_minutes,
-    status: service.data.is_active
-      ? ("active" as const)
-      : ("inactive" as const),
-    categories: [], // Assuming categories will be populated from API
-    imageUrl: "",
-  };
-
   return (
-    <div className="space-y-6">
-      {/* Header with Delete Button */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-2xl font-bold">Edit Service</h1>
-          <p className="text-muted-foreground">
-            Update the service details or delete it permanently.
-          </p>
-        </div>
+    <PageLayout
+      title={`Edit Service: ${service?.name || ""}`}
+      breadcrumbs={[
+        { label: "Dashboard", href: "/admin" },
+        { label: "Services", href: "/admin/services" },
+        {
+          label: "Edit Service",
+          href: `/admin/services/${service?.id}/edit`,
+        },
+      ]}
+      actions={
         <DeleteRecordDialog
-          recordName={service.data.name}
-          recordId={serviceId}
-          onDelete={handleDelete}
           isDeleting={deleteServiceMutation.isPending}
-          triggerText="Delete Service"
+          onDelete={async () => {
+            try {
+              await deleteServiceMutation.mutateAsync(service.id);
+              toast.success("Service deleted successfully");
+              router.push("/admin/services");
+            } catch (error) {
+              toast.error("Failed to delete service");
+            }
+          }}
+          recordId={service.id}
+          recordName={service.name}
+        />
+      }
+    >
+      <div className="container mx-auto px-4 py-8">
+        <ServiceForm
+          onSubmit={handleSubmit}
+          isLoading={updateServiceMutation.isPending}
+          service={service}
         />
       </div>
-
-      {/* Service Form */}
-      <ServiceForm
-        mode="edit"
-        initialData={initialData}
-        onSubmit={handleSubmit}
-        isLoading={updateServiceMutation.isPending}
-      />
-    </div>
+    </PageLayout>
   );
 }

@@ -1,211 +1,442 @@
 "use client";
 
-import React from "react";
+import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@furever/ui/components/dialog";
-import { ServiceFormValues } from "../../../(routes)/api/services/services.schema";
-import { Service } from "../types";
-import { useForm } from "react-hook-form";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@furever/ui/components/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus, Upload, X } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import {
+  getServiceDefaultValues,
+  ServiceFormValues,
+  serviceSchema,
+} from "../../../(routes)/api/services/services.schema";
 import { TextInput } from "../../../shared/components/TextInput/TextInput";
-import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
+import {
+  getMediaId,
+  useMediaUpload,
+} from "../../../shared/hooks/use-media-upload";
+import { useServiceTypesQuery } from "../../service-types/hooks/useServiceTypeQueries";
+import { AddonsSection } from "../components/AddonsSection";
+import { Service } from "../types";
+import Image from "next/image";
 
 interface ServiceFormProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   service?: Service;
-  onSubmit: (data: ServiceFormValues) => Promise<void>;
+  onSubmit: (data: ServiceFormValues) => void;
   isLoading?: boolean;
 }
 
 export function ServiceForm({
-  open,
-  onOpenChange,
   service,
   onSubmit,
   isLoading,
 }: ServiceFormProps) {
+  const uploadMedia = useMediaUpload();
+
+  const defaultValues = getServiceDefaultValues(service);
+
+  // State for thumbnail image
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
+    service?.thumbnail_media_object?.file_path
+      ? process.env.NEXT_PUBLIC_IMAGE_URL +
+          service.thumbnail_media_object.file_path
+      : null
+  );
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
+
+  // State for gallery images
+  const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+  const [galleryPreviews, setGalleryPreviews] = useState<string[]>(
+    service?.gallery
+      ? service.gallery.map((item) =>
+          item.media_object
+            ? process.env.NEXT_PUBLIC_IMAGE_URL + item.media_object.file_path
+            : ""
+        )
+      : []
+  );
+  const [galleryMediaIds, setGalleryMediaIds] = useState<number[]>([]);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch service types
+  const { data: serviceTypesData, isLoading: isLoadingServiceTypes } =
+    useServiceTypesQuery({
+      status: "active",
+      limit: 100, // Get all active service types
+    });
+
+  const availableServiceTypes = serviceTypesData?.data?.data || [];
+
+  const methods = useForm<ServiceFormValues>({
+    resolver: zodResolver(serviceSchema),
+    defaultValues,
+  });
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-  } = useForm<ServiceFormValues>({
-    defaultValues: {
-      name: service?.name || "",
-      description: service?.description || "",
-      price: service?.price || 0,
-      duration_minutes: service?.duration_minutes || 30,
-      is_active: service?.is_active || false,
-      service_category_id: service?.service_category_id || 0,
-    },
-  });
+  } = methods;
 
   const isActiveValue = watch("is_active");
+
+  // Initialize media state for existing service
+  useEffect(() => {
+    if (service) {
+      // Initialize gallery media IDs if they exist
+      if (service.media_object_ids && service.media_object_ids.length > 0) {
+        setGalleryMediaIds(service.media_object_ids);
+      }
+    }
+  }, [service]);
+
+  // Thumbnail upload handlers
+  const handleThumbnailUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setThumbnailFile(file);
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setThumbnailPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    // Upload file
+    try {
+      const result = await uploadMedia.mutateAsync({ file });
+      const mediaId = getMediaId(result);
+      setValue("thumbnail_media_object_id", mediaId);
+    } catch (error) {
+      console.error("Thumbnail upload failed:", error);
+      setThumbnailFile(null);
+      setThumbnailPreview(null);
+    }
+  };
+
+  const removeThumbnail = () => {
+    setThumbnailFile(null);
+    setThumbnailPreview(null);
+    setValue("thumbnail_media_object_id", 0);
+    if (thumbnailInputRef.current) {
+      thumbnailInputRef.current.value = "";
+    }
+  };
+
+  // Gallery upload handlers
+  const handleGalleryUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
+
+    const newGalleryFiles = [...galleryFiles, ...files];
+    setGalleryFiles(newGalleryFiles);
+
+    // Create previews
+    const newPreviews = [...galleryPreviews];
+    const newMediaIds = [...galleryMediaIds];
+
+    for (const file of files) {
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        newPreviews.push(reader.result as string);
+        setGalleryPreviews([...newPreviews]);
+      };
+      reader.readAsDataURL(file);
+
+      // Upload file
+      try {
+        const result = await uploadMedia.mutateAsync({ file });
+        const mediaId = getMediaId(result);
+        newMediaIds.push(mediaId);
+        setGalleryMediaIds([...newMediaIds]);
+        setValue("media_object_ids", [...newMediaIds]);
+      } catch (error) {
+        console.error("Gallery upload failed:", error);
+      }
+    }
+  };
+
+  const removeGalleryImage = (index: number) => {
+    const newFiles = galleryFiles.filter((_, i) => i !== index);
+    const newPreviews = galleryPreviews.filter((_, i) => i !== index);
+    const newMediaIds = galleryMediaIds.filter((_, i) => i !== index);
+
+    setGalleryFiles(newFiles);
+    setGalleryPreviews(newPreviews);
+    setGalleryMediaIds(newMediaIds);
+    setValue("media_object_ids", newMediaIds);
+  };
 
   const onFormSubmit = async (data: ServiceFormValues) => {
     try {
       await onSubmit(data);
-      onOpenChange(false);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {service ? "Edit Service" : "Create New Service"}
-          </DialogTitle>
-          <DialogDescription>
-            {service
-              ? "Update the details of your service."
-              : "Fill in the details to create a new service."}
-          </DialogDescription>
-        </DialogHeader>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)} className="space-y-6">
+        {/* Basic Information */}
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="name">Service Name *</Label>
+            <TextInput
+              control={control}
+              name="name"
+              id="name"
+              placeholder="Enter service name"
+            />
+            {errors.name && (
+              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+            )}
+          </div>
 
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
-          {/* Basic Information */}
-          <div className="space-y-4">
+          <div>
+            <Label htmlFor="description">Description *</Label>
+            <TextAreaInput
+              control={control}
+              name="description"
+              id="description"
+              placeholder="Describe your service..."
+              rows={4}
+            />
+            {errors.description && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+
+          {/* Thumbnail Image */}
+          <div>
+            <Label>Thumbnail Image</Label>
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => thumbnailInputRef.current?.click()}
+                  className="flex items-center gap-2"
+                  disabled={uploadMedia.isPending || isLoading}
+                >
+                  <Upload className="h-4 w-4" />
+                  {uploadMedia.isPending ? "Uploading..." : "Choose Thumbnail"}
+                </Button>
+                <input
+                  ref={thumbnailInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleThumbnailUpload}
+                  className="hidden"
+                />
+                {thumbnailFile && (
+                  <span className="text-sm text-muted-foreground">
+                    {thumbnailFile.name}
+                  </span>
+                )}
+              </div>
+
+              {thumbnailPreview && (
+                <div className="relative inline-block">
+                  <div className="relative w-32 h-32 border rounded-lg overflow-hidden">
+                    <Image
+                      src={thumbnailPreview}
+                      alt="Thumbnail preview"
+                      fill
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={removeThumbnail}
+                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                    disabled={isLoading}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Image Gallery */}
+          <div>
+            <Label>Image Gallery</Label>
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => galleryInputRef.current?.click()}
+                  className="flex items-center gap-2"
+                  disabled={uploadMedia.isPending || isLoading}
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Gallery Images
+                </Button>
+                <input
+                  ref={galleryInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleGalleryUpload}
+                  className="hidden"
+                />
+              </div>
+
+              {galleryPreviews.length > 0 && (
+                <div className="flex flex-row gap-4">
+                  {galleryPreviews.map((preview, index) => (
+                    <div key={index} className="relative">
+                      <div className="relative w-24 h-24 border rounded-lg overflow-hidden">
+                        <Image
+                          src={preview}
+                          alt={`Gallery image ${index + 1}`}
+                          fill
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeGalleryImage(index)}
+                        className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0"
+                        disabled={isLoading}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="name">Service Name *</Label>
+              <Label htmlFor="price">Price ($) *</Label>
               <TextInput
                 control={control}
-                name="name"
-                id="name"
-                placeholder="Enter service name"
+                name="price"
+                id="price"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
               />
-              {errors.name && (
+              {errors.price && (
                 <p className="text-sm text-red-500 mt-1">
-                  {errors.name.message}
+                  {errors.price.message}
                 </p>
               )}
             </div>
 
             <div>
-              <Label htmlFor="description">Description *</Label>
-              <TextAreaInput
-                control={control}
-                name="description"
-                id="description"
-                placeholder="Describe your service..."
-                rows={4}
-              />
-              {errors.description && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.description.message}
-                </p>
-              )}
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="price">Price ($) *</Label>
-                <TextInput
-                  control={control}
-                  name="price"
-                  id="price"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  placeholder="0.00"
-                />
-                {errors.price && (
-                  <p className="text-sm text-red-500 mt-1">
-                    {errors.price.message}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="duration_minutes">Duration (minutes) *</Label>
-                <TextInput
-                  control={control}
-                  name="duration_minutes"
-                  id="duration_minutes"
-                  type="number"
-                  min="1"
-                  placeholder="30"
-                />
-                {errors.duration_minutes && (
-                  <p className="text-sm text-red-500 mt-1">
-                    {errors.duration_minutes.message}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="service_category_id">Category ID *</Label>
+              <Label htmlFor="duration_minutes">Duration (minutes) *</Label>
               <TextInput
                 control={control}
-                name="service_category_id"
-                id="service_category_id"
+                name="duration_minutes"
+                id="duration_minutes"
                 type="number"
                 min="1"
-                placeholder="1"
+                placeholder="30"
               />
-              {errors.service_category_id && (
+              {errors.duration_minutes && (
                 <p className="text-sm text-red-500 mt-1">
-                  {errors.service_category_id.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label htmlFor="is_active">Status</Label>
-              <select
-                id="is_active"
-                value={isActiveValue ? "true" : "false"}
-                onChange={(e) =>
-                  setValue("is_active", e.target.value === "true")
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="false">Inactive</option>
-                <option value="true">Active</option>
-              </select>
-              {errors.is_active && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.is_active.message}
+                  {errors.duration_minutes.message}
                 </p>
               )}
             </div>
           </div>
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isLoading}
+          <div>
+            <Label htmlFor="service_type_id">Service Type *</Label>
+            <Select
+              value={watch("service_type_id")?.toString() || ""}
+              onValueChange={(value) =>
+                setValue("service_type_id", parseInt(value))
+              }
+              disabled={isLoading || isLoadingServiceTypes}
             >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="bg-purple-400 hover:bg-purple-500"
+              <SelectTrigger>
+                <SelectValue placeholder="Select service type" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableServiceTypes.map((serviceType) => (
+                  <SelectItem
+                    key={serviceType.id}
+                    value={serviceType.id.toString()}
+                  >
+                    {serviceType.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.service_type_id && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.service_type_id.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="is_active">Status</Label>
+            <select
+              id="is_active"
+              value={isActiveValue ? "true" : "false"}
+              onChange={(e) => setValue("is_active", e.target.value === "true")}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              {isLoading
-                ? "Saving..."
-                : service
-                  ? "Update Service"
-                  : "Create Service"}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+              <option value="false">Inactive</option>
+              <option value="true">Active</option>
+            </select>
+            {errors.is_active && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.is_active.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Add-ons Section */}
+        <AddonsSection control={control} isLoading={isLoading} />
+
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="bg-purple-400 hover:bg-purple-500"
+        >
+          {isLoading
+            ? "Saving..."
+            : service
+              ? "Update Service"
+              : "Create Service"}
+        </Button>
+      </form>
+    </FormProvider>
   );
 }

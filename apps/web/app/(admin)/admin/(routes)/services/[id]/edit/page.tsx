@@ -1,26 +1,24 @@
 import { Suspense } from "react";
-import { PageLayout } from "../../../../shared/components/PageLayout/PageLayout";
 import { EditServiceScreen } from "../../../../featured/services/screens/EditServiceScreen/EditServiceScreen";
+import { ServicesClient } from "@/app/(admin)/admin/featured/services/clients/services.client";
 
-type EditServicePageProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default function EditServicePage({ params }: EditServicePageProps) {
+export default async function EditServicePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const service = await getService(id);
+  if (!service.data) {
+    return <div>Service not found</div>;
+  }
   return (
-    <PageLayout
-      title=""
-      breadcrumbs={[
-        { label: "Dashboard", href: "/admin" },
-        { label: "Services", href: "/admin/services" },
-        { label: "Edit" },
-      ]}
-    >
-      <Suspense fallback={<div>Loading...</div>}>
-        <EditServiceScreen serviceId={params.id} />
-      </Suspense>
-    </PageLayout>
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditServiceScreen service={service.data} />
+    </Suspense>
   );
+}
+
+async function getService(id: string) {
+  return await ServicesClient.getService(id);
 }

@@ -1,28 +1,29 @@
 "use client";
 
 import { useCreateServiceMutation } from "../../hooks/useServiceQueries";
-import { ServiceForm } from "../../components/ServiceForm/ServiceForm";
-import { CreateServiceSchema } from "../../../../(routes)/api/services/schema";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-
-type CreateServiceInput = z.infer<typeof CreateServiceSchema>;
+import { ServiceForm } from "../../containers/ServiceForm";
+import { ServiceFormValues } from "@/app/(admin)/admin/(routes)/api/services/services.schema";
 
 export function CreateServiceScreen() {
   const router = useRouter();
   const createServiceMutation = useCreateServiceMutation();
 
-  const handleSubmit = (data: CreateServiceInput) => {
-    createServiceMutation.mutate(data, {
-      onSuccess: () => {
-        router.push("/admin/services");
-      },
-    });
+  const handleSubmit = (data: ServiceFormValues) => {
+    try {
+      createServiceMutation.mutate(data, {
+        onSuccess: () => {
+          router.push("/admin/services");
+        },
+      });
+    } catch (error) {
+      console.error("Failed to create service", error);
+    }
   };
 
   return (
     <ServiceForm
-      mode="create"
       onSubmit={handleSubmit}
       isLoading={createServiceMutation.isPending}
     />

@@ -1,36 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ServicesClient } from "../clients/services.client";
 import { Service } from "../types";
-import { CreateServiceSchema } from "../../../(routes)/api/services/schema";
 import { toast } from "sonner";
 import { z } from "zod";
-
-type CreateServiceInput = z.infer<typeof CreateServiceSchema>;
-type UpdateServiceInput = Partial<CreateServiceInput>;
-
-const QUERY_KEYS = {
-  services: ["services"] as const,
-  service: (id: string) => ["services", id] as const,
-};
-
-interface UseServicesQueryParams {
-  page?: number;
-  per_page?: number;
-  search?: string;
-  status?: string;
-  category?: string;
-}
-
-export function useServicesQuery(params: UseServicesQueryParams = {}) {
-  return useQuery({
-    queryKey: [...QUERY_KEYS.services, params],
-    queryFn: () => ServicesClient.getServices(params),
-  });
-}
+import { ServiceFormValues } from "../../../(routes)/api/services/services.schema";
 
 export function useServiceQuery(id: string) {
   return useQuery({
-    queryKey: QUERY_KEYS.service(id),
+    queryKey: ["services", id],
     queryFn: () => ServicesClient.getService(id),
     enabled: !!id,
   });
@@ -40,10 +17,9 @@ export function useCreateServiceMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateServiceInput) =>
-      ServicesClient.createService(data),
+    mutationFn: (data: ServiceFormValues) => ServicesClient.createService(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.services });
+      queryClient.invalidateQueries({ queryKey: ["services"] });
       toast.success("Service created successfully");
     },
     onError: (error: any) => {
@@ -56,11 +32,11 @@ export function useUpdateServiceMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateServiceInput }) =>
+    mutationFn: ({ id, data }: { id: number; data: ServiceFormValues }) =>
       ServicesClient.updateService(id, data),
     onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.services });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.service(id) });
+      queryClient.invalidateQueries({ queryKey: ["services"] });
+      queryClient.invalidateQueries({ queryKey: ["services", id] });
       toast.success("Service updated successfully");
     },
     onError: (error: any) => {
@@ -73,9 +49,9 @@ export function useDeleteServiceMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => ServicesClient.deleteService(id),
+    mutationFn: (id: number) => ServicesClient.deleteService(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.services });
+      queryClient.invalidateQueries({ queryKey: ["services"] });
       toast.success("Service deleted successfully");
     },
     onError: (error: any) => {

@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { CreateServiceSchema, GetServicesQuerySchema } from "./schema";
-import { ValidationError } from "../../../../../shared/utils/error.utils";
+import {
+  FiveHundredError,
+  ValidationError,
+} from "../../../../../shared/utils/error.utils";
 import { server } from "@/app/shared/utils/http.server.utils";
+import { ServiceFormValues, serviceSchema } from "./services.schema";
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,23 +27,19 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const validatedData = CreateServiceSchema.parse(body);
+  let body: ServiceFormValues;
 
-    // Proxy request to backend API
-    const response = await (
-      await server()
-    ).post("/api/services", validatedData);
-    return NextResponse.json(response, { status: 201 });
+  try {
+    body = await request.json();
+    serviceSchema.parse(body);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return ValidationError(error);
-    }
-    console.error("Services POST API Error:", error);
-    return NextResponse.json(
-      { error: "Failed to create service" },
-      { status: 500 }
-    );
+    return ValidationError(error);
+  }
+
+  try {
+    const response = await (await server()).post("/api/admin/services", body);
+    return NextResponse.json(response.data, { status: 201 });
+  } catch (error) {
+    return FiveHundredError(error);
   }
 }

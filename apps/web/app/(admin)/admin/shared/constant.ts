@@ -6,6 +6,7 @@ import {
   Settings,
   PawPrint,
   Wrench,
+  Plus,
 } from "lucide-react";
 
 export const APP_NAVIGATION_LINKS: {
@@ -42,6 +43,11 @@ export const APP_NAVIGATION_LINKS: {
     title: "Services",
     url: "/admin/services",
     icon: Settings,
+  },
+  {
+    title: "Addons",
+    url: "/admin/addons",
+    icon: Plus,
   },
 ];
 

@@ -17,8 +17,8 @@ import { useState } from "react";
 type DeleteRecordDialogProps = {
   recordName: string;
   triggerText?: string;
-  recordId: string;
-  onDelete: (id: string) => void;
+  recordId: number;
+  onDelete: (id: number) => void;
   isDeleting: boolean;
 };
 

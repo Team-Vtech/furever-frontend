@@ -12,16 +12,7 @@ export default async function EditPetTypePage({
   const petType = await getPetType(id);
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <PageLayout
-        title={`Edit Pet Type: ${petType.data?.name || ""}`}
-        breadcrumbs={[
-          { label: "Dashboard", href: "/admin" },
-          { label: "Pet Types", href: "/admin/pet-types" },
-          { label: "Edit Pet Type", href: `/admin/pet-types/${id}/edit` },
-        ]}
-      >
-        <EditPetTypeScreen petType={petType.data} />
-      </PageLayout>
+      <EditPetTypeScreen petType={petType.data} />
     </Suspense>
   );
 }
