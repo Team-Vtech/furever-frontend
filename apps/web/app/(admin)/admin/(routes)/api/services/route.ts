@@ -37,7 +37,23 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const response = await (await server()).post("/api/admin/services", body);
+    const { addons, ...rest } = body;
+
+    const transformedAddons = addons
+      ? addons.map((addon) => ({
+          ...addon,
+          price: parseFloat(addon.price as unknown as string),
+          restrictions: addon.restrictions.map((r) => r.value),
+        }))
+      : [];
+
+    // Transform data for backend API (frontend uses service_type_ids array, backend expects service_type_ids array for creation)
+    const response = await (
+      await server()
+    ).post("/api/admin/services", {
+      ...rest,
+      addons: transformedAddons,
+    });
     return NextResponse.json(response.data, { status: 201 });
   } catch (error) {
     return FiveHundredError(error);

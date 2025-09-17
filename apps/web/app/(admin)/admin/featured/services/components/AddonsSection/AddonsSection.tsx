@@ -2,16 +2,11 @@
 
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@furever/ui/components/select";
 import { Plus, Trash2 } from "lucide-react";
 import React from "react";
 import { Control, useFieldArray, useFormContext } from "react-hook-form";
+import { MultiSelectInput } from "@/app/shared/components/MultiSelectInput/MultiSelectInput";
+import { SelectInput } from "../../../../shared/components/SelectInput";
 import { TextInput } from "../../../../shared/components/TextInput/TextInput";
 import {
   ServiceFormValues,
@@ -33,23 +28,23 @@ const UNIT_OPTIONS = [
 ] as const;
 
 const PET_RESTRICTION_OPTIONS = [
-  "No Restrictions",
-  "Dogs Only",
-  "Cats Only",
-  "Birds",
-  "Small Animals",
-  "Large Dogs Only",
-  "Senior Pets",
-] as const;
+  { value: "no_restrictions", label: "No Restrictions" },
+  { value: "dogs_only", label: "Dogs Only" },
+  { value: "cats_only", label: "Cats Only" },
+  { value: "birds", label: "Birds" },
+  { value: "small_animals", label: "Small Animals" },
+  { value: "large_dogs_only", label: "Large Dogs Only" },
+  { value: "senior_pets", label: "Senior Pets" },
+];
 
 export function AddonsSection({ control, isLoading }: AddonsSectionProps) {
-  const { setValue, watch } = useFormContext<ServiceFormValues>();
+  const { formState } = useFormContext<ServiceFormValues>();
+  const { errors } = formState;
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "addons",
   });
-
-  const watchedAddons = watch("addons") || [];
 
   // Fetch available addons
   const { data: addonsData, isLoading: isLoadingAddons } = useAddonsQuery({
@@ -62,7 +57,7 @@ export function AddonsSection({ control, isLoading }: AddonsSectionProps) {
   const addNewAddon = () => {
     const newAddon: AddonFormValues = {
       addon_id: 0,
-      price: 0,
+      price: "0",
       unit: AddonUnit.PER_SESSION,
       restrictions: [],
     };
@@ -71,34 +66,6 @@ export function AddonsSection({ control, isLoading }: AddonsSectionProps) {
 
   const removeAddon = (index: number) => {
     remove(index);
-  };
-
-  const handleUnitChange = (index: number, value: string) => {
-    setValue(`addons.${index}.unit`, value as AddonFormValues["unit"]);
-  };
-
-  const handleRestrictionsChange = (index: number, value: string) => {
-    const currentRestrictions = watchedAddons[index]?.restrictions || [];
-
-    if (value === "No Restrictions") {
-      setValue(`addons.${index}.restrictions`, []);
-    } else {
-      // Toggle the restriction
-      const newRestrictions = currentRestrictions.includes(value)
-        ? currentRestrictions.filter((r: string) => r !== value)
-        : [...currentRestrictions, value];
-      setValue(`addons.${index}.restrictions`, newRestrictions);
-    }
-  };
-
-  const getRestrictionsDisplayValue = (restrictions: string[] = []) => {
-    if (restrictions.length === 0) {
-      return "No Restrictions";
-    }
-    if (restrictions.length === 1) {
-      return restrictions[0];
-    }
-    return `Restricted (${restrictions.length})`;
   };
 
   return (
@@ -114,31 +81,31 @@ export function AddonsSection({ control, isLoading }: AddonsSectionProps) {
       {/* Addons List */}
       <div className="space-y-4">
         {fields.map((field, index) => (
-          <div key={field.id} className="border rounded-lg p-4 space-y-4">
+          <div
+            key={field.id}
+            className="flex flex-row gap-x-2 items-center border rounded-lg p-4 space-y-4"
+          >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Add-on Selection */}
               <div className="col-span-4 md:col-span-1">
                 <Label htmlFor={`addons.${index}.addon_id`}>Add-on</Label>
-                <Select
-                  value={watchedAddons[index]?.addon_id?.toString() || ""}
-                  onValueChange={(value) =>
-                    setValue(`addons.${index}.addon_id`, parseInt(value))
-                  }
+                <SelectInput
+                  name={`addons.${index}.addon_id`}
+                  control={control}
+                  options={availableAddons.map((addon) => ({
+                    value: addon.id,
+                    label: addon.name,
+                  }))}
+                  placeholder="Select add-on"
                   disabled={isLoading || isLoadingAddons}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select add-on" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableAddons.map((addon) => (
-                      <SelectItem key={addon.id} value={addon.id.toString()}>
-                        {addon.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  className="w-full"
+                />
+                {errors.addons?.[index]?.addon_id && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.addons[index]?.addon_id?.message}
+                  </p>
+                )}
               </div>
-
               {/* Price */}
               <div className="col-span-4 md:col-span-1">
                 <Label htmlFor={`addons.${index}.price`}>Price (₹)</Label>
@@ -151,54 +118,54 @@ export function AddonsSection({ control, isLoading }: AddonsSectionProps) {
                   placeholder="0.00"
                   disabled={isLoading}
                 />
+                {errors.addons?.[index]?.price && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.addons[index]?.price?.message}
+                  </p>
+                )}
               </div>
-
               {/* Unit */}
               <div className="col-span-4 md:col-span-1">
                 <Label htmlFor={`addons.${index}.unit`}>Unit</Label>
-                <Select
-                  value={watchedAddons[index]?.unit || "per session"}
-                  onValueChange={(value) => handleUnitChange(index, value)}
+                <SelectInput
+                  name={`addons.${index}.unit`}
+                  control={control}
+                  options={UNIT_OPTIONS.map((option) => ({
+                    value: option.value,
+                    label: option.label,
+                  }))}
+                  placeholder="Select unit"
                   disabled={isLoading}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select unit" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {UNIT_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  className="w-full"
+                />
+                {errors.addons?.[index]?.unit && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.addons[index]?.unit?.message}
+                  </p>
+                )}
               </div>
-
               {/* Pet Restrictions */}
               <div className="col-span-4 md:col-span-1">
                 <Label htmlFor={`addons.${index}.restrictions`}>
                   Restrictions
                 </Label>
-                <Select
-                  value={getRestrictionsDisplayValue(
-                    watchedAddons[index]?.restrictions
+                <div className="mt-2">
+                  <MultiSelectInput
+                    name={`addons.${index}.restrictions`}
+                    control={control}
+                    options={PET_RESTRICTION_OPTIONS}
+                    placeholder="Select restrictions"
+                    disabled={isLoading}
+                    maxSelected={3}
+                    searchable={true}
+                    optional={true}
+                  />
+                  {errors.addons?.[index]?.restrictions && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.addons[index]?.restrictions?.message}
+                    </p>
                   )}
-                  onValueChange={(value) =>
-                    handleRestrictionsChange(index, value)
-                  }
-                  disabled={isLoading}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Pet restrictions" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PET_RESTRICTION_OPTIONS.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                </div>
               </div>
             </div>
 
@@ -218,6 +185,13 @@ export function AddonsSection({ control, isLoading }: AddonsSectionProps) {
           </div>
         ))}
       </div>
+
+      {/* General addons error */}
+      {errors.addons &&
+        typeof errors.addons === "object" &&
+        "message" in errors.addons && (
+          <p className="text-sm text-red-500 mt-1">{errors.addons.message}</p>
+        )}
 
       {/* Add Add-on Button */}
       <div className="flex justify-center">

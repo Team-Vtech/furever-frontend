@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { ServiceIdSchema } from "../../schema";
+import { ServiceIdSchema } from "../../services.schema";
 import {
   ValidationError,
   NotFoundError,

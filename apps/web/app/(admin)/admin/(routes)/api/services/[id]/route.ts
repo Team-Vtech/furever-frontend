@@ -34,11 +34,24 @@ export async function PATCH(
   }
 
   try {
+    const { addons, ...rest } = body;
+
+    const transformedAddons = addons
+      ? addons.map((addon) => ({
+          ...addon,
+          price: parseFloat(addon.price as unknown as string),
+          restrictions: addon.restrictions.map((r) => r.value),
+        }))
+      : [];
     const response = await (
       await server()
-    ).put(`/api/admin/services/${id}`, body);
-    return NextResponse.json(response);
+    ).put(`/api/admin/services/${id}`, {
+      ...rest,
+      addons: transformedAddons,
+    });
+    return NextResponse.json(response.data);
   } catch (error) {
+    console.log(error);
     return FiveHundredError(error);
   }
 }

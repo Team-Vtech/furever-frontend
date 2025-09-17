@@ -15,6 +15,7 @@ import {
 } from "@furever/ui/components/sidebar";
 import { NavMain } from "./components/NavMain";
 import { NavUser } from "./components/NavUser";
+import Image from "next/image";
 
 export function AppNavigation({
   ...props
@@ -29,7 +30,12 @@ export function AppNavigation({
               className="h-full data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href="/">
-                <h1 className="text-xl font-bold">Furever Admin</h1>
+                <Image
+                  src="/logo.png"
+                  alt="Furever Admin"
+                  width={42}
+                  height={42}
+                />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

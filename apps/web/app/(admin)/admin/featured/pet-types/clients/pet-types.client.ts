@@ -8,6 +8,13 @@ import {
 import { z } from "zod";
 import { PetTypeFormValues } from "../../../(routes)/api/pet-types/schema";
 
+export interface GetPetTypesParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}
+
 export const PetTypesClient = {
   async getPetTypes({ queryKey }: { queryKey: string[] }) {
     const response = await client().get<
@@ -17,6 +24,29 @@ export const PetTypesClient = {
     >(ENDPOINTS.getPetTypes.url, {
       params: queryKey[1],
     });
+    return response.data;
+  },
+
+  async getPetTypesWithParams(params: GetPetTypesParams = {}) {
+    const { page = 1, limit = 10, search, status } = params;
+
+    const searchParams = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+
+    if (search) {
+      searchParams.append("search", search);
+    }
+    if (status) {
+      searchParams.append("status", status);
+    }
+
+    const response = await client().get<
+      PaginatedJsonResponse<{
+        data: PetType[];
+      }>
+    >(`${ENDPOINTS.getPetTypes.url}?${searchParams.toString()}`);
     return response.data;
   },
 

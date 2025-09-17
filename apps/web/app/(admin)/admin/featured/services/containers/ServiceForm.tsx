@@ -3,15 +3,9 @@
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@furever/ui/components/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Upload, X } from "lucide-react";
+import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -19,29 +13,34 @@ import {
   ServiceFormValues,
   serviceSchema,
 } from "../../../(routes)/api/services/services.schema";
+import { CheckboxGroup } from "../../../shared/components/CheckboxGroup";
 import { TextInput } from "../../../shared/components/TextInput/TextInput";
 import {
   getMediaId,
   useMediaUpload,
 } from "../../../shared/hooks/use-media-upload";
+import { usePetTypesQuery } from "../../pet-types/hooks/usePetTypeQueries";
 import { useServiceTypesQuery } from "../../service-types/hooks/useServiceTypeQueries";
 import { AddonsSection } from "../components/AddonsSection";
 import { Service } from "../types";
-import Image from "next/image";
 
 interface ServiceFormProps {
   service?: Service;
   onSubmit: (data: ServiceFormValues) => void;
   isLoading?: boolean;
+  mode?: "create" | "edit";
 }
 
 export function ServiceForm({
   service,
   onSubmit,
   isLoading,
+  mode = "create",
 }: ServiceFormProps) {
   const uploadMedia = useMediaUpload();
+  const isEditMode = mode === "edit";
 
+  // Always use create schema for form structure, transform on submit
   const defaultValues = getServiceDefaultValues(service);
 
   // State for thumbnail image
@@ -75,7 +74,16 @@ export function ServiceForm({
       limit: 100, // Get all active service types
     });
 
+  // Fetch pet types
+  const { data: petTypesData, isLoading: isLoadingPetTypes } = usePetTypesQuery(
+    {
+      status: "active",
+      limit: 100, // Get all active pet types
+    }
+  );
+
   const availableServiceTypes = serviceTypesData?.data?.data || [];
+  const availablePetTypes = petTypesData?.data?.data || [];
 
   const methods = useForm<ServiceFormValues>({
     resolver: zodResolver(serviceSchema),
@@ -188,6 +196,7 @@ export function ServiceForm({
 
   const onFormSubmit = async (data: ServiceFormValues) => {
     try {
+      // Always use the unified schema format
       await onSubmit(data);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -199,7 +208,7 @@ export function ServiceForm({
       <form onSubmit={methods.handleSubmit(onFormSubmit)} className="space-y-6">
         {/* Basic Information */}
         <div className="space-y-4">
-          <div>
+          <div className="flex flex-col gap-y-2">
             <Label htmlFor="name">Service Name *</Label>
             <TextInput
               control={control}
@@ -212,7 +221,7 @@ export function ServiceForm({
             )}
           </div>
 
-          <div>
+          <div className="flex flex-col gap-y-2">
             <Label htmlFor="description">Description *</Label>
             <TextAreaInput
               control={control}
@@ -229,7 +238,7 @@ export function ServiceForm({
           </div>
 
           {/* Thumbnail Image */}
-          <div>
+          <div className="flex flex-col gap-y-2">
             <Label>Thumbnail Image</Label>
             <div className="space-y-4">
               <div className="flex items-center gap-4">
@@ -283,7 +292,7 @@ export function ServiceForm({
           </div>
 
           {/* Image Gallery */}
-          <div>
+          <div className="flex flex-col gap-y-2">
             <Label>Image Gallery</Label>
             <div className="space-y-4">
               <div className="flex items-center gap-4">
@@ -337,7 +346,7 @@ export function ServiceForm({
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="flex flex-col gap-y-2">
               <Label htmlFor="price">Price ($) *</Label>
               <TextInput
                 control={control}
@@ -355,7 +364,7 @@ export function ServiceForm({
               )}
             </div>
 
-            <div>
+            <div className="flex flex-col gap-y-2">
               <Label htmlFor="duration_minutes">Duration (minutes) *</Label>
               <TextInput
                 control={control}
@@ -373,37 +382,57 @@ export function ServiceForm({
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="service_type_id">Service Type *</Label>
-            <Select
-              value={watch("service_type_id")?.toString() || ""}
-              onValueChange={(value) =>
-                setValue("service_type_id", parseInt(value))
-              }
-              disabled={isLoading || isLoadingServiceTypes}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select service type" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableServiceTypes.map((serviceType) => (
-                  <SelectItem
-                    key={serviceType.id}
-                    value={serviceType.id.toString()}
-                  >
-                    {serviceType.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.service_type_id && (
+          <div className="flex flex-col gap-y-2">
+            <Label htmlFor="service_type_ids">Service Types *</Label>
+            {isLoadingServiceTypes ? (
+              <div className="text-gray-500 mt-2">Loading service types...</div>
+            ) : (
+              <div className="mt-2">
+                <CheckboxGroup
+                  name="service_type_ids"
+                  control={control}
+                  options={availableServiceTypes.map((serviceType) => ({
+                    value: serviceType.id,
+                    label: serviceType.name,
+                  }))}
+                  disabled={isLoading}
+                  className="grid grid-cols-2 md:grid-cols-3 gap-2"
+                />
+              </div>
+            )}
+            {errors.service_type_ids && (
               <p className="text-sm text-red-500 mt-1">
-                {errors.service_type_id.message}
+                {errors.service_type_ids.message}
               </p>
             )}
           </div>
 
-          <div>
+          <div className="flex flex-col gap-y-2">
+            <Label htmlFor="pet_type_ids">Pet Types *</Label>
+            {isLoadingPetTypes ? (
+              <div className="text-gray-500 mt-2">Loading pet types...</div>
+            ) : (
+              <div className="mt-2">
+                <CheckboxGroup
+                  name="pet_type_ids"
+                  control={control}
+                  options={availablePetTypes.map((petType) => ({
+                    value: petType.id,
+                    label: petType.name,
+                  }))}
+                  className="grid grid-cols-2 md:grid-cols-3 gap-2"
+                  disabled={isLoading}
+                />
+              </div>
+            )}
+            {errors.pet_type_ids && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.pet_type_ids.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-y-2">
             <Label htmlFor="is_active">Status</Label>
             <select
               id="is_active"
@@ -417,6 +446,25 @@ export function ServiceForm({
             {errors.is_active && (
               <p className="text-sm text-red-500 mt-1">
                 {errors.is_active.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-y-2">
+            <Label htmlFor="cancellation_policy">
+              Cancellation Policy{" "}
+              <span className="text-gray-400">(Optional)</span>
+            </Label>
+            <TextAreaInput
+              control={control}
+              name="cancellation_policy"
+              id="cancellation_policy"
+              placeholder="Enter cancellation policy details (e.g., 24-hour notice required, refund policy, etc.)"
+              rows={4}
+            />
+            {errors.cancellation_policy && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.cancellation_policy.message}
               </p>
             )}
           </div>

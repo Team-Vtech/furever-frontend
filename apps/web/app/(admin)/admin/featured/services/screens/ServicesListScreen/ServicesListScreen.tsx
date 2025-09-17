@@ -27,30 +27,15 @@ export function ServicesListScreen() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Services Management</h1>
-          <p className="text-muted-foreground">
-            Manage your services, pricing, and availability.
-          </p>
-        </div>
-        <Button onClick={() => router.push("/admin/services/create")}>
-          <Plus className="mr-2 h-4 w-4" />
-          Create Service
-        </Button>
-      </div>
-
-      <DataTable
-        columns={servicesColumns}
-        data={data}
-        pagination={pagination}
-        isLoading={isLoading}
-        searchPlaceholder="Search services..."
-        showToolbar={true}
-        showSearch={true}
-        showColumnVisibility={true}
-      />
-    </div>
+    <DataTable
+      columns={servicesColumns}
+      data={data}
+      pagination={pagination}
+      isLoading={isLoading}
+      searchPlaceholder="Search services..."
+      showToolbar={true}
+      showSearch={true}
+      showColumnVisibility={true}
+    />
   );
 }

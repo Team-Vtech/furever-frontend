@@ -61,8 +61,8 @@ export const ServicesClient = {
     return response.data;
   },
 
-  async updateService(id: string, data: UpdateServiceInput) {
-    const response = await client().put<JsonResponse<Service>>(
+  async updateService(id: number, data: UpdateServiceInput) {
+    const response = await client().patch<JsonResponse<Service>>(
       `${ENDPOINTS.getServices.url}/${id}`,
       data
     );
