@@ -46,10 +46,9 @@ export function AddonsSection({ control, isLoading }: AddonsSectionProps) {
     name: "addons",
   });
 
-  // Fetch available addons
   const { data: addonsData, isLoading: isLoadingAddons } = useAddonsQuery({
     status: "active",
-    per_page: 100, // Get all active addons
+    per_page: 100,
   });
 
   const availableAddons = addonsData?.data?.data || [];

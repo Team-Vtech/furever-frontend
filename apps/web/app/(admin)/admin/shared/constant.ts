@@ -7,6 +7,8 @@ import {
   PawPrint,
   Wrench,
   Plus,
+  Users,
+  BookOpen,
 } from "lucide-react";
 
 export const APP_NAVIGATION_LINKS: {
@@ -20,13 +22,8 @@ export const APP_NAVIGATION_LINKS: {
     icon: LayoutDashboard,
   },
   {
-    title: "Applications",
-    url: "/admin/application",
-    icon: FileText,
-  },
-  {
-    title: "Appointments",
-    url: "/admin/appointments",
+    title: "Bookings",
+    url: "/admin/bookings",
     icon: Calendar,
   },
   {
@@ -48,6 +45,16 @@ export const APP_NAVIGATION_LINKS: {
     title: "Addons",
     url: "/admin/addons",
     icon: Plus,
+  },
+  {
+    title: "Bookings",
+    url: "/admin/bookings",
+    icon: BookOpen,
+  },
+  {
+    title: "Providers",
+    url: "/admin/providers",
+    icon: Users,
   },
 ];
 

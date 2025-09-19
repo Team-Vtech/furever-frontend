@@ -1,5 +1,3 @@
-"use client";
-
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
@@ -15,12 +13,14 @@ import {
 } from "../../../(routes)/api/services/services.schema";
 import { CheckboxGroup } from "../../../shared/components/CheckboxGroup";
 import { TextInput } from "../../../shared/components/TextInput/TextInput";
+import { SelectInput } from "../../../shared/components/SelectInput/SelectInput";
 import {
   getMediaId,
   useMediaUpload,
 } from "../../../shared/hooks/use-media-upload";
 import { usePetTypesQuery } from "../../pet-types/hooks/usePetTypeQueries";
 import { useServiceTypesQuery } from "../../service-types/hooks/useServiceTypeQueries";
+import { useProviderQueries } from "../../providers/hooks/useProviderQueries";
 import { AddonsSection } from "../components/AddonsSection";
 import { Service } from "../types";
 
@@ -82,8 +82,18 @@ export function ServiceForm({
     }
   );
 
+  // Fetch providers
+  const { providersQuery } = useProviderQueries();
+  const { data: providersData, isLoading: isLoadingProviders } = providersQuery(
+    {
+      status: "approved", // Only approved providers
+      per_page: 100, // Get all approved providers
+    }
+  );
+
   const availableServiceTypes = serviceTypesData?.data?.data || [];
   const availablePetTypes = petTypesData?.data?.data || [];
+  const availableProviders = providersData?.data?.data || [];
 
   const methods = useForm<ServiceFormValues>({
     resolver: zodResolver(serviceSchema),
@@ -218,6 +228,29 @@ export function ServiceForm({
             />
             {errors.name && (
               <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-y-2">
+            <Label htmlFor="provider_id">Provider *</Label>
+            {isLoadingProviders ? (
+              <div className="text-gray-500 mt-2">Loading providers...</div>
+            ) : (
+              <SelectInput
+                control={control}
+                name="provider_id"
+                options={availableProviders.map((provider) => ({
+                  value: provider.id,
+                  label: provider.business_name,
+                }))}
+                placeholder="Select a provider"
+                disabled={isLoading}
+              />
+            )}
+            {errors.provider_id && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.provider_id.message}
+              </p>
             )}
           </div>
 

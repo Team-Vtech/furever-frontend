@@ -34,6 +34,18 @@ export const servicesColumns: ColumnDef<Service>[] = [
     },
   },
   {
+    accessorKey: "provider",
+    header: "Provider",
+    cell: ({ row }: { row: Row<Service> }) => {
+      const service = row.original;
+      return (
+        <div className="text-sm">
+          {service.provider?.business_name || "No Provider"}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "description",
     header: "Description",
     cell: ({ row }: { row: Row<Service> }) => {

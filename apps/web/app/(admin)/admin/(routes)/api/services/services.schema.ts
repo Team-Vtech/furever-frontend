@@ -35,6 +35,7 @@ export const addonSchema = z.object({
 // Unified schema for services (supports both create and update operations)
 export const serviceSchema = z.object({
   name: z.string().min(1, "Service name is required"),
+  provider_id: z.number().min(1, "Provider is required"),
   service_type_ids: z
     .array(z.number())
     .min(1, "At least one service type is required"),
@@ -65,6 +66,7 @@ export const getServiceDefaultValues = (
       ? service.pet_types.map((type) => type.id)
       : [],
     name: service?.name || "",
+    provider_id: service?.provider_id || 0,
     description: service?.description || "",
     price: service?.price ? String(service.price) : "0",
     duration_minutes: service?.duration_minutes || 30,

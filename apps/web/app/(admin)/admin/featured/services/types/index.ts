@@ -1,3 +1,5 @@
+import { Provider } from "../../providers/types";
+
 export enum AddonUnit {
   PER_SESSION = "per session",
   PER_PET = "per pet",
@@ -52,6 +54,8 @@ export type PetType = {
 export type Service = {
   id: number;
   name: string;
+  provider_id: number;
+  provider?: Provider;
   description: string;
   price: string;
   duration_minutes: number;
