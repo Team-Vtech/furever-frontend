@@ -1,11 +1,11 @@
 "use client";
 
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Provider } from "../../../types";
 import { Button } from "@furever/ui/components/button";
 import { Badge } from "@furever/ui/components/badge";
 import { Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Provider } from "@/app/(admin)/admin/shared/types/models.types";
 
 function ProviderActionsCell({ provider }: { provider: Provider }) {
   const router = useRouter();
@@ -84,7 +84,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     header: "Location",
     cell: ({ row }) => {
       const provider = row.original;
-      if (!provider.location) {
+      if (!provider.location || typeof provider.location !== "object") {
         return <div className="text-sm text-muted-foreground">N/A</div>;
       }
       return (

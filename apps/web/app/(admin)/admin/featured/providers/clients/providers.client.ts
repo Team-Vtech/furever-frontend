@@ -1,43 +1,22 @@
 import { client } from "@/app/shared/utils/http.client.utils";
 import { ENDPOINTS } from "../constant";
-import {
-  Provider,
-  CreateProviderData,
-  UpdateProviderData,
-} from "../types/index";
+
 import {
   JsonResponse,
   PaginatedJsonResponse,
 } from "@/app/shared/types/general";
-
-interface GetProvidersParams {
-  page?: number;
-  per_page?: number;
-  search?: string;
-  status?: string;
-}
+import { Provider } from "../../../shared/types/models.types";
+import { ProviderFormValues } from "../../../(routes)/api/providers/providers.schema";
 
 export const ProvidersClient = {
-  async getProviders(params: GetProvidersParams = {}) {
-    const { page = 1, per_page = 10, search, status } = params;
-
-    const searchParams = new URLSearchParams({
-      page: page.toString(),
-      limit: per_page.toString(),
-    });
-
-    if (search) {
-      searchParams.append("search", search);
-    }
-    if (status) {
-      searchParams.append("status", status);
-    }
-
+  async getProviders({ queryKey }: { queryKey: [string, string] }) {
     const response = await client().get<
       PaginatedJsonResponse<{
         data: Provider[];
       }>
-    >(`${ENDPOINTS.getProviders.url}?${searchParams.toString()}`);
+    >(ENDPOINTS.getProviders.url, {
+      params: queryKey[1],
+    });
     return response.data;
   },
 
@@ -48,7 +27,7 @@ export const ProvidersClient = {
     return response.data;
   },
 
-  async createProvider(data: CreateProviderData) {
+  async createProvider(data: ProviderFormValues) {
     const response = await client().post<JsonResponse<Provider>>(
       ENDPOINTS.createProvider.url,
       data
@@ -56,7 +35,7 @@ export const ProvidersClient = {
     return response.data;
   },
 
-  async updateProvider(id: string, data: UpdateProviderData) {
+  async updateProvider(id: string, data: ProviderFormValues) {
     const response = await client().put<JsonResponse<Provider>>(
       `${ENDPOINTS.getProviders.url}/${id}`,
       data

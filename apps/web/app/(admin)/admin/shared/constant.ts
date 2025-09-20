@@ -47,14 +47,14 @@ export const APP_NAVIGATION_LINKS: {
     icon: Plus,
   },
   {
-    title: "Bookings",
-    url: "/admin/bookings",
-    icon: BookOpen,
+    title: "Users",
+    url: "/admin/users",
+    icon: Users,
   },
   {
     title: "Providers",
     url: "/admin/providers",
-    icon: Users,
+    icon: BookOpen,
   },
 ];
 

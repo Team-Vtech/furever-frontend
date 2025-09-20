@@ -1,25 +1,20 @@
-import { PageLayout } from "../../../shared/components/PageLayout/PageLayout";
 import { EditProviderScreen } from "../../../featured/providers/screens/EditProviderScreen/EditProviderScreen";
+import { ProvidersClient } from "../../../featured/providers/clients/providers.client";
+import { notFound } from "next/navigation";
 
-interface EditProviderPageProps {
-  params: {
-    id: string;
-  };
+export default async function EditProviderPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const provider = await getProviderById(id);
+  if (!provider) {
+    return notFound();
+  }
+  return <EditProviderScreen provider={provider.data} />;
 }
 
-export default function EditProviderPage({ params }: EditProviderPageProps) {
-  return (
-    <PageLayout
-      title="Edit Provider"
-      breadcrumbs={[
-        { label: "Dashboard", href: "/admin" },
-        { label: "Providers", href: "/admin/providers" },
-        { label: "Edit", href: `/admin/providers/${params.id}` },
-      ]}
-    >
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <EditProviderScreen providerId={params.id} />
-      </div>
-    </PageLayout>
-  );
+async function getProviderById(id: string) {
+  return ProvidersClient.getProvider(id);
 }

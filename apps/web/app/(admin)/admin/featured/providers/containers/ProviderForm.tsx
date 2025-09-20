@@ -1,6 +1,4 @@
 "use client";
-
-import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import {
@@ -14,12 +12,14 @@ import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextInput } from "../../../shared/components/TextInput/TextInput";
-import { Provider } from "../types";
 import {
   CreateProviderFormValues,
   createProviderSchema,
+  getProviderDefaultValues,
 } from "../../../(routes)/api/providers/providers.schema";
 import { PROVIDER_STATUS_OPTIONS } from "../constant";
+import { NumberInput } from "../../../shared/components/NumberInput/NumberInput";
+import { Provider } from "../../../shared/types/models.types";
 
 interface ProviderFormProps {
   provider?: Provider;
@@ -34,24 +34,10 @@ export function ProviderForm({
   onCancel,
   isLoading,
 }: ProviderFormProps) {
+  const defaultValues = getProviderDefaultValues(provider);
   const formMethods = useForm<CreateProviderFormValues>({
     resolver: zodResolver(createProviderSchema),
-    defaultValues: {
-      business_name: provider?.business_name || "",
-      contact_person_name: provider?.contact_person_name || "",
-      email: provider?.email || "",
-      phone_number: provider?.phone_number || "",
-      location: {
-        address: provider?.location?.address || "",
-        city: provider?.location?.city || "",
-        state: provider?.location?.state || "",
-        country: provider?.location?.country || "",
-        postal_code: provider?.location?.postal_code || "",
-        latitude: provider?.location?.latitude,
-        longitude: provider?.location?.longitude,
-      },
-      status: provider?.status || "pending",
-    },
+    defaultValues,
   });
 
   const {
@@ -71,6 +57,12 @@ export function ProviderForm({
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+        <TextInput
+          id="location.id"
+          name="location.id"
+          control={control}
+          className="mt-1 hidden"
+        />
         <div className="space-y-4">
           {/* Business Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -282,7 +274,7 @@ export function ProviderForm({
                   htmlFor="location.latitude"
                   className="text-sm font-medium text-gray-700"
                 >
-                  Latitude (Optional)
+                  Latitude
                 </Label>
                 <TextInput
                   id="location.latitude"
@@ -304,7 +296,7 @@ export function ProviderForm({
                   htmlFor="location.longitude"
                   className="text-sm font-medium text-gray-700"
                 >
-                  Longitude (Optional)
+                  Longitude
                 </Label>
                 <TextInput
                   id="location.longitude"

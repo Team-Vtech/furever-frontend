@@ -88,3 +88,29 @@ export type MediaUploadResponse = {
   file_size: number;
   mime_type: string;
 };
+
+export type Location = {
+  id: number;
+  country: string;
+  state: string;
+  city: string;
+  address: string;
+  postal_code: string;
+  latitude: string;
+  longitude: string;
+  created_at: string;
+  updated_at: string;
+  provider_id: number;
+};
+
+export type Provider = {
+  id: number;
+  business_name: string;
+  contact_person_name: string;
+  email: string;
+  phone_number: string;
+  location: Location;
+  status: "pending" | "approved" | "rejected" | "inactive";
+  created_at: string;
+  updated_at: string;
+};

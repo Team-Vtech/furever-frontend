@@ -1,38 +1,26 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { ProviderForm } from "../../containers/ProviderForm";
-import { useProviderQueries } from "../../hooks/useProviderQueries";
-import { CreateProviderFormValues } from "../../../../(routes)/api/providers/providers.schema";
-import { Button } from "@furever/ui/components/button";
-import { Trash2 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@furever/ui/components/dialog";
-import { PageLayout } from "@/app/(admin)/admin/shared/components/PageLayout/PageLayout";
 import { DeleteRecordDialog } from "@/app/(admin)/admin/shared/components/DeleteRecordDialog/DeleteRecordDialog";
+import { PageLayout } from "@/app/(admin)/admin/shared/components/PageLayout/PageLayout";
+import { useRouter } from "next/navigation";
+import { ProviderFormValues } from "../../../../(routes)/api/providers/providers.schema";
+import { ProviderForm } from "../../containers/ProviderForm";
+import { useProviderDelete } from "./hooks/useProviderDelete";
+import { useProviderMutation } from "./hooks/useProviderMutation";
+import { Provider } from "@/app/(admin)/admin/shared/types/models.types";
 
 interface EditProviderScreenProps {
-  providerId: string;
+  provider: Provider;
 }
 
-export function EditProviderScreen({ providerId }: EditProviderScreenProps) {
+export function EditProviderScreen({ provider }: EditProviderScreenProps) {
   const router = useRouter();
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const { providerQuery, updateProviderMutation, deleteProviderMutation } =
-    useProviderQueries();
-  const { data: providerData, isLoading, isError } = providerQuery(providerId);
-
-  const handleSubmit = (data: CreateProviderFormValues) => {
-    updateProviderMutation.mutate(
-      { id: providerId, data },
+  const { updateProvider, isUpdating } = useProviderMutation();
+  const { deleteProvider, isDeleting } = useProviderDelete();
+  const handleSubmit = (data: ProviderFormValues) => {
+    updateProvider(
+      { id: provider.id, data },
       {
         onSuccess: () => {
           router.push("/admin/providers");
@@ -46,43 +34,12 @@ export function EditProviderScreen({ providerId }: EditProviderScreenProps) {
   };
 
   const handleDelete = () => {
-    deleteProviderMutation.mutate(Number(providerId), {
+    deleteProvider(provider.id, {
       onSuccess: () => {
         router.push("/admin/providers");
       },
     });
-    setShowDeleteDialog(true);
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="text-sm text-muted-foreground mt-2">
-            Loading provider...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError || !providerData?.data) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <h2 className="text-lg font-semibold text-red-600">
-            Error loading provider
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Please try refreshing the page or go back to the providers list
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  const provider = providerData.data;
 
   return (
     <PageLayout
@@ -92,7 +49,7 @@ export function EditProviderScreen({ providerId }: EditProviderScreenProps) {
           recordId={provider.id}
           recordName={provider.business_name}
           onDelete={handleDelete}
-          isDeleting={deleteProviderMutation.isPending}
+          isDeleting={isDeleting}
         />
       }
       breadcrumbs={[
@@ -104,14 +61,12 @@ export function EditProviderScreen({ providerId }: EditProviderScreenProps) {
         { label: "Edit", href: "#" },
       ]}
     >
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <ProviderForm
-          provider={provider}
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
-          isLoading={updateProviderMutation.isPending}
-        />
-      </div>
+      <ProviderForm
+        provider={provider}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        isLoading={isUpdating}
+      />
     </PageLayout>
   );
 }
