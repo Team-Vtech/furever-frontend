@@ -6,6 +6,26 @@ import axios from "axios";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, User } from "@/app/shared/types/general";
 
+const IGNORE_PATHS = [
+  "/_next",
+  "/api",
+  "/manifest.json",
+  "/manifest.webmanifest",
+  "/auth/login",
+  "/auth/register",
+  "/auth/callback",
+  "/auth/signin",
+  "/auth/signout",
+  "/auth/session",
+  "/images",
+  "/favicon.ico",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+  "/login", // Pet parent login
+  "/register", // Pet parent register
+  "/forgot-password", // Pet parent forgot password
+  "/api",
+];
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     CredentialsProvider({
@@ -32,7 +52,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: credentials.email,
             password: credentials.password,
           });
-          console.log(response, "response");
           return {
             id: response.data.data.user.id.toString(),
             name: response.data.data.user.name,
@@ -40,9 +59,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             phone: response.data.data.user.phone,
             status: response.data.data.user.status,
             access_token: response.data.data.access_token,
+            emailVerified: response.data.data.user.emailVerified || null,
           };
-
-          return null;
         } catch (error) {
           console.error("Auth error:", error);
           return null;
@@ -58,12 +76,59 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, account, trigger, session }) {
+      if (trigger === "update" && session) {
+        if (token.user) {
+          token.user = token.user;
+        }
+        return token;
+      } else {
+        if (user) {
+          token.user = {
+            id: Number(user.id)!,
+            email: user.email!,
+            name: user.name!,
+            status: user.status,
+            phone: user.phone,
+            emailVerified: user.emailVerified?.toString()!,
+          };
+          token.access_token = user.access_token;
+        }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.user) {
+        session.user = {
+          ...token.user,
+          emailVerified: new Date(token.user.emailVerified)?.toString(),
+          access_token: token.access_token!,
+        };
+        session.access_token = token.access_token;
+        const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
+        session.expires = expires as Date & string;
+      }
+      return session;
+    },
+    async authorized({ request, auth }) {
+      if (
+        IGNORE_PATHS.some((path) => request.nextUrl.pathname.startsWith(path))
+      ) {
+        return true;
+      }
+      if (auth) {
+        return true;
+      }
+      return false;
+    },
+  },
+  pages: {
+    signIn: "/auth/login", // Default for admin, will be overridden by redirect
+  },
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 24, // 1 day
-  },
-  pages: {
-    signIn: "/admin/login",
   },
 });
 export async function getSessionUser() {

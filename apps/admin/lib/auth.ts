@@ -1,0 +1,138 @@
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
+import axios from "axios";
+import { server } from "@/app/shared/utils/http.server.utils";
+import { JsonResponse, User } from "@/app/shared/types/general";
+
+const IGNORE_PATHS = [
+  "/_next",
+  "/api",
+  "/manifest.json",
+  "/manifest.webmanifest",
+  "/auth/login",
+  "/auth/register",
+  "/auth/callback",
+  "/auth/signin",
+  "/auth/signout",
+  "/auth/session",
+  "/images",
+  "/favicon.ico",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+  "/admin/api",
+  "/login", // Pet parent login
+  "/register", // Pet parent register
+  "/forgot-password", // Pet parent forgot password
+  "/api",
+];
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  providers: [
+    CredentialsProvider({
+      id: "credentials",
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        try {
+          const response = await (
+            await server()
+          ).post<
+            JsonResponse<{
+              user: User;
+              access_token: string;
+            }>
+          >("/auth/login", {
+            email: credentials.email,
+            password: credentials.password,
+          });
+          return {
+            id: response.data.data.user.id.toString(),
+            name: response.data.data.user.name,
+            email: response.data.data.user.email,
+            phone: response.data.data.user.phone,
+            status: response.data.data.user.status,
+            access_token: response.data.data.access_token,
+            emailVerified: response.data.data.user.emailVerified || null,
+          };
+        } catch (error) {
+          console.error("Auth error:", error);
+          return null;
+        }
+      },
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user, account, trigger, session }) {
+      if (trigger === "update" && session) {
+        if (token.user) {
+          token.user = token.user;
+        }
+        return token;
+      } else {
+        if (user) {
+          token.user = {
+            id: Number(user.id)!,
+            email: user.email!,
+            name: user.name!,
+            status: user.status,
+            phone: user.phone,
+            emailVerified: user.emailVerified?.toString()!,
+          };
+          token.access_token = user.access_token;
+        }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.user) {
+        session.user = {
+          ...token.user,
+          emailVerified: new Date(token.user.emailVerified)?.toString(),
+          access_token: token.access_token!,
+        };
+        session.access_token = token.access_token;
+        const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
+        session.expires = expires as Date & string;
+      }
+      return session;
+    },
+    async authorized({ request, auth }) {
+      if (
+        IGNORE_PATHS.some((path) => request.nextUrl.pathname.startsWith(path))
+      ) {
+        return true;
+      }
+      if (auth) {
+        return true;
+      }
+      return false;
+    },
+  },
+  pages: {
+    signIn: "/admin/login", // Default for admin, will be overridden by redirect
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 60 * 24, // 1 day
+  },
+});
+export async function getSessionUser() {
+  const session = await auth();
+  return session?.user;
+}
