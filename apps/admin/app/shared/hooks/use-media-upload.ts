@@ -1,8 +1,8 @@
-import { MediaClient } from "@/app/(admin)/shared/utils/media.client";
 import { CreateMediaObjectData, MediaUploadResponse } from "@furever/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { toast } from "sonner";
+import { MediaClient } from "../utils/media.client";
 
 const QUERY_KEYS = {
   media: ["media"] as const,

@@ -38,9 +38,10 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { DataTableToolbar } from "./components/DataTableToolbar";
 import { Pagination } from "@/app/shared/types/general";
-import { Loader } from "@/app/shared/components/Loader/Loader";
-import { FilterConfig, FilterValue } from "./types/filter.types";
-import { DataTableFilters } from "./components/filters/DataTableFilters";
+import { FilterConfig } from "../FiltersFactory/FiltersFactory";
+import { DataTableSearch } from "./components/DataTableSearch";
+import { useFilters } from "../../hooks/useFilters";
+import { EmptyTableResults } from "../EmptyTableResults/EmptyTableResults";
 
 interface DataTableProps<TData, TValue = unknown> {
   columns: ColumnDef<TData, TValue>[];
@@ -51,79 +52,23 @@ interface DataTableProps<TData, TValue = unknown> {
   showSearch?: boolean;
   showColumnVisibility?: boolean;
   pagination?: Pagination; // Make optional
-  filters?: FilterConfig[];
-  onFiltersChange?: (filters: FilterValue) => void;
+  filters: {
+    initialData: Record<string, unknown>;
+    config: FilterConfig[];
+  };
 }
 
 export function DataTable<TData, TValue>({
   data,
   columns,
   pagination,
-  isLoading = false,
-  showToolbar = true,
-  searchPlaceholder = "Search...",
-  showSearch = true,
-  showColumnVisibility = true,
-  filters = [],
-  onFiltersChange,
+  filters,
 }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] = useState({});
-  const [filterValues, setFilterValues] = useState<FilterValue>({});
   const searchParams = useSearchParams();
   const router = useRouter();
-  // Initialize filter values from URL params or default values
-  useEffect(() => {
-    const initialFilters: FilterValue = {};
-    filters.forEach((filter) => {
-      const urlValue = searchParams.get(filter.key);
-      if (urlValue) {
-        initialFilters[filter.key] = urlValue;
-      } else if (filter.defaultValue !== undefined) {
-        initialFilters[filter.key] = filter.defaultValue;
-      }
-    });
-    setFilterValues(initialFilters);
-  }, [filters, searchParams]);
-
-  const handleFilterChange = useCallback(
-    (key: string, value: any) => {
-      setFilterValues((prev) => {
-        const newFilters = { ...prev };
-        if (value === "" || value === null || value === undefined) {
-          delete newFilters[key];
-        } else {
-          newFilters[key] = value;
-        }
-
-        // Update URL with new filter values
-        const newSearchParams = new URLSearchParams(searchParams);
-        if (value === "" || value === null || value === undefined) {
-          newSearchParams.delete(key);
-        } else {
-          newSearchParams.set(key, value.toString());
-        }
-        newSearchParams.set("page", "1"); // Reset to first page when filters change
-        router.push(`?${newSearchParams.toString()}`);
-
-        // Call parent callback if provided
-        onFiltersChange?.(newFilters);
-
-        return newFilters;
-      });
-    },
-    [searchParams, router, onFiltersChange]
-  );
-
-  const handleClearFilters = useCallback(() => {
-    setFilterValues({});
-    const newSearchParams = new URLSearchParams(searchParams);
-    filters.forEach((filter) => {
-      newSearchParams.delete(filter.key);
-    });
-    newSearchParams.set("page", "1");
-    router.push(`?${newSearchParams.toString()}`);
-    onFiltersChange?.({});
-  }, [filters, searchParams, router, onFiltersChange]);
+  const { addFilter, getFilterValue } =
+    useFilters<(typeof filters)["initialData"]>();
   const table = useReactTable({
     data,
     columns,
@@ -160,91 +105,63 @@ export function DataTable<TData, TValue>({
     router.push(`?${searchParams.toString()}`);
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        {showToolbar && (
-          <DataTableToolbar
-            table={table}
-            searchPlaceholder={searchPlaceholder}
-            showSearch={showSearch}
-            showColumnVisibility={showColumnVisibility}
-            filters={filters}
-            searchValue={searchParams.get("search") || ""}
-            filterValues={filterValues}
-            onFilterChange={handleFilterChange}
-            onClearFilters={handleClearFilters}
-          />
-        )}
-        <div className="overflow-hidden rounded-lg border">
-          <div className="flex items-center justify-center p-8">
-            <Loader />
-          </div>
-        </div>
-      </div>
-    );
-  }
   return (
     <div>
-      {showToolbar && (
-        <DataTableToolbar
-          table={table}
-          searchPlaceholder={searchPlaceholder}
-          showSearch={showSearch}
-          showColumnVisibility={showColumnVisibility}
-          filters={filters}
-          filterValues={filterValues}
-          searchValue={searchParams.get("search") || ""}
-          onFilterChange={handleFilterChange}
-          onClearFilters={handleClearFilters}
-          onSearchChange={(value) => {
-            const searchParams = new URLSearchParams();
-            if (value) {
-              searchParams.set("search", value);
-            } else {
-              searchParams.delete("search");
-            }
-            searchParams.set("page", "1"); // Reset to first page when search changes
-            router.push(`?${searchParams.toString()}`);
-          }}
+      <div className="flex justify-between py-4">
+        <DataTableSearch
+          onChange={(value) => addFilter("search", value)}
+          value={getFilterValue("search") as string}
         />
-      )}
+        {filters?.config?.length > 0 && (
+          <DataTableToolbar
+            config={filters?.config || []}
+            initialData={filters?.initialData || {}}
+          />
+        )}
+      </div>
 
       <div className="overflow-hidden rounded-lg border">
-        <Table>
-          <TableHeader className="bg-muted sticky top-0 z-10">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody className="**:data-[slot=table-cell]:first:w-8">
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="data-[slot=table-cell]:first:w-8"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        {data.length === 0 ? (
+          <EmptyTableResults />
+        ) : (
+          <Table>
+            <TableHeader className="bg-muted sticky top-0 z-10">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody className="**:data-[slot=table-cell]:first:w-8">
+              {table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className="data-[slot=table-cell]:first:w-8"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
       {pagination ? (
         <div className="mt-10 flex items-center justify-between px-4">

@@ -67,7 +67,7 @@ export type Addon = {
   id: number;
   name: string;
   description: string;
-  status: string;
+  status: GeneralStatus;
 };
 
 export type ServiceAddon = {
@@ -76,7 +76,7 @@ export type ServiceAddon = {
   price: string;
   unit: AddonUnit;
   restrictions: Array<string>;
-  is_active: boolean;
+  status: GeneralStatus;
   service_id: number;
   addon: Addon;
   created_at: string;
@@ -285,8 +285,31 @@ export type Booking = {
 
 export type BookingStatistics = {
   total_bookings: number;
-  bookings_by_status: Array<any>;
-  bookings_per_provider: Array<any>;
-  bookings_per_service: Array<any>;
+  total_revenue: string;
+  bookings_by_status: Array<{
+    service_id: number;
+    service_name: string;
+    count: number;
+  }>;
+  bookings_per_provider: Array<{
+    provider_id: number;
+    provider_name: string;
+    count: number;
+  }>;
+  bookings_per_service: Record<string, number>;
   up_coming_bookings: Array<Booking>;
 };
+
+
+export interface ReviewBooking {
+  id: number
+  booking_id: number
+  user_id: number
+  rating: number
+  comment: string
+  reviewed_at: string
+  created_at: string
+  updated_at: string
+  booking: Booking
+  user: User
+}

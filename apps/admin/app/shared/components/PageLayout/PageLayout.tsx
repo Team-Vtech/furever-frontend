@@ -4,7 +4,8 @@ import { PropsWithChildren } from "react";
 import { SiteHeader } from "./components/SiteHeader";
 import { AppNavigation } from "../AppNavigation/AppNavigation";
 import { SidebarInset } from "@furever/ui/components/sidebar";
-
+import { DashboardLayout } from "../layout/dashboard-layout";
+import { APP_NAVIGATION_LINKS } from "../../constant";
 type PageLayoutProps = PropsWithChildren<{
   title: string;
   breadcrumbs: {
@@ -23,23 +24,19 @@ export function PageLayout({
   actions,
 }: PageLayoutProps) {
   return (
-    <>
-      <AppNavigation variant="inset" />
-      <SidebarInset>
-        <SiteHeader breadcrumbs={breadcrumbs} />
-        <Card className="mx-4 mt-2">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 pt-4">
-            <div>
-              <h2 className="text-2xl font-bold">{title}</h2>
-              {description && (
-                <p className="text-muted-foreground">{description}</p>
-              )}
-            </div>
-            {actions}
-          </CardHeader>
-          <CardContent>{children}</CardContent>
-        </Card>
-      </SidebarInset>
-    </>
+    <DashboardLayout navigationGroups={APP_NAVIGATION_LINKS} breadcrumbs={breadcrumbs}>
+      <Card className="mx-4 mt-2">
+        <CardHeader className="flex flex-row items-center justify-between pb-2 pt-4">
+          <div>
+            <h2 className="text-2xl font-bold">{title}</h2>
+            {description && (
+              <p className="text-muted-foreground">{description}</p>
+            )}
+          </div>
+          {actions}
+        </CardHeader>
+        <CardContent>{children}</CardContent>
+      </Card>
+    </DashboardLayout>
   );
 }

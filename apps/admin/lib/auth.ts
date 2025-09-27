@@ -3,8 +3,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "axios";
-import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, User } from "@/app/shared/types/general";
+import { server } from "@/app/shared/utils/http.server.utils";
 
 const IGNORE_PATHS = [
   "/_next",
@@ -125,7 +125,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   pages: {
-    signIn: "/admin/login", // Default for admin, will be overridden by redirect
+    signIn: "/login", // Default for admin, will be overridden by redirect
   },
   session: {
     strategy: "jwt",

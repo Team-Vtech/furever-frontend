@@ -5,6 +5,7 @@ import { TextFilter } from "./TextFilter";
 import { SelectFilter } from "./SelectFilter";
 import { NumberFilter } from "./NumberFilter";
 import { DateFilter } from "./DateFilter";
+import DynamicFilterAutoCompleteInput from "../../../DynamicSelect";
 
 interface DynamicFilterProps {
   config: FilterConfig;
@@ -24,6 +25,8 @@ export function DynamicFilter({ config, value, onChange }: DynamicFilterProps) {
       return <NumberFilter {...filterProps} />;
     case "date":
       return <DateFilter {...filterProps} />;
+    case "dynamic-select":
+      return <DynamicFilterAutoCompleteInput {...filterProps} />;
     default:
       return <TextFilter {...filterProps} />;
   }

@@ -50,9 +50,10 @@ export function DataTableSearch({
         <Search className="text-muted-foreground absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2 transform" />
         <Input
           placeholder={placeholder}
-          value={searchValue}
+          value={searchValue ?? ""}
           onChange={(e) => handleSearchChange(e.target.value)}
           className="pr-8 pl-8"
+          
         />
         {searchValue && (
           <Button

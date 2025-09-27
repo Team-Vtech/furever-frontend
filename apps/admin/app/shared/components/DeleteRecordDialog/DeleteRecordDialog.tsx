@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { toastUtils } from "@/app/(admin)/shared/utils/toast.utils";
-import { Button } from "@furever/ui/components/button";
+import { toastUtils } from '@/app/shared/utils/toast.utils';
+import { Button } from '@furever/ui/components/button';
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@furever/ui/components/dialog";
-import { Trash2 } from "lucide-react";
-import { useState } from "react";
+} from '@furever/ui/components/dialog';
+import { Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
 type DeleteRecordDialogProps = {
   recordName: string;
@@ -24,7 +24,7 @@ type DeleteRecordDialogProps = {
 
 export function DeleteRecordDialog({
   recordName,
-  triggerText = "Delete Record",
+  triggerText = 'Delete Record',
   recordId,
   onDelete,
   isDeleting,
@@ -36,13 +36,16 @@ export function DeleteRecordDialog({
       setOpen(false);
       onDelete(recordId);
     } catch (error) {
-      console.error("Failed to delete record:", error);
+      console.error('Failed to delete record:', error);
       toastUtils.error.delete(recordName);
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>
         <Button variant="destructive">
           <Trash2 className="mr-2 h-4 w-4" />
@@ -58,7 +61,10 @@ export function DeleteRecordDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+          >
             Cancel
           </Button>
           <Button
@@ -66,7 +72,7 @@ export function DeleteRecordDialog({
             onClick={handleDelete}
             disabled={isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? 'Deleting...' : 'Delete'}
           </Button>
         </DialogFooter>
       </DialogContent>

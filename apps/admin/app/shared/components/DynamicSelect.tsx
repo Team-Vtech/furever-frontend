@@ -1,0 +1,81 @@
+import { QueryFunction, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@furever/ui/components/select";
+import { Label } from "@furever/ui/components/label";
+import { map } from "lodash";
+import { PaginatedJsonResponse } from "../types/general";
+import { Skeleton } from "@furever/ui/components/skeleton";
+
+export type DynamicFilterAutoCompleteInputProps = Omit<
+  typeof Select,
+  "value" | "onChange" | "options" | "renderInput"
+> & {
+  setValue: (value: string) => void;
+  value?: string;
+  queryKey: string;
+  label: string;
+  optionDisplayKey: string | ((record: unknown) => string);
+  queryFn: QueryFunction<
+    PaginatedJsonResponse<{
+      data: Record<string, any>[];
+    }>,
+    string[]
+  >;
+};
+
+function DynamicFilterAutoCompleteInput({
+  setValue,
+  value,
+  queryKey,
+  label,
+  optionDisplayKey = "name",
+  queryFn,
+}: DynamicFilterAutoCompleteInputProps) {
+  const {
+    data,
+    isFetched: isFetched,
+    isLoading: isLoading,
+  } = useQuery({
+    queryKey: ["query-" + queryKey],
+    queryFn,
+    select(data) {
+      return data.data.data;
+    },
+  });
+
+  if (isLoading) {
+    return <Skeleton className="h-10 w-full rounded-md" />;
+  }
+
+  return (
+    <div className="w-full">
+      <Select value={value} onValueChange={(value: string) => setValue(value)}>
+        <SelectTrigger className="w-full" value={value}>
+          <SelectValue placeholder={label} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem key="all" value="all">
+            All
+          </SelectItem>
+          {map(data, (record) => {
+            return (
+              <SelectItem key={record.id} value={`${record.id}`}>
+                {typeof optionDisplayKey === "function"
+                  ? optionDisplayKey(record)
+                  : record[optionDisplayKey]}
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+export default DynamicFilterAutoCompleteInput;

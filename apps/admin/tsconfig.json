@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@furever/ui/*": ["../../packages/ui/src/*"]
+      "@furever/ui/*": ["../../packages/ui/src/*"],
+      "@furever/types/*": ["../../packages/types/src/*"]
     },
     "plugins": [
       {
