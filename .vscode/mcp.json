@@ -20,6 +20,10 @@
       "headers": {
         "Authorization": "Bearer ${POSTMAN_API_KEY}"
       }
+    },
+    "Sentry": {
+      "url": "https://mcp.sentry.dev/mcp/yanal-apps/development-env",
+      "type": "http"
     }
   }
 }

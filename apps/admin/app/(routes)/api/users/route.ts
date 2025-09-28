@@ -1,11 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { userSchema } from "./users.schema";
 import {
-  FiveHundredError,
-  ValidationError,
+  FiveHundredError
 } from "@/app/shared/utils/error.utils";
 import { server } from "@/app/shared/utils/http.server.utils";
+import { NextRequest, NextResponse } from "next/server";
+import { userSchema } from "./users.schema";
 
 export async function GET(request: NextRequest) {
   try {

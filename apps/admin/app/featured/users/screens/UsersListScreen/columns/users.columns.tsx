@@ -5,22 +5,31 @@ import { User } from "../../../types";
 import { Button } from "@furever/ui/components/button";
 import { Badge } from "@furever/ui/components/badge";
 import { Edit } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { useSession } from "next-auth/react";
+import { Skeleton } from "@furever/ui/components/skeleton";
 
 function UserActionsCell({ user }: { user: User }) {
-  const router = useRouter();
-
-  const handleEdit = () => {
-    router.push(`/users/${user.id}`);
-  };
-
+  const { data: session, status } = useSession();
+  if (status === "loading" || status === "unauthenticated") {
+    return <Skeleton className="w-10 h-10" />;
+  }
+  console.log(user.id, session?.user?.id);
   return (
-    <div className="flex items-center gap-2">
-      <Button variant="outline" size="sm" onClick={handleEdit}>
-        <Edit className="mr-2 h-4 w-4" />
-        Edit
-      </Button>
-    </div>
+    <Authorize
+      permission="update user"
+      condition={user.id === session?.user?.id}
+    >
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size="sm" asChild>
+          <Link href={`/users/${user.id}`}>
+            <Edit className="mr-2 h-4 w-4" />
+            Edit
+          </Link>
+        </Button>
+      </div>
+    </Authorize>
   );
 }
 

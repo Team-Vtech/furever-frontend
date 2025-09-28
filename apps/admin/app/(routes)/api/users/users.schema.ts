@@ -20,6 +20,8 @@ export const userSchema = z.object({
   status: z.enum(["active", "inactive"], {
     required_error: "Status is required",
   }),
+  roles_ids: z.array(z.number()).optional(),
+  provider_id: z.number().optional(),
 });
 
 export type UserFormValues = z.infer<typeof userSchema>;

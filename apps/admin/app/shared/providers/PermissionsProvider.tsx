@@ -20,6 +20,7 @@ export const PermissionsProvider = ({
   permissions: string[];
 }) => {
   const hasPermission = (permissionName: string) => {
+    console.log(permissionName);
     if (!permissions) return false;
     return permissions.some((perm) => perm === permissionName);
   };
@@ -38,5 +39,7 @@ export function useAuthPermissions() {
       "useAuthPermissions must be used within a PermissionsProvider"
     );
   }
+
+
   return context;
 }

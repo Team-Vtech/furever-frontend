@@ -24,7 +24,7 @@ import {
 import { cn } from "@furever/ui/lib/utils";
 import { Badge } from "@furever/ui/components/badge";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
 export interface BreadcrumbItem {
@@ -233,7 +233,7 @@ export function DashboardLayout({
                     <Avatar className="h-8 w-8">
                       <AvatarImage src="/caring-vet.png" />
                       <AvatarFallback className="bg-primary text-primary-foreground">
-                  {session?.user?.name?.charAt(0)}
+                        {session?.user?.name?.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <span className="hidden md:block text-sm font-medium">
@@ -258,7 +258,12 @@ export function DashboardLayout({
                     Billing
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-destructive">
+                  <DropdownMenuItem
+                    className="text-destructive"
+                    onClick={() => {
+                      signOut({ callbackUrl: "/login" });
+                    }}
+                  >
                     Log out
                   </DropdownMenuItem>
                 </DropdownMenuContent>

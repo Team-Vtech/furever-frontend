@@ -42,8 +42,13 @@ export type User = {
   name: string;
   email: string;
   phone: string;
-  status: UserStatus;
-  emailVerified: string;
+  address: string;
+  profile_image_id?: number;
+  status: "active" | "inactive";
+  created_at: string;
+  updated_at: string;
+  roles: Role[];
+  provider_id?: number;
 };
 
 export enum Status {
@@ -193,6 +198,7 @@ export type Provider = {
   status: "pending" | "approved" | "rejected" | "inactive";
   created_at: string;
   updated_at: string;
+  provider_id: number;
 };
 
 export type Role = {
@@ -300,16 +306,15 @@ export type BookingStatistics = {
   up_coming_bookings: Array<Booking>;
 };
 
-
 export interface ReviewBooking {
-  id: number
-  booking_id: number
-  user_id: number
-  rating: number
-  comment: string
-  reviewed_at: string
-  created_at: string
-  updated_at: string
-  booking: Booking
-  user: User
+  id: number;
+  booking_id: number;
+  user_id: number;
+  rating: number;
+  comment: string;
+  reviewed_at: string;
+  created_at: string;
+  updated_at: string;
+  booking: Booking;
+  user: User;
 }

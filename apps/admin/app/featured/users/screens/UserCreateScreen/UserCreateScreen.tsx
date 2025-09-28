@@ -5,8 +5,14 @@ import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
 import { useCreateUser } from "../../hooks/use-users";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Provider, Role } from "@furever/types/index";
 
-export function UserCreateScreen() {
+type UserCreateScreenProps = {
+  roles: Role[];
+  providers: Provider[];
+};
+
+export function UserCreateScreen({ roles, providers }: UserCreateScreenProps) {
   const router = useRouter();
   const createUserMutation = useCreateUser();
 
@@ -31,6 +37,8 @@ export function UserCreateScreen() {
         onSubmit={handleSubmit}
         onCancel={handleCancel}
         isLoading={createUserMutation.isPending}
+        roles={roles}
+        providers={providers}
       />
     </div>
   );

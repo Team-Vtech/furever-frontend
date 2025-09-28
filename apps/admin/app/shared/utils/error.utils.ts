@@ -4,15 +4,10 @@ import { ZodError } from "zod";
 
 export function FiveHundredError(error: unknown) {
   if (isAxiosError(error)) {
-    console.log(error.response?.data);
-    return NextResponse.json(
-      {
-        error: {
-          message: error.response?.data?.message || "Internal Server Error",
-        },
-      },
-      { status: 500 }
-    );
+
+    return NextResponse.json(error.response?.data, {
+      status: error.response?.status,
+    });
   }
   return NextResponse.json(
     {

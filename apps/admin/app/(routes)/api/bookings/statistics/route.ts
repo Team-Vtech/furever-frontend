@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { server } from "@/app/shared/utils/http.server.utils";
+import { FiveHundredError } from "@/app/shared/utils/error.utils";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
 
-    // Proxy request to backend API
     const response = await (
       await server()
     ).get("/admin/bookings/statistics", {
@@ -13,10 +13,6 @@ export async function GET(request: NextRequest) {
     });
     return NextResponse.json(response.data);
   } catch (error) {
-    console.log(error.response.data);
-    return NextResponse.json(
-      { error: "Failed to fetch bookings" },
-      { status: 500 }
-    );
+    return FiveHundredError(error);
   }
 }

@@ -28,7 +28,7 @@ export default async function EditServicePage({
     ]);
 
   if (!serviceTypesRes || !petTypesRes || !providersRes || !addonsRes) {
-    throw new Error("Failed to fetch necessary data for creating a service.");
+    return notFound();
   }
   return (
     <Suspense fallback={<div>Loading...</div>}>

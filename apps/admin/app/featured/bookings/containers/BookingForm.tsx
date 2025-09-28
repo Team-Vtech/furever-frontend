@@ -48,7 +48,6 @@ export function BookingForm({
     setValue,
     watch,
     control,
-    reset,
   } = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
@@ -71,7 +70,7 @@ export function BookingForm({
   const watchedServiceId = watch("service_id");
 
   const { data: users, isLoading: isLoadingUsers } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", "all=true"],
     queryFn: UsersClient.getUsers,
     select: (data) => data.data.data,
   });

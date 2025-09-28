@@ -1,9 +1,11 @@
 import { server } from "@/app/shared/utils/http.server.utils";
-import { UsersClient } from "../../../featured/users/clients/users.client";
 import { UserEditScreen } from "../../../featured/users/screens/UserEditScreen/UserEditScreen";
-import { JsonResponse } from "@/app/shared/types/general";
-import { User } from "@/app/featured/users/types";
+import {
+  JsonResponse,
+  PaginatedJsonResponse,
+} from "@/app/shared/types/general";
 import { notFound } from "next/navigation";
+import { Provider, Role, User } from "@furever/types/index";
 
 interface EditUserPageProps {
   params: Promise<{
@@ -20,9 +22,44 @@ export default async function EditUserPage({ params }: EditUserPageProps) {
   if (!user?.data?.data) {
     return notFound();
   }
-  return <UserEditScreen user={user.data.data} />;
+
+  const providers = await getProviders();
+  const roles = await getRoles();
+  return (
+    <UserEditScreen user={user.data.data} roles={roles} providers={providers} />
+  );
 }
 
 async function getUser(id: string) {
   return await (await server()).get<JsonResponse<User>>(`/admin/users/${id}`);
+}
+
+async function getRoles() {
+  try {
+    const response = await (
+      await server()
+    ).get<
+      PaginatedJsonResponse<{
+        data: Role[];
+      }>
+    >("/admin/roles");
+    return response.data.data.data;
+  } catch (error) {
+    return [];
+  }
+}
+
+async function getProviders() {
+  try {
+    const response = await (
+      await server()
+    ).get<
+      PaginatedJsonResponse<{
+        data: Provider[];
+      }>
+    >("/admin/providers");
+    return response.data.data.data;
+  } catch (error) {
+    return [];
+  }
 }

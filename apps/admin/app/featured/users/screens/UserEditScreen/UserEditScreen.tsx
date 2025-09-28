@@ -1,20 +1,25 @@
 "use client";
 
-import { useUser, useUpdateUser, useDeleteUser } from "../../hooks/use-users";
-import { CreateUserForm } from "../../containers/CreateUserForm";
-import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { Loader } from "@/app/shared/components/Loader/Loader";
-import { User } from "../../types";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
+import { Provider, Role, User } from "@furever/types/index";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
+import { CreateUserForm } from "../../containers/CreateUserForm";
+import { useDeleteUser, useUpdateUser } from "../../hooks/use-users";
 
 interface UserEditScreenProps {
   user: User;
+  roles: Role[];
+  providers: Provider[];
 }
 
-export function UserEditScreen({ user }: UserEditScreenProps) {
+export function UserEditScreen({
+  user,
+  roles,
+  providers,
+}: UserEditScreenProps) {
   const router = useRouter();
   const updateUserMutation = useUpdateUser();
   const deleteUserMutation = useDeleteUser();
@@ -53,10 +58,7 @@ export function UserEditScreen({ user }: UserEditScreenProps) {
     <PageLayout
       title="Edit User"
       description="Update user information and settings"
-      breadcrumbs={[
-        { label: "Users", href: "/users" },
-        { label: "Edit User" },
-      ]}
+      breadcrumbs={[{ label: "Users", href: "/users" }, { label: "Edit User" }]}
       actions={
         <DeleteRecordDialog
           recordId={user?.id}
@@ -73,6 +75,8 @@ export function UserEditScreen({ user }: UserEditScreenProps) {
           onSubmit={handleSubmit}
           onCancel={handleCancel}
           isLoading={updateUserMutation.isPending}
+          roles={roles}
+          providers={providers}
         />
       </div>
     </PageLayout>

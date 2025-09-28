@@ -4,6 +4,7 @@ import { server } from "@/app/shared/utils/http.server.utils";
 import { Addon, PetType, Provider, ServiceType } from "@furever/types/index";
 import { Suspense } from "react";
 import { CreateServiceScreen } from "../../../featured/services/screens/CreateServiceScreen/CreateServiceScreen";
+import { notFound } from "next/navigation";
 
 export default async function CreateServicePage() {
   const [serviceTypesRes, petTypesRes, providersRes, addonsRes] =
@@ -15,7 +16,7 @@ export default async function CreateServicePage() {
     ]);
 
   if (!serviceTypesRes || !petTypesRes || !providersRes || !addonsRes) {
-    throw new Error("Failed to fetch necessary data for creating a service.");
+    return notFound();
   }
 
   return (
