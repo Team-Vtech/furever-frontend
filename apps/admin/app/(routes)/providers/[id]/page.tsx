@@ -1,9 +1,7 @@
-import { EditProviderScreen } from '../../../featured/providers/screens/EditProviderScreen/EditProviderScreen';
-import { ProvidersClient } from '../../../featured/providers/clients/providers.client';
-import { notFound } from 'next/navigation';
-import { server } from '@/app/shared/utils/http.server.utils';
-import { JsonResponse } from '@/app/shared/types/general';
-import { Provider } from '@furever/types';
+import { EditProviderScreen } from "../../../featured/providers/screens/EditProviderScreen/EditProviderScreen";
+import { notFound } from "next/navigation";
+import { server } from "@/app/shared/utils/http.server.utils";
+import { JsonResponse, Provider } from "@furever/types";
 
 export default async function EditProviderPage({
   params,

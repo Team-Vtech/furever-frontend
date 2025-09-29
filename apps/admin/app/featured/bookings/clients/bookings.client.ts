@@ -1,11 +1,12 @@
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
 import { client } from "@/app/shared/utils/http.client.utils";
 import { ENDPOINTS } from "../constants";
 import { BookingFormValues } from "../../../(routes)/api/bookings/bookings.schema";
-import { Booking, BookingStatus } from "@furever/types/index";
+import {
+  Booking,
+  BookingStatus,
+  JsonResponse,
+  PaginatedJsonResponse,
+} from "@furever/types";
 
 export const BookingsClient = {
   async getBookings({ queryKey }: { queryKey: string[] }) {

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useReviewQuery } from "../../hooks/useReviewQuery";
 import { useUpdateReviewMutation } from "../../hooks/useUpdateReviewMutation";
 import { useDeleteReviewMutation } from "../../hooks/useDeleteReviewMutation";
@@ -23,20 +23,25 @@ export function ReviewEditScreen({ id }: ReviewEditScreenProps) {
   if (isLoading) return <div>Loading...</div>;
   if (!review) return <div>Review not found</div>;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
-    updateMutation.mutate({ id, data: form }, {
-      onSuccess: () => router.push("/featured/reviews")
-    });
+    updateMutation.mutate(
+      { id, data: form },
+      {
+        onSuccess: () => router.push("/featured/reviews"),
+      }
+    );
   };
 
   const handleDelete = () => {
     deleteMutation.mutate(id, {
-      onSuccess: () => router.push("/featured/reviews")
+      onSuccess: () => router.push("/featured/reviews"),
     });
   };
 
@@ -44,14 +49,30 @@ export function ReviewEditScreen({ id }: ReviewEditScreenProps) {
     <form onSubmit={handleUpdate} className="space-y-4">
       <div>
         <label>Rating</label>
-        <input type="number" name="rating" min={1} max={5} value={form.rating} onChange={handleChange} />
+        <input
+          type="number"
+          name="rating"
+          min={1}
+          max={5}
+          value={form.rating}
+          onChange={handleChange}
+        />
       </div>
       <div>
         <label>Comment</label>
         <textarea name="comment" value={form.comment} onChange={handleChange} />
       </div>
-  <button type="submit" disabled={updateMutation.isPending}>Update</button>
-  <button type="button" onClick={handleDelete} disabled={deleteMutation.isPending} className="text-red-600">Delete</button>
+      <button type="submit" disabled={updateMutation.isPending}>
+        Update
+      </button>
+      <button
+        type="button"
+        onClick={handleDelete}
+        disabled={deleteMutation.isPending}
+        className="text-red-600"
+      >
+        Delete
+      </button>
     </form>
   );
 }

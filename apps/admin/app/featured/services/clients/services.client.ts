@@ -1,11 +1,7 @@
 import { client } from "@/app/shared/utils/http.client.utils";
 import { ENDPOINTS } from "../constant";
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
 import { ServiceFormValues } from "../../../(routes)/api/services/services.schema";
-import { Service } from "@furever/types/index";
+import { JsonResponse, PaginatedJsonResponse, Service } from "@furever/types";
 
 export const ServicesClient = {
   async getServices({ queryKey }: { queryKey: string[] }) {

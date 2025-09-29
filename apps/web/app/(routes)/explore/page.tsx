@@ -3,7 +3,6 @@ import { FilterDropdowns } from "../../featured/explore/components/FilterDropdow
 import { CategoryGrid } from "../../featured/explore/components/CategoryGrid";
 import { PopularServices } from "../../featured/explore/components/PopularServices";
 import { BottomNavigation } from "../../featured/bookings/components/BottomNavigation";
-import { ExploreClients } from "../../featured/explore/clients/explore.clients";
 
 export default function ExplorePage() {
   return (

@@ -1,8 +1,7 @@
-import EditPetTypeScreen from '../../../../featured/pet-types/screens/EditPetTypeScreen/EditPetTypeScreen';
-import { Suspense } from 'react';
-import { PetType } from '@furever/types';
-import { JsonResponse } from '@/app/shared/types/general';
-import { server } from '@/app/shared/utils/http.server.utils';
+import EditPetTypeScreen from "../../../../featured/pet-types/screens/EditPetTypeScreen/EditPetTypeScreen";
+import { Suspense } from "react";
+import { JsonResponse, PetType } from "@furever/types";
+import { server } from "@/app/shared/utils/http.server.utils";
 
 export default async function EditPetTypePage({
   params,

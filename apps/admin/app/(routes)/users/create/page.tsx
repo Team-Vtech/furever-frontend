@@ -1,14 +1,13 @@
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { UserCreateScreen } from "../../../featured/users/screens/UserCreateScreen/UserCreateScreen";
 import { server } from "@/app/shared/utils/http.server.utils";
-import { PaginatedJsonResponse } from "@/app/shared/types/general";
-import { Provider, Role } from "@furever/types";
+
+import { PaginatedJsonResponse, Provider, Role } from "@furever/types";
 import { Suspense } from "react";
 
 export default async function CreateUserPage() {
   const roles = await getRoles();
   const providers = await getProviders();
-  console.log(roles, providers, "data");
   return (
     <Suspense>
       <PageLayout

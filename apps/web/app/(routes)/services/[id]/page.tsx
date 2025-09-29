@@ -1,8 +1,7 @@
-import { server } from '@/app/shared/utils/http.server.utils';
-import { ServiceDetailsScreen } from '../../../featured/services/screens/ServiceDetailsScreen';
-import { Suspense } from 'react';
-import { JsonResponse } from '@/app/shared/types/general';
-import { Service } from '@furever/types';
+import { server } from "@/app/shared/utils/http.server.utils";
+import { ServiceDetailsScreen } from "../../../featured/services/screens/ServiceDetailsScreen";
+import { Suspense } from "react";
+import { JsonResponse, Service } from "@furever/types";
 
 interface ServiceDetailsPageProps {
   params: Promise<{

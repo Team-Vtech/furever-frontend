@@ -1,10 +1,15 @@
 import { Suspense } from "react";
 import { EditServiceScreen } from "../../../../featured/services/screens/EditServiceScreen/EditServiceScreen";
+
 import {
+  Addon,
   JsonResponse,
   PaginatedJsonResponse,
-} from "@/app/shared/types/general";
-import { Addon, PetType, Provider, Service, ServiceType } from "@furever/types";
+  PetType,
+  Provider,
+  Service,
+  ServiceType,
+} from "@furever/types";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { notFound } from "next/navigation";
 

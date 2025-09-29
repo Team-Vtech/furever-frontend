@@ -2,18 +2,7 @@ import { z } from "zod";
 
 // Login form schema
 export const LoginFormSchema = z.object({
-  emailOrPhone: z
-    .string()
-    .min(1, "Email or phone is required")
-    .refine((value) => {
-      // Check if it's a valid email
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      // Check if it's a valid phone number (basic validation)
-      const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-      return (
-        emailRegex.test(value) || phoneRegex.test(value.replace(/\s/g, ""))
-      );
-    }, "Please enter a valid email or phone number"),
+  emailOrPhone: z.string().min(1, "Email or phone is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
@@ -42,16 +31,7 @@ export const RegisterFormSchema = z
 
 // Forgot password schema
 export const ForgotPasswordSchema = z.object({
-  emailOrPhone: z
-    .string()
-    .min(1, "Email or phone is required")
-    .refine((value) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-      return (
-        emailRegex.test(value) || phoneRegex.test(value.replace(/\s/g, ""))
-      );
-    }, "Please enter a valid email or phone number"),
+  emailOrPhone: z.string().min(1, "Email or phone is required"),
 });
 
 // Reset password schema

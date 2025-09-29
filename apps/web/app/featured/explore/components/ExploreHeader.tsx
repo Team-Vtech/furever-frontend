@@ -1,5 +1,6 @@
 import { Bell, Search } from "lucide-react";
 import { Input } from "@furever/ui/components/input";
+import Image from "next/image";
 
 interface ExploreHeaderProps {
   searchQuery: string;
@@ -19,8 +20,8 @@ export function ExploreHeader({
         {/* Header content */}
         <div className="flex items-center justify-between mb-4">
           {/* Logo - hidden on mobile, shown on larger screens */}
-          <div className="hidden lg:flex items-center space-x-2">
-            <img src="/logo.png" alt="Furever" className="h-8 w-auto" />
+          <div className="hidden lg:flex items-center space-x-2 h-8 relative">
+            <Image src="/logo.png" alt="Furever" fill />
             <span className="text-xl font-bold text-purple-600">Furever</span>
           </div>
 
@@ -36,11 +37,12 @@ export function ExploreHeader({
             </button>
 
             {/* User Avatar */}
-            <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 border-2 border-purple-600 flex items-center justify-center overflow-hidden">
-              <img
+            <div className="w-9 h-9 lg:w-10 lg:h-10 relative rounded-full bg-gradient-to-br from-purple-100 to-purple-200 border-2 border-purple-600 flex items-center justify-center overflow-hidden">
+              <Image
                 src="/provider-login-image-38aca3.png"
                 alt="User avatar"
                 className="w-full h-full object-cover"
+                fill
               />
             </div>
           </div>

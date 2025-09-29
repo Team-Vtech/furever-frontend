@@ -1,5 +1,4 @@
 "use client";
-import { ControlledInputProps } from "@/app/shared/types/general";
 import {
   Select,
   SelectContent,
@@ -36,7 +35,7 @@ export function FilterSelect(props: SelectInputProps) {
       }}
       disabled={disabled}
     >
-      <SelectTrigger  className={`${className} w-full`}>
+      <SelectTrigger className={`${className} w-full`}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

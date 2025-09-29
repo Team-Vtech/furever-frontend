@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { Booking } from "@furever/types/index";
+import { Booking } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import Link from "next/link";
 import { InsightsCard } from "../../components/InsightsCard";

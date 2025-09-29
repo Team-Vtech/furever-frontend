@@ -1,4 +1,7 @@
-import { forwardRef, useState } from "react";
+import { Label } from "@furever/ui/components/label";
+import { Eye, EyeOff } from "lucide-react";
+import { DynamicIcon, dynamicIconImports } from "lucide-react/dynamic";
+import { ReactElement, useState } from "react";
 import {
   Control,
   Controller,
@@ -6,10 +9,6 @@ import {
   FieldValues,
   RegisterOptions,
 } from "react-hook-form";
-import { Eye, EyeOff, Icon, LucideProps, Mail } from "lucide-react";
-import { ReactElement } from "react";
-import { Label } from "@furever/ui/components/label";
-import { DynamicIcon, dynamicIconImports } from "lucide-react/dynamic";
 
 interface TextInputProps<TFieldValues extends FieldValues = FieldValues> {
   control: Control<TFieldValues>;

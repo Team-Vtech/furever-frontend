@@ -2,16 +2,7 @@ import { z } from "zod";
 
 // Pet parent login schema
 export const petParentLoginSchema = z.object({
-  emailOrPhone: z
-    .string()
-    .min(1, "Email or phone is required")
-    .refine((value) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-      return (
-        emailRegex.test(value) || phoneRegex.test(value.replace(/\s/g, ""))
-      );
-    }, "Please enter a valid email or phone number"),
+  emailOrPhone: z.string().min(1, "Email or phone is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 

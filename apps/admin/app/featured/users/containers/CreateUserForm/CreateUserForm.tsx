@@ -20,7 +20,7 @@ import {
   UserFormValues,
   userSchema,
 } from "@/app/(routes)/api/users/users.schema";
-import { Provider, Role, User } from "@furever/types/index";
+import { Provider, Role, User } from "@furever/types";
 import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
 
 interface CreateUserFormProps {

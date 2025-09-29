@@ -1,10 +1,9 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthResult } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
-import axios from "axios";
-import { JsonResponse, User } from "@/app/shared/types/general";
 import { server } from "@/app/shared/utils/http.server.utils";
+import { JsonResponse, User } from "@furever/types";
 
 const IGNORE_PATHS = [
   "/_next",
@@ -27,15 +26,16 @@ const IGNORE_PATHS = [
   "/forgot-password", // Pet parent forgot password
   "/api",
 ];
-export const { handlers, signIn, signOut, auth } = NextAuth({
+const result = NextAuth({
   providers: [
     CredentialsProvider({
       id: "credentials",
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: {},
+        password: {},
       },
+      // @ts-expect-error -next-auth types are wrong
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null;
@@ -53,6 +53,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: credentials.email,
             password: credentials.password,
           });
+          if (response.status !== 200) {
+            return null;
+          }
           return {
             id: response.data.data.user.id.toString(),
             name: response.data.data.user.name,
@@ -61,6 +64,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             status: response.data.data.user.status,
             access_token: response.data.data.access_token,
             emailVerified: response.data.data.user.emailVerified || null,
+            address: "",
+            created_at: "",
+            roles: [],
+            updated_at: "",
           };
         } catch (error) {
           console.error("Auth error:", error);
@@ -86,14 +93,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       } else {
         if (user) {
-          token.user = {
-            id: Number(user.id)!,
-            email: user.email!,
-            name: user.name!,
-            status: user.status,
-            phone: user.phone,
-            emailVerified: user.emailVerified?.toString()!,
-          };
+          token.user = user as User;
           token.access_token = user.access_token;
         }
       }
@@ -101,9 +101,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       if (session.user && token.user) {
+        const tokenUser = token.user as User;
+      // @ts-expect-error -next-auth types are wrong
         session.user = {
-          ...token.user,
-          emailVerified: new Date(token.user.emailVerified)?.toString(),
+          ...tokenUser,
           access_token: token.access_token!,
         };
         session.access_token = token.access_token;
@@ -132,6 +133,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     maxAge: 60 * 60 * 24, // 1 day
   },
 });
+
+export const handlers: NextAuthResult["handlers"] = result.handlers;
+export const auth: NextAuthResult["auth"] = result.auth;
+export const signIn: NextAuthResult["signIn"] = result.signIn;
+export const signOut: NextAuthResult["signOut"] = result.signOut;
 export async function getSessionUser() {
   const session = await auth();
   return session?.user;

@@ -4,7 +4,7 @@ import { useCreateServiceMutation } from "../../hooks/useServiceQueries";
 import { useRouter } from "next/navigation";
 import { ServiceForm } from "../../containers/ServiceForm";
 import { ServiceFormValues } from "@/app/(routes)/api/services/services.schema";
-import { Addon, PetType, Provider, ServiceType } from "@furever/types/index";
+import { Addon, PetType, Provider, ServiceType } from "@furever/types";
 
 type CreateServiceScreenProps = {
   serviceTypes: ServiceType[];

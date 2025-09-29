@@ -1,9 +1,9 @@
-import { Suspense } from 'react';
-import { PageLayout } from '@/app/shared/components/PageLayout/PageLayout';
-import { BookingsListScreen } from '../../featured/bookings/screens/BookingsListScreen/BookingsListScreen';
-import { Button } from '@furever/ui/components/button';
-import { Plus } from 'lucide-react';
-import Link from 'next/link';
+import { Suspense } from "react";
+import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
+import { BookingsListScreen } from "../../featured/bookings/screens/BookingsListScreen/BookingsListScreen";
+import { Button } from "@furever/ui/components/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default async function BookingsPage() {
   return (
@@ -11,8 +11,8 @@ export default async function BookingsPage() {
       title="Bookings Management"
       description="Manage customer bookings and appointments"
       breadcrumbs={[
-        { label: 'Bookings', href: '/bookings' },
-        { label: 'List' },
+        { label: "Bookings", href: "/bookings" },
+        { label: "List" },
       ]}
       actions={
         <Button asChild>

@@ -1,7 +1,6 @@
-import { Permission } from '@furever/types';
-import { EditPermissionScreen } from '../../../featured/permissions/screens/EditPermissionScreen/EditPermissionScreen';
-import { server } from '@/app/shared/utils/http.server.utils';
-import { JsonResponse } from '@/app/shared/types/general';
+import { JsonResponse, Permission } from "@furever/types";
+import { EditPermissionScreen } from "../../../featured/permissions/screens/EditPermissionScreen/EditPermissionScreen";
+import { server } from "@/app/shared/utils/http.server.utils";
 
 interface EditPermissionPageProps {
   params: Promise<{

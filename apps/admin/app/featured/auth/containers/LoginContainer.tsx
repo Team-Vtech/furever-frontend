@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { LoginForm } from '../components/LoginForm';
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { LoginForm } from "../components/LoginForm";
 
 interface LoginFormData {
   email: string;
@@ -13,38 +13,38 @@ interface LoginFormData {
 
 export function LoginContainer() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
         redirect: false,
       });
 
       if (result?.error) {
-        setError('Invalid email or password');
+        setError("Invalid email or password");
       } else {
-        router.push('/');
+        router.push("/");
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleForgotPassword = () => {
-    router.push('/forgot-password');
+    router.push("/forgot-password");
   };
 
   const handleCreateAccount = () => {
-    router.push('/register');
+    router.push("/register");
   };
 
   return (

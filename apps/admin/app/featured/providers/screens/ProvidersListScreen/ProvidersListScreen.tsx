@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
 import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
 
@@ -22,7 +21,10 @@ export function ProvidersListScreen() {
       isLoading={isLoading}
       searchPlaceholder="Search providers..."
       showToolbar={true}
-      filters={[]}
+      filters={{
+        config: [],
+        initialData: {},
+      }}
     />
   );
 }

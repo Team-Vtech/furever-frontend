@@ -1,11 +1,8 @@
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
 import { client } from "@/app/shared/utils/http.client.utils";
 import { RoleFormValues } from "../../../(routes)/api/roles/roles.schema";
 import { ENDPOINTS } from "../constants";
 import { Role } from "../types/index";
+import { JsonResponse, PaginatedJsonResponse } from "@furever/types/general";
 
 interface GetRolesParams {
   page?: number;

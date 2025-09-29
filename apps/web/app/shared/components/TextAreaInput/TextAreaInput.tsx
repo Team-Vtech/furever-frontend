@@ -1,8 +1,8 @@
 "use client";
 
-import { ControlledInputProps } from "@/app/shared/types/general";
 import { FieldValues, useController } from "react-hook-form";
 import { Textarea } from "@furever/ui/components/textarea";
+import { ControlledInputProps } from "@furever/types";
 
 type TextAreaInputProps<T extends FieldValues> =
   React.ComponentProps<"textarea"> & ControlledInputProps<T>;

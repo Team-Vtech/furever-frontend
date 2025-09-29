@@ -1,8 +1,7 @@
 import { Suspense } from "react";
 import { DashboardScreen } from "../featured/dashboard/screens/DashboardScreen";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { JsonResponse } from "@/app/shared/types/general";
-import { BookingStatistics } from "@furever/types";
+import { BookingStatistics, JsonResponse } from "@furever/types";
 import { server } from "../shared/utils/http.server.utils";
 import { notFound } from "next/navigation";
 

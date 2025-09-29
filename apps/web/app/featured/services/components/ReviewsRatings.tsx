@@ -1,5 +1,6 @@
 import { Star, StarHalf } from "lucide-react";
 import { Button } from "@furever/ui/components/button";
+import Image from "next/image";
 
 interface Review {
   id: string;
@@ -92,11 +93,12 @@ export function ReviewsRatings() {
             >
               {/* Reviewer Info */}
               <div className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 bg-orange-100 rounded-full border-2 border-orange-300 flex items-center justify-center">
-                  <img
+                <div className="w-10 h-10 relative bg-orange-100 rounded-full border-2 border-orange-300 flex items-center justify-center">
+                  <Image
                     src={review.avatar}
                     alt={review.petName}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className=" rounded-full object-cover"
+                    fill
                   />
                 </div>
                 <span className="font-semibold text-gray-900">

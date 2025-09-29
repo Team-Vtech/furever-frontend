@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { PetTypeFormValues } from '@/app/(routes)/api/pet-types/schema';
-import { PetTypeForm } from '../../containers/PetTypeForm';
-import { useCreatePetTypeMutation } from '../../hooks/use-pet-types';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { PetTypeFormValues } from "@/app/(routes)/api/pet-types/schema";
+import { PetTypeForm } from "../../containers/PetTypeForm";
+import { useCreatePetTypeMutation } from "../../hooks/use-pet-types";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function CreatePetTypeScreen() {
   const router = useRouter();
@@ -13,10 +13,10 @@ export default function CreatePetTypeScreen() {
   const handleSubmit = async (data: PetTypeFormValues) => {
     try {
       await createMutation.mutateAsync(data);
-      toast.success('Pet type created successfully');
-      router.push('/pet-types');
+      toast.success("Pet type created successfully");
+      router.push("/pet-types");
     } catch (error) {
-      toast.error('Failed to create pet type');
+      toast.error("Failed to create pet type");
     }
   };
 

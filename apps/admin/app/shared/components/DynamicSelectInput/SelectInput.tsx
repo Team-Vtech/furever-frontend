@@ -1,5 +1,5 @@
 "use client";
-import { ControlledInputProps } from "@/app/shared/types/general";
+import { ControlledInputProps } from "@furever/types";
 import {
   Select,
   SelectContent,

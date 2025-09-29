@@ -5,7 +5,7 @@ import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
 import { useCreateUser } from "../../hooks/use-users";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Provider, Role } from "@furever/types/index";
+import { Provider, Role } from "@furever/types";
 
 type UserCreateScreenProps = {
   roles: Role[];

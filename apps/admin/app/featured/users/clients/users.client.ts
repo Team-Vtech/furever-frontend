@@ -1,18 +1,7 @@
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
 import { client } from "@/app/shared/utils/http.client.utils";
 import { UserFormValues } from "../../../(routes)/api/users/users.schema";
 import { ENDPOINTS } from "../constant";
-import { User } from "../types/index";
-
-interface GetUsersParams {
-  page?: number;
-  per_page?: number;
-  search?: string;
-  status?: string;
-}
+import { JsonResponse, PaginatedJsonResponse, User } from "@furever/types";
 
 export const UsersClient = {
   async getUsers({ queryKey }: { queryKey: string[] }) {

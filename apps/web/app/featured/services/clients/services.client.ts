@@ -1,6 +1,5 @@
-import { JsonResponse } from "@/app/shared/types/general";
-import { client } from "../../../shared/utils/http.client.utils";
-import { Service } from "../../../../../admin/app/(admin)/featured/bookings/types/index";
+import { client } from "@/app/shared/utils/http.client.utils";
+import { JsonResponse, Service } from "@furever/types";
 
 const http = client();
 

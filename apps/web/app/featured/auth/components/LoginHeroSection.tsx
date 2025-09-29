@@ -16,7 +16,7 @@ export function LoginHeroSection() {
 
       {/* Main Heading */}
       <h1 className="text-[32px] font-extrabold text-[#19191F] font-nunito leading-tight mb-4 max-w-[400px]">
-        Your Pet's Best Life Starts Here
+        Your Pet&apos;s Best Life Starts Here
       </h1>
 
       {/* Subtitle */}

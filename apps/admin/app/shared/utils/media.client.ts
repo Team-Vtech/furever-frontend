@@ -1,10 +1,8 @@
-
-
-import { JsonResponse } from "@/app/shared/types/general";
 import {
   CreateMediaObjectData,
   MediaUploadResponse,
   MediaObject,
+  JsonResponse,
 } from "@furever/types";
 import { client } from "./http.client.utils";
 import { MEDIA_ENDPOINTS } from "../constant";

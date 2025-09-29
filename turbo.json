@@ -1,11 +1,38 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "NODE_ENV",
+    "ANALYZE",
+    "FACEBOOK_CLIENT_ID",
+    "FACEBOOK_CLIENT_SECRET",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "NEXTAUTH_SECRET",
+    "NEXTAUTH_URL",
+    "API_BASE_URL"
+  ],
+  "globalDependencies": [
+    "apps/**/.env",
+    "apps/**/.env.local",
+    "**/*.tsconfig.json"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": [
+        "NODE_ENV",
+        "ANALYZE",
+        "FACEBOOK_CLIENT_ID",
+        "FACEBOOK_CLIENT_SECRET",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET",
+        "NEXTAUTH_SECRET",
+        "NEXTAUTH_URL",
+        "API_BASE_URL"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

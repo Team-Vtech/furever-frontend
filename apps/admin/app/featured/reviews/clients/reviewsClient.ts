@@ -1,9 +1,9 @@
-import {
+import { client } from "@/app/shared/utils/http.client.utils";
+import type {
   JsonResponse,
   PaginatedJsonResponse,
-} from "@/app/shared/types/general";
-import { client } from "@/app/shared/utils/http.client.utils";
-import type { ReviewBooking } from "@furever/types/index";
+  ReviewBooking,
+} from "@furever/types";
 
 export interface ListReviewBookingsParams {
   booking_id?: number;

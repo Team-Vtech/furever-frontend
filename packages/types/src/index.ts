@@ -43,12 +43,13 @@ export type User = {
   email: string;
   phone: string;
   address: string;
-  profile_image_id?: number;
-  status: "active" | "inactive";
+  status: string;
+  emailVerified: string;
+  profile_image_id: string | null;
   created_at: string;
   updated_at: string;
-  roles: Role[];
-  provider_id?: number;
+  deleted_at: string | null;
+  is_deleted: boolean;
 };
 
 export enum Status {
@@ -73,6 +74,8 @@ export type Addon = {
   name: string;
   description: string;
   status: GeneralStatus;
+  created_at: string;
+  updated_at: string;
 };
 
 export type ServiceAddon = {
@@ -238,6 +241,7 @@ export type PetType = {
   is_active: boolean;
   sort_order: number;
   media_object: MediaObject;
+  media_object_id: number;
 };
 
 export type Service = {
@@ -318,3 +322,5 @@ export interface ReviewBooking {
   booking: Booking;
   user: User;
 }
+
+export * from "./general";

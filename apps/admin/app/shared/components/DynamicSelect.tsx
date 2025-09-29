@@ -1,6 +1,6 @@
 import { QueryFunction, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 
+import { PaginatedJsonResponse } from "@furever/types";
 import {
   Select,
   SelectContent,
@@ -8,10 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@furever/ui/components/select";
-import { Label } from "@furever/ui/components/label";
-import { map } from "lodash";
-import { PaginatedJsonResponse } from "../types/general";
 import { Skeleton } from "@furever/ui/components/skeleton";
+import { map } from "lodash";
 
 export type DynamicFilterAutoCompleteInputProps = Omit<
   typeof Select,

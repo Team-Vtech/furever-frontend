@@ -1,6 +1,6 @@
 "use client";
 
-import { Booking, BookingStatus } from "@furever/types/index";
+import { Booking, BookingStatus } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import {

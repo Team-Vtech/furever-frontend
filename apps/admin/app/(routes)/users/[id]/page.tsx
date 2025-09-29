@@ -1,11 +1,14 @@
 import { server } from "@/app/shared/utils/http.server.utils";
 import { UserEditScreen } from "../../../featured/users/screens/UserEditScreen/UserEditScreen";
+
+import { notFound } from "next/navigation";
 import {
   JsonResponse,
   PaginatedJsonResponse,
-} from "@/app/shared/types/general";
-import { notFound } from "next/navigation";
-import { Provider, Role, User } from "@furever/types/index";
+  Provider,
+  Role,
+  User,
+} from "@furever/types";
 
 interface EditUserPageProps {
   params: Promise<{

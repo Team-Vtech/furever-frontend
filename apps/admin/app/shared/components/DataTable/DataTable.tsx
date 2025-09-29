@@ -18,8 +18,9 @@ import {
   TableHeader,
   TableRow,
 } from "@furever/ui/components/table";
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
 
+import { Pagination } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import {
@@ -36,12 +37,11 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { DataTableToolbar } from "./components/DataTableToolbar";
-import { Pagination } from "@/app/shared/types/general";
-import { FilterConfig } from "../FiltersFactory/FiltersFactory";
-import { DataTableSearch } from "./components/DataTableSearch";
 import { useFilters } from "../../hooks/useFilters";
 import { EmptyTableResults } from "../EmptyTableResults/EmptyTableResults";
+import { FilterConfig } from "../FiltersFactory/FiltersFactory";
+import { DataTableSearch } from "./components/DataTableSearch";
+import { DataTableToolbar } from "./components/DataTableToolbar";
 
 interface DataTableProps<TData, TValue = unknown> {
   columns: ColumnDef<TData, TValue>[];

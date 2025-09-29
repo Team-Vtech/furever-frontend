@@ -1,18 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { LoginForm } from "../components/LoginForm";
-import { LoginFormData } from "../utils/auth.schemas";
+import { LoginFormData } from "../../utils/auth.schemas";
+import { LoginForm } from "../../containers/LoginForm";
+import { LoginHeroSection } from "../../components/LoginHeroSection";
 
-export function LoginContainer() {
+export function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const redirectTo = searchParams.get("callbackUrl") || "/dashboard";
+  const redirectTo = searchParams.get("callbackUrl") || "/";
 
   const handleSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
@@ -31,8 +32,7 @@ export function LoginContainer() {
       } else if (result?.ok) {
         router.push(redirectTo);
       }
-    } catch (error) {
-      console.error("Login error:", error);
+    } catch {
       setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
@@ -60,7 +60,7 @@ export function LoginContainer() {
       await signIn("google", {
         callbackUrl: redirectTo,
       });
-    } catch (error) {
+    } catch {
       setError("Google sign-in failed. Please try again.");
       setIsLoading(false);
     }
@@ -72,7 +72,7 @@ export function LoginContainer() {
       // Apple sign-in would be implemented here
       // For now, we'll show an error as it's not configured
       setError("Apple sign-in is not available at the moment.");
-    } catch (error) {
+    } catch {
       setError("Apple sign-in failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -85,22 +85,39 @@ export function LoginContainer() {
       await signIn("facebook", {
         callbackUrl: redirectTo,
       });
-    } catch (error) {
+    } catch {
       setError("Facebook sign-in failed. Please try again.");
       setIsLoading(false);
     }
   };
 
   return (
-    <LoginForm
-      onSubmit={handleSubmit}
-      onSignUp={handleSignUp}
-      onForgotPassword={handleForgotPassword}
-      onGoogleSignIn={handleGoogleSignIn}
-      onAppleSignIn={handleAppleSignIn}
-      onFacebookSignIn={handleFacebookSignIn}
-      isLoading={isLoading}
-      error={error}
-    />
+    <div id="page-layout" className="min-h-screen bg-gray-50 flex">
+      {/* Left Side - Hero Section */}
+      <section id="hero-section" className="hidden lg:flex lg:flex-1 bg-white">
+        <LoginHeroSection />
+      </section>
+
+      {/* Right Side - Login Form */}
+      <main
+        id="login-form-section"
+        className="flex-1 lg:flex-none lg:w-[500px] flex items-center justify-center px-8 py-12"
+      >
+        <div className="w-full max-w-[400px]">
+          <Suspense>
+            <LoginForm
+              onSubmit={handleSubmit}
+              onSignUp={handleSignUp}
+              onForgotPassword={handleForgotPassword}
+              onGoogleSignIn={handleGoogleSignIn}
+              onAppleSignIn={handleAppleSignIn}
+              onFacebookSignIn={handleFacebookSignIn}
+              isLoading={isLoading}
+              error={error}
+            />
+          </Suspense>
+        </div>
+      </main>
+    </div>
   );
 }

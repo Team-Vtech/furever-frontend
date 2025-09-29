@@ -1,7 +1,6 @@
-import { EditServiceTypeScreen } from '../../../../featured/service-types/screens/EditServiceTypeScreen';
-import { JsonResponse } from '@/app/shared/types/general';
-import { server } from '@/app/shared/utils/http.server.utils';
-import { ServiceType } from '@furever/types';
+import { EditServiceTypeScreen } from "../../../../featured/service-types/screens/EditServiceTypeScreen";
+import { server } from "@/app/shared/utils/http.server.utils";
+import { JsonResponse, ServiceType } from "@furever/types";
 
 interface EditServiceTypePageProps {
   params: Promise<{

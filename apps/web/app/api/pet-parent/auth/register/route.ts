@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { ValidationError } from "@/app/shared/utils/error.utils";
+import { FiveHundredError, ValidationError } from "@/app/shared/utils/error.utils";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { petParentRegisterSchema, PetParentRegisterData } from "../auth.schema";
 
-/**
- * POST /api/pet-parent/auth/register
- * Handles pet parent registration
- */
+
 export async function POST(request: NextRequest) {
   let body: PetParentRegisterData;
 
@@ -19,7 +15,6 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Proxy request to backend API for pet parent registration
     const response = await (
       await server()
     ).post("/api/pet-parent/auth/register", {
@@ -31,7 +26,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response.data, { status: 201 });
   } catch (error) {
-    console.error("Pet Parent Register API Error:", error);
-    return NextResponse.json({ error: "Registration failed" }, { status: 400 });
+    return FiveHundredError(error)
   }
 }

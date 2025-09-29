@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
 import {
   getServiceTypeDefaultValues,
   ServiceTypeFormValues,
   serviceTypeSchema,
-} from '@/app/(routes)/api/service-types/schema';
+} from "@/app/(routes)/api/service-types/schema";
 import {
   getMediaId,
   useMediaUpload,
-} from '@/app/shared/hooks/use-media-upload';
-import { GeneralStatus, ServiceType } from '@furever/types';
-import { Button } from '@furever/ui/components/button';
-import { Input } from '@furever/ui/components/input';
-import { Label } from '@furever/ui/components/label';
+} from "@/app/shared/hooks/use-media-upload";
+import { GeneralStatus, ServiceType } from "@furever/types";
+import { Button } from "@furever/ui/components/button";
+import { Input } from "@furever/ui/components/input";
+import { Label } from "@furever/ui/components/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@furever/ui/components/select';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Save, Upload, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+} from "@furever/ui/components/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Save, Upload, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 
 type ServiceTypeFormProps = {
   serviceType?: ServiceType;
@@ -82,9 +82,9 @@ export function ServiceTypeForm({
         const result = await uploadMedia.mutateAsync({ file });
         const mediaId = getMediaId(result);
         setUploadedMediaId(mediaId);
-        setValue('media_object_id', mediaId);
+        setValue("media_object_id", mediaId);
       } catch (error) {
-        console.error('File upload failed:', error);
+        console.error("File upload failed:", error);
         // Reset the file selection on error
         setSelectedFile(null);
         setPreviewUrl(null);
@@ -96,28 +96,25 @@ export function ServiceTypeForm({
     setSelectedFile(null);
     setPreviewUrl(null);
     setUploadedMediaId(null);
-    setValue('media_object_id', 0);
+    setValue("media_object_id", 0);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
   const onFormSubmit = (data: ServiceTypeFormValues) => {
     onSubmit(data);
   };
-  const status = watch('status');
+  const status = watch("status");
 
   return (
-    <form
-      onSubmit={handleSubmit(onFormSubmit)}
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
       {/* Name */}
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input
           id="name"
-          {...register('name')}
+          {...register("name")}
           placeholder="Enter service type name"
         />
         {errors.name && (
@@ -130,7 +127,7 @@ export function ServiceTypeForm({
         <Label htmlFor="description">Description</Label>
         <textarea
           id="description"
-          {...register('description')}
+          {...register("description")}
           placeholder="Enter service type description"
           rows={4}
           className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -145,17 +142,14 @@ export function ServiceTypeForm({
         <Label htmlFor="status">Status</Label>
         <Select
           value={status}
-          onValueChange={(value: GeneralStatus) => setValue('status', value)}
+          onValueChange={(value: GeneralStatus) => setValue("status", value)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
           <SelectContent>
             {Object.values(GeneralStatus).map((statusValue) => (
-              <SelectItem
-                key={statusValue}
-                value={statusValue}
-              >
+              <SelectItem key={statusValue} value={statusValue}>
                 {statusValue.charAt(0).toUpperCase() + statusValue.slice(1)}
               </SelectItem>
             ))}
@@ -180,7 +174,7 @@ export function ServiceTypeForm({
               disabled={uploadMedia.isPending}
             >
               <Upload className="h-4 w-4" />
-              {uploadMedia.isPending ? 'Uploading...' : 'Choose Image'}
+              {uploadMedia.isPending ? "Uploading..." : "Choose Image"}
             </Button>
             <input
               ref={fileInputRef}
@@ -219,10 +213,7 @@ export function ServiceTypeForm({
           )}
 
           {/* Hidden input for form submission */}
-          <Input
-            type="hidden"
-            {...register('media_object_id')}
-          />
+          <Input type="hidden" {...register("media_object_id")} />
         </div>
         {errors.media_object_id && (
           <p className="text-sm text-red-600">
@@ -233,18 +224,15 @@ export function ServiceTypeForm({
 
       {/* Form Actions */}
       <div className="flex gap-4 pt-6 justify-end">
-        <Button
-          type="submit"
-          disabled={isLoading}
-        >
+        <Button type="submit" disabled={isLoading}>
           <Save className="mr-2 h-4 w-4" />
           {isLoading
             ? !serviceType
-              ? 'Creating...'
-              : 'Updating...'
+              ? "Creating..."
+              : "Updating..."
             : !serviceType
-              ? 'Create Service Type'
-              : 'Update Service Type'}
+              ? "Create Service Type"
+              : "Update Service Type"}
         </Button>
       </div>
     </form>

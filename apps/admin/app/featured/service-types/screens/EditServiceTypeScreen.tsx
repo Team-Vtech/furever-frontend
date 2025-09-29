@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { ServiceTypeFormValues } from '@/app/(routes)/api/service-types/schema';
-import { PageLayout } from '@/app/shared/components/PageLayout/PageLayout';
-import { ServiceType } from '@furever/types';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { ServiceTypeForm } from '../components/ServiceTypeForm';
-import { useUpdateServiceTypeMutation } from '../hooks/useServiceTypeQueries';
+import { ServiceTypeFormValues } from "@/app/(routes)/api/service-types/schema";
+import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
+import { ServiceType } from "@furever/types";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { ServiceTypeForm } from "../components/ServiceTypeForm";
+import { useUpdateServiceTypeMutation } from "../hooks/useServiceTypeQueries";
 
 interface EditServiceTypeScreenProps {
   serviceType: ServiceType;
@@ -25,9 +25,9 @@ export function EditServiceTypeScreen({
         id: serviceType.id,
         data,
       });
-      router.push('/service-types');
+      router.push("/service-types");
     } catch (error) {
-      toast.error('Failed to update service type');
+      toast.error("Failed to update service type");
     }
   };
 
@@ -35,7 +35,7 @@ export function EditServiceTypeScreen({
     <PageLayout
       title={`Edit Service Type: ${serviceType.name}`}
       breadcrumbs={[
-        { label: 'Service Types', href: '/service-types' },
+        { label: "Service Types", href: "/service-types" },
         { label: `Edit ${serviceType.name}` },
       ]}
     >

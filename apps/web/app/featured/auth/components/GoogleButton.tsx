@@ -1,5 +1,4 @@
 import { Button } from "@furever/ui/components/button";
-import { Chrome } from "lucide-react";
 
 interface GoogleButtonProps {
   onClick: () => void;

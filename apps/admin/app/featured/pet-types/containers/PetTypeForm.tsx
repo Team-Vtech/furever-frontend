@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
-import { TextAreaInput } from '@/app/shared/components/TextAreaInput/TextAreaInput';
-import { TextInput } from '@/app/shared/components/TextInput/TextInput';
+import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
+import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import {
   getMediaId,
   useMediaUpload,
-} from '@/app/shared/hooks/use-media-upload';
-import { PetType } from '@furever/types';
-import { Button } from '@furever/ui/components/button';
-import { Label } from '@furever/ui/components/label';
+} from "@/app/shared/hooks/use-media-upload";
+import { PetType } from "@furever/types";
+import { Button } from "@furever/ui/components/button";
+import { Label } from "@furever/ui/components/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@furever/ui/components/select';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Save, Upload, X } from 'lucide-react';
-import { useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+} from "@furever/ui/components/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Save, Upload, X } from "lucide-react";
+import { useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   getPetTypeDefaults,
   PetTypeFormValues,
   petTypeSchema,
-} from '../../../(routes)/api/pet-types/schema';
+} from "../../../(routes)/api/pet-types/schema";
 
 type PetTypeFormProps = {
   onSubmit: (data: PetTypeFormValues) => void;
@@ -75,9 +75,9 @@ export function PetTypeForm({
       try {
         const result = await uploadMedia.mutateAsync({ file });
         const mediaId = getMediaId(result);
-        setValue('media_object_id', mediaId);
+        setValue("media_object_id", mediaId);
       } catch (error) {
-        console.error('File upload failed:', error);
+        console.error("File upload failed:", error);
         // Reset the file selection on error
         setSelectedFile(null);
         setPreviewUrl(null);
@@ -92,9 +92,9 @@ export function PetTypeForm({
   const removeImage = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
-    setValue('media_object_id', 0);
+    setValue("media_object_id", 0);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -103,10 +103,7 @@ export function PetTypeForm({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onFormSubmit)}
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="name"> Name</Label>
         <TextInput
@@ -141,8 +138,8 @@ export function PetTypeForm({
           name="is_active"
           render={({ field }) => (
             <Select
-              value={field.value ? 'active' : 'inactive'}
-              onValueChange={(value) => field.onChange(value === 'active')}
+              value={field.value ? "active" : "inactive"}
+              onValueChange={(value) => field.onChange(value === "active")}
               disabled={isLoading}
             >
               <SelectTrigger>
@@ -173,7 +170,7 @@ export function PetTypeForm({
               disabled={uploadMedia.isPending || isLoading}
             >
               <Upload className="h-4 w-4" />
-              {uploadMedia.isPending ? 'Uploading...' : 'Choose Image'}
+              {uploadMedia.isPending ? "Uploading..." : "Choose Image"}
             </Button>
             <input
               ref={fileInputRef}
@@ -216,12 +213,7 @@ export function PetTypeForm({
           <Controller
             control={control}
             name="media_object_id"
-            render={({ field }) => (
-              <input
-                type="hidden"
-                {...field}
-              />
-            )}
+            render={({ field }) => <input type="hidden" {...field} />}
           />
         </div>
         {errors.media_object_id && (
@@ -232,18 +224,15 @@ export function PetTypeForm({
       </div>
 
       <div className="flex gap-4 pt-6 justify-end">
-        <Button
-          type="submit"
-          disabled={isLoading}
-        >
+        <Button type="submit" disabled={isLoading}>
           <Save className="mr-2 h-4 w-4" />
           {isLoading
             ? petType
-              ? 'Updating...'
-              : 'Creating...'
+              ? "Updating..."
+              : "Creating..."
             : petType
-              ? 'Update Pet Type'
-              : 'Create Pet Type'}
+              ? "Update Pet Type"
+              : "Create Pet Type"}
         </Button>
       </div>
     </form>

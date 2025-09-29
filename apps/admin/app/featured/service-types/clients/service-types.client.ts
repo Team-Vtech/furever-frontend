@@ -1,37 +1,20 @@
 import { client } from "@/app/shared/utils/http.client.utils";
 import { ENDPOINTS } from "../constant";
-import {
-  ServiceType,
-  CreateServiceTypeData,
-  UpdateServiceTypeData,
-  GetServiceTypesParams,
-} from "../types/index";
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
+import { JsonResponse, PaginatedJsonResponse } from "@furever/types/general";
+import { ServiceType } from "@furever/types/index";
+import { ServiceTypeFormValues } from "@/app/(routes)/api/service-types/schema";
 
 export const ServiceTypesClient = {
-  async getServiceTypes(params: GetServiceTypesParams = {}) {
-    const { page = 1, limit = 10, search, status } = params;
-
-    const searchParams = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-    });
-
-    if (search) {
-      searchParams.append("search", search);
-    }
-    if (status) {
-      searchParams.append("status", status);
-    }
+  async getServiceTypes({ queryKey }: { queryKey: string[] }) {
+    const [_key, searchParams] = queryKey;
 
     const response = await client().get<
       PaginatedJsonResponse<{
         data: ServiceType[];
       }>
-    >(`${ENDPOINTS.getServiceTypes.url}?${searchParams.toString()}`);
+    >(ENDPOINTS.getServiceTypes.url, {
+      params: new URLSearchParams(searchParams),
+    });
     return response.data;
   },
 
@@ -42,7 +25,7 @@ export const ServiceTypesClient = {
     return response.data;
   },
 
-  async createServiceType(data: CreateServiceTypeData) {
+  async createServiceType(data: ServiceTypeFormValues) {
     const response = await client().post<JsonResponse<ServiceType>>(
       ENDPOINTS.createServiceType.url,
       data
@@ -50,7 +33,7 @@ export const ServiceTypesClient = {
     return response.data;
   },
 
-  async updateServiceType(id: string, data: UpdateServiceTypeData) {
+  async updateServiceType(id: string, data: ServiceTypeFormValues) {
     const response = await client().put<JsonResponse<ServiceType>>(
       ENDPOINTS.updateServiceType.url(id),
       data

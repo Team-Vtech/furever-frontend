@@ -1,7 +1,12 @@
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { PaginatedJsonResponse } from "@/app/shared/types/general";
 import { server } from "@/app/shared/utils/http.server.utils";
-import { Addon, PetType, Provider, ServiceType } from "@furever/types/index";
+import {
+  Addon,
+  PaginatedJsonResponse,
+  PetType,
+  Provider,
+  ServiceType,
+} from "@furever/types";
 import { Suspense } from "react";
 import { CreateServiceScreen } from "../../../featured/services/screens/CreateServiceScreen/CreateServiceScreen";
 import { notFound } from "next/navigation";

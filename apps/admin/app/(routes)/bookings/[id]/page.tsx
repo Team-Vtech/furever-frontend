@@ -1,8 +1,7 @@
 import { Suspense } from "react";
 import { BookingDetailScreen } from "../../../featured/bookings/screens/BookingDetailScreen/BookingDetailScreen";
 import { server } from "@/app/shared/utils/http.server.utils";
-import { JsonResponse } from "@/app/shared/types/general";
-import { Booking } from "@furever/types/index";
+import { Booking, JsonResponse } from "@furever/types";
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Button } from "@furever/ui/components/button";

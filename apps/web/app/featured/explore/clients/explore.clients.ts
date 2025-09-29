@@ -1,7 +1,5 @@
-import { Service } from "@/app/(admin)/admin/featured/services/types";
-import { JsonResponse } from "@/app/shared/types/general";
 import { client } from "@/app/shared/utils/http.client.utils";
-import { getServiceDetails } from "../../services/clients/services.client";
+import { Service, JsonResponse } from "@furever/types";
 
 export const ExploreClients = {
   async getPopularService() {

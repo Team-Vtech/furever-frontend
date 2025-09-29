@@ -1,11 +1,8 @@
 import { AddonFormValues } from "@/app/(routes)/api/addons/addons.schema";
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
+
 import { client } from "@/app/shared/utils/http.client.utils";
 import { ENDPOINTS } from "../constant";
-import { Addon } from "@furever/types/index";
+import { Addon, JsonResponse, PaginatedJsonResponse } from "@furever/types";
 
 export const AddonsClient = {
   async getAddons({ queryKey }: { queryKey: string[] }) {

@@ -1,6 +1,6 @@
 import "next-auth";
 import "next-auth/jwt";
-import { User as BackendUser, UserStatus } from "@/app/shared/types/general";
+import { User as BackendUser, UserStatus } from "@furever/types";
 declare module "next-auth" {
   interface User extends Omit<BackendUser, "id"> {
     id: number;

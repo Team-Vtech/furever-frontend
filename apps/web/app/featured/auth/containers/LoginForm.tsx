@@ -6,9 +6,9 @@ import { Button } from "@furever/ui/components/button";
 import { Input } from "@furever/ui/components/input";
 import { Label } from "@furever/ui/components/label";
 import { LoginFormData, LoginFormSchema } from "../utils/auth.schemas";
-import { GoogleButton } from "./GoogleButton";
-import { AppleButton } from "./AppleButton";
-import { FacebookButton } from "./FacebookButton";
+import { AppleButton } from "../components/AppleButton";
+import { FacebookButton } from "../components/FacebookButton";
+import { GoogleButton } from "../components/GoogleButton";
 
 interface LoginFormProps {
   onSubmit: (data: LoginFormData) => void;
@@ -51,7 +51,7 @@ export function LoginForm({
           Welcome Back!
         </h2>
         <p className="text-[14px] text-[#565D6D] font-nunito leading-5">
-          Sign in to manage your pet's care journey.
+          Sign in to manage your pet&apos;s care journey.
         </p>
       </div>
 
@@ -145,7 +145,7 @@ export function LoginForm({
             className="text-[#6D28D9] font-medium text-[14px] font-nunito hover:text-[#5B21B6] p-0"
             onClick={onSignUp}
           >
-            Don't have an account? Sign Up
+            Don&apos;t have an account? Sign Up
           </Button>
 
           <Button

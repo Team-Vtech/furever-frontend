@@ -1,12 +1,14 @@
-import { Suspense } from 'react';
-import { BookingEditScreen } from '../../../../featured/bookings/screens/BookingEditScreen/BookingEditScreen';
-import { Booking, BookingStatistics, Provider } from '@furever/types';
+import { Suspense } from "react";
+import { BookingEditScreen } from "../../../../featured/bookings/screens/BookingEditScreen/BookingEditScreen";
 import {
+  Booking,
   JsonResponse,
   PaginatedJsonResponse,
-} from '@/app/shared/types/general';
-import { notFound } from 'next/navigation';
-import { server } from '@/app/shared/utils/http.server.utils';
+  Provider,
+} from "@furever/types";
+
+import { notFound } from "next/navigation";
+import { server } from "@/app/shared/utils/http.server.utils";
 
 interface EditBookingPageProps {
   params: Promise<{
@@ -25,10 +27,7 @@ export default async function EditBookingPage({
   const providers = (await getProviders()).data.data.data;
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <BookingEditScreen
-        booking={booking}
-        providers={providers}
-      />
+      <BookingEditScreen booking={booking} providers={providers} />
     </Suspense>
   );
 }
@@ -40,7 +39,7 @@ async function getProviders() {
     PaginatedJsonResponse<{
       data: Provider[];
     }>
-  >('/admin/providers');
+  >("/admin/providers");
 }
 
 async function getBookingById(id: string) {

@@ -1,12 +1,8 @@
 import { client } from "@/app/shared/utils/http.client.utils";
 import { ENDPOINTS } from "../constants";
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
-import { z } from "zod";
+
 import { PetTypeFormValues } from "../../../(routes)/api/pet-types/schema";
-import { PetType } from "@furever/types/index";
+import { JsonResponse, PaginatedJsonResponse, PetType } from "@furever/types";
 
 export interface GetPetTypesParams {
   page?: number;

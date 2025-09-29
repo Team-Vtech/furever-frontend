@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { ValidationError } from "@/app/shared/utils/error.utils";
+import {
+  FiveHundredError,
+  ValidationError,
+} from "@/app/shared/utils/error.utils";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { petParentLoginSchema, PetParentLoginData } from "../auth.schema";
 
-/**
- * POST /api/pet-parent/auth/login
- * Handles pet parent login authentication
- */
 export async function POST(request: NextRequest) {
   let body: PetParentLoginData;
 
@@ -19,7 +17,6 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Proxy request to backend API for pet parent authentication
     const response = await (
       await server()
     ).post("/api/pet-parent/auth/login", {
@@ -29,7 +26,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
-    console.error("Pet Parent Login API Error:", error);
-    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+    return FiveHundredError(error);
   }
 }

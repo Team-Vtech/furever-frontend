@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { TextAreaInput } from '@/app/shared/components/TextAreaInput/TextAreaInput';
-import { Button } from '@furever/ui/components/button';
-import { Label } from '@furever/ui/components/label';
+import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
+import { Button } from "@furever/ui/components/button";
+import { Label } from "@furever/ui/components/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@furever/ui/components/select';
-import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { TextInput } from '@/app/shared/components/TextInput/TextInput';
+} from "@furever/ui/components/select";
+import React from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import {
   AddonFormValues,
   addonSchema,
-} from '@/app/(routes)/api/addons/addons.schema';
-import { Addon, GeneralStatus } from '@furever/types';
+} from "@/app/(routes)/api/addons/addons.schema";
+import { Addon, GeneralStatus } from "@furever/types";
 
 interface AddonFormProps {
   addon?: Addon;
@@ -36,8 +36,8 @@ export function AddonForm({
   const formMethods = useForm<AddonFormValues>({
     resolver: zodResolver(addonSchema),
     defaultValues: {
-      name: addon?.name || '',
-      description: addon?.description || '',
+      name: addon?.name || "",
+      description: addon?.description || "",
       status: addon?.status || GeneralStatus.ACTIVE,
     },
   });
@@ -50,7 +50,7 @@ export function AddonForm({
     control,
   } = formMethods;
 
-  const watchedStatus = watch('status');
+  const watchedStatus = watch("status");
 
   const handleFormSubmit = (data: AddonFormValues) => {
     onSubmit(data);
@@ -58,16 +58,10 @@ export function AddonForm({
 
   return (
     <FormProvider {...formMethods}>
-      <form
-        onSubmit={handleSubmit(handleFormSubmit)}
-        className="space-y-6"
-      >
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
         <div className="space-y-4">
           <div>
-            <Label
-              htmlFor="name"
-              className="text-sm font-medium text-gray-700"
-            >
+            <Label htmlFor="name" className="text-sm font-medium text-gray-700">
               Addon Name *
             </Label>
             <TextInput
@@ -109,7 +103,7 @@ export function AddonForm({
             <Select
               value={watchedStatus}
               onValueChange={(value: GeneralStatus) =>
-                setValue('status', value)
+                setValue("status", value)
               }
             >
               <SelectTrigger>
@@ -117,10 +111,7 @@ export function AddonForm({
               </SelectTrigger>
               <SelectContent>
                 {Object.values(GeneralStatus).map((statusValue) => (
-                  <SelectItem
-                    key={statusValue}
-                    value={statusValue}
-                  >
+                  <SelectItem key={statusValue} value={statusValue}>
                     {statusValue.charAt(0).toUpperCase() + statusValue.slice(1)}
                   </SelectItem>
                 ))}
@@ -143,11 +134,8 @@ export function AddonForm({
               Cancel
             </Button>
           )}
-          <Button
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Saving...' : addon ? 'Update Addon' : 'Create Addon'}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Saving..." : addon ? "Update Addon" : "Create Addon"}
           </Button>
         </div>
       </form>

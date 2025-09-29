@@ -1,24 +1,24 @@
-'use client';
-import { Button } from '@furever/ui/components/button';
-import { Label } from '@furever/ui/components/label';
+"use client";
+import { Button } from "@furever/ui/components/button";
+import { Label } from "@furever/ui/components/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@furever/ui/components/select';
-import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from "@furever/ui/components/select";
+import React from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   getProviderDefaultValues,
   ProviderFormValues,
   providerSchema,
-} from '../../../(routes)/api/providers/providers.schema';
-import { PROVIDER_STATUS_OPTIONS } from '../constant';
-import { TextInput } from '@/app/shared/components/TextInput/TextInput';
-import { Provider } from '@furever/types';
+} from "../../../(routes)/api/providers/providers.schema";
+import { PROVIDER_STATUS_OPTIONS } from "../constant";
+import { TextInput } from "@/app/shared/components/TextInput/TextInput";
+import { Provider } from "@furever/types";
 
 interface ProviderFormProps {
   provider?: Provider;
@@ -47,7 +47,7 @@ export function ProviderForm({
     control,
   } = formMethods;
 
-  const watchedStatus = watch('status');
+  const watchedStatus = watch("status");
 
   const handleFormSubmit = (data: ProviderFormValues) => {
     onSubmit(data);
@@ -55,10 +55,7 @@ export function ProviderForm({
 
   return (
     <FormProvider {...formMethods}>
-      <form
-        onSubmit={handleSubmit(handleFormSubmit)}
-        className="space-y-6"
-      >
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
         <TextInput
           id="location.id"
           name="location.id"
@@ -329,8 +326,8 @@ export function ProviderForm({
               value={watchedStatus}
               onValueChange={(value) =>
                 setValue(
-                  'status',
-                  value as 'pending' | 'approved' | 'rejected' | 'inactive'
+                  "status",
+                  value as "pending" | "approved" | "rejected" | "inactive"
                 )
               }
             >
@@ -339,10 +336,7 @@ export function ProviderForm({
               </SelectTrigger>
               <SelectContent>
                 {PROVIDER_STATUS_OPTIONS.map((option) => (
-                  <SelectItem
-                    key={option.value}
-                    value={option.value}
-                  >
+                  <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
                 ))}
@@ -367,15 +361,12 @@ export function ProviderForm({
               Cancel
             </Button>
           )}
-          <Button
-            type="submit"
-            disabled={isLoading}
-          >
+          <Button type="submit" disabled={isLoading}>
             {isLoading
-              ? 'Saving...'
+              ? "Saving..."
               : provider
-                ? 'Update Provider'
-                : 'Create Provider'}
+                ? "Update Provider"
+                : "Create Provider"}
           </Button>
         </div>
       </form>

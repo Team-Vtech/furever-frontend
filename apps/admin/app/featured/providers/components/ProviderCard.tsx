@@ -1,10 +1,10 @@
 "use client";
 
+import { Provider } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent } from "@furever/ui/components/card";
 import { Edit2, Trash2, MapPin, Phone, Mail, User } from "lucide-react";
-import { Provider } from "../types/index";
 
 interface ProviderCardProps {
   provider: Provider;

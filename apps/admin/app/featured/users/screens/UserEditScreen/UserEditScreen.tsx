@@ -2,7 +2,7 @@
 
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Provider, Role, User } from "@furever/types/index";
+import { Provider, Role, User } from "@furever/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { UserFormValues } from "../../../../(routes)/api/users/users.schema";

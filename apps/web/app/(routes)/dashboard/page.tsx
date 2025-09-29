@@ -37,8 +37,8 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <p className="text-gray-600 mb-6">
-                  You've successfully logged in to the pet parent dashboard.
-                  This is where you'll manage your pet's care journey.
+                  You&apos;ve successfully logged in to the pet parent dashboard.
+                  This is where you&apos;ll manage your pet&apos;s care journey.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="text-center p-4 bg-blue-50 rounded-lg">

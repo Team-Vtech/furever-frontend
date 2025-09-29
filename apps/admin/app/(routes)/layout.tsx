@@ -1,6 +1,6 @@
+import { JsonResponse } from "@furever/types/general";
 import { PermissionsProvider } from "../shared/providers/PermissionsProvider";
 import { server } from "../shared/utils/http.server.utils";
-import { JsonResponse } from "../shared/types/general";
 
 export default async function AdminLayout({
   children,

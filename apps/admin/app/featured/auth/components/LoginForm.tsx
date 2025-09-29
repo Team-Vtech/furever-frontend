@@ -114,7 +114,7 @@ export function LoginForm({
       <div className="text-center space-y-4">
         <div className="h-[16px] border-t border-[#FFFFFF]"></div>
         <p className="text-[14px] text-[#565D6D] font-quicksand">
-          Don't have an account?
+          Don&apos;t have an account?
         </p>
         <Button
           variant="outline"

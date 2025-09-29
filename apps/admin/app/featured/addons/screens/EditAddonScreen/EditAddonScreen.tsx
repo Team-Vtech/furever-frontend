@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { DeleteRecordDialog } from '@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog';
-import { PageLayout } from '@/app/shared/components/PageLayout/PageLayout';
-import { Addon } from '@furever/types';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { AddonForm } from '../../containers/AddonForm';
-import { useDeleteAddon } from './hooks/useDeleteAddon';
-import { useUpdateAddon } from './hooks/useUpdateAddon';
-import { AddonFormValues } from '@/app/(routes)/api/addons/addons.schema';
+import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
+import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
+import { Addon } from "@furever/types";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { AddonForm } from "../../containers/AddonForm";
+import { useDeleteAddon } from "./hooks/useDeleteAddon";
+import { useUpdateAddon } from "./hooks/useUpdateAddon";
+import { AddonFormValues } from "@/app/(routes)/api/addons/addons.schema";
 
 interface EditAddonScreenProps {
   addon: Addon;
@@ -26,20 +26,20 @@ export function EditAddonScreen({ addon }: EditAddonScreenProps) {
       { id: addon.id, data },
       {
         onSuccess: () => {
-          router.push('/addons');
+          router.push("/addons");
         },
       }
     );
   };
 
   const handleCancel = () => {
-    router.push('/addons');
+    router.push("/addons");
   };
 
   const handleDelete = () => {
     deleteAddon(addon.id, {
       onSuccess: () => {
-        router.push('/addons');
+        router.push("/addons");
       },
     });
     setShowDeleteDialog(true);
@@ -58,7 +58,7 @@ export function EditAddonScreen({ addon }: EditAddonScreenProps) {
       }
       breadcrumbs={[
         { label: addon.name, href: `/addons/${addon.id}` },
-        { label: 'Edit', href: '#' },
+        { label: "Edit", href: "#" },
       ]}
     >
       <div className="bg-white rounded-lg border border-gray-200 p-6">

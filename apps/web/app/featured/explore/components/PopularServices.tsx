@@ -6,12 +6,11 @@ import { ExploreClients } from "../clients/explore.clients";
 import Image from "next/image";
 
 export function PopularServices() {
-  const { data: services, isLoading } = useQuery({
+  const { data: services } = useQuery({
     queryKey: ["popular-services"],
     queryFn: async () => ExploreClients.getPopularService(),
     select: (res) => res.data.data,
   });
-  console.log(services, "services");
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
       {services?.map((service) => (

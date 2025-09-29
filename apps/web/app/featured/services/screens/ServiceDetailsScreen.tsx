@@ -1,24 +1,22 @@
 "use client";
 
-import { ServiceDescription } from "../components/ServiceDescription";
-import { ServiceAddons } from "../components/ServiceAddons";
-import { FacilitiesRequirements } from "../components/FacilitiesRequirements";
-import { ReviewsRatings } from "../components/ReviewsRatings";
-import { BookingFooter } from "../components/BookingFooter";
-import { useQuery } from "@tanstack/react-query";
+import { Service } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import {
   ArrowLeft,
-  Star,
-  Shield,
-  MapPin,
+  Calendar,
   Clock,
   DollarSign,
-  Calendar,
+  MapPin,
+  Shield,
+  Star,
 } from "lucide-react";
 import Image from "next/image";
-import { ServicesClient } from "../clients/services.client";
-import { Service } from "@furever/types";
+import { BookingFooter } from "../components/BookingFooter";
+import { FacilitiesRequirements } from "../components/FacilitiesRequirements";
+import { ReviewsRatings } from "../components/ReviewsRatings";
+import { ServiceDescription } from "../components/ServiceDescription";
+
 interface ServiceDetailsScreenProps {
   service: Service;
 }
@@ -103,11 +101,12 @@ export function ServiceDetailsScreen({ service }: ServiceDetailsScreenProps) {
                     </div>
 
                     <div className="flex items-center space-x-3 mb-3">
-                      <div className="w-12 h-12 bg-red-100 rounded-full border-2 border-red-300 flex items-center justify-center">
-                        <img
+                      <div className="w-12 h-12 relative bg-red-100 rounded-full border-2 border-red-300 flex items-center justify-center">
+                        <Image
                           src="/provider-login-image-38aca3.png"
                           alt="Happy Paws Salon"
-                          className="w-10 h-10 rounded-full object-cover"
+                          className="rounded-full object-cover"
+                          fill
                         />
                       </div>
                       <div>
@@ -249,7 +248,7 @@ export function ServiceDetailsScreen({ service }: ServiceDetailsScreenProps) {
                     </h2>
 
                     <div className="space-y-4">
-                      {service?.addons?.map((addon, index) => (
+                      {service?.addons?.map((addon) => (
                         <div key={addon.id}>
                           <div className="flex items-center justify-between py-3">
                             <div className="flex items-center space-x-3">
@@ -299,11 +298,6 @@ export function ServiceDetailsScreen({ service }: ServiceDetailsScreenProps) {
           </div>
         </div>
       </main>
-
-      {/* Mobile Booking Footer */}
-      <footer id="booking-footer" className="flex-shrink-0 lg:hidden">
-        <BookingFooter />
-      </footer>
     </div>
   );
 }

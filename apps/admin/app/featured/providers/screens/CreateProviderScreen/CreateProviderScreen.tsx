@@ -1,31 +1,15 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { ProviderForm } from '../../containers/ProviderForm';
-import { ProviderFormValues } from '@/app/(routes)/api/providers/providers.schema';
-import { useProviderQueries } from '../../hooks/useProviderQueries';
+import { ProviderForm } from "../../containers/ProviderForm";
+import { ProviderFormValues } from "@/app/(routes)/api/providers/providers.schema";
+import { useCreateProvider } from "./hooks/useCreateProvider";
 
 export function CreateProviderScreen() {
-  const router = useRouter();
-  const { createProviderMutation } = useProviderQueries();
+  const { createProvider, isCreating } = useCreateProvider();
 
   const handleSubmit = (data: ProviderFormValues) => {
-    createProviderMutation.mutate(data, {
-      onSuccess: () => {
-        router.push('/providers');
-      },
-    });
+    createProvider(data);
   };
 
-  const handleCancel = () => {
-    router.push('/providers');
-  };
-
-  return (
-    <ProviderForm
-      onSubmit={handleSubmit}
-      onCancel={handleCancel}
-      isLoading={createProviderMutation.isPending}
-    />
-  );
+  return <ProviderForm onSubmit={handleSubmit} isLoading={isCreating} />;
 }

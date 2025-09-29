@@ -1,14 +1,14 @@
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
 import { client } from "@/app/shared/utils/http.client.utils";
 import {
   CreatePermissionRequest,
   UpdatePermissionRequest,
 } from "../../../(routes)/api/permissions/permissions.schema";
-import { Permission } from "../types/index";
 import { ENDPOINTS } from "../constants";
+import {
+  JsonResponse,
+  PaginatedJsonResponse,
+  Permission,
+} from "@furever/types";
 
 export const PermissionsClient = {
   async getPermissions({ queryKey }: { queryKey: [string, string] }) {

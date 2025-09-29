@@ -1,11 +1,12 @@
 import {
   JsonResponse,
   PaginatedJsonResponse,
-} from '@/app/shared/types/general';
-import { Permission, Role } from '@furever/types';
-import { Suspense } from 'react';
-import { EditRoleScreen } from '../../../featured/roles/screens/EditRoleScreen/EditRoleScreen';
-import { server } from '@/app/shared/utils/http.server.utils';
+  Permission,
+  Role,
+} from "@furever/types";
+import { Suspense } from "react";
+import { EditRoleScreen } from "../../../featured/roles/screens/EditRoleScreen/EditRoleScreen";
+import { server } from "@/app/shared/utils/http.server.utils";
 
 interface EditRolePageProps {
   params: Promise<{

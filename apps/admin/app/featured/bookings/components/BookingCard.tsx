@@ -1,5 +1,6 @@
 "use client";
 
+import { Booking } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent } from "@furever/ui/components/card";
@@ -12,7 +13,6 @@ import {
   Clock,
   DollarSign,
 } from "lucide-react";
-import { Booking } from "../types/index";
 
 interface BookingCardProps {
   booking: Booking;

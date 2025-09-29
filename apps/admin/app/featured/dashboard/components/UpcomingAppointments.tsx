@@ -22,7 +22,6 @@ export function UpcomingAppointments({
   upcomingBookings,
   className,
 }: UpcomingAppointmentsProps) {
-  // Get today's date for badge display
   const today = new Date();
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
   const dayNumber = today.getDate();

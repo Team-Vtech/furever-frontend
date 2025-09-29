@@ -1,5 +1,5 @@
 "use client";
-import { ControlledInputProps } from "@/app/shared/types/general";
+import { ControlledInputProps } from "@furever/types";
 import { Input } from "@furever/ui/components/input";
 import { FieldValues, useController } from "react-hook-form";
 

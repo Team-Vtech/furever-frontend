@@ -1,12 +1,7 @@
 import { client } from "@/app/shared/utils/http.client.utils";
 import { ENDPOINTS } from "../constant";
-
-import {
-  JsonResponse,
-  PaginatedJsonResponse,
-} from "@/app/shared/types/general";
 import { ProviderFormValues } from "../../../(routes)/api/providers/providers.schema";
-import { Provider } from "@furever/types";
+import { JsonResponse, PaginatedJsonResponse, Provider } from "@furever/types";
 
 export const ProvidersClient = {
   async getProviders({ queryKey }: { queryKey: string[] }) {

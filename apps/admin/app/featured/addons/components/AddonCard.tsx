@@ -1,10 +1,10 @@
 "use client";
 
+import { Addon } from "@furever/types/index";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent } from "@furever/ui/components/card";
 import { Edit2, Trash2 } from "lucide-react";
-import { Addon } from "../types/index";
 
 interface AddonCardProps {
   addon: Addon;

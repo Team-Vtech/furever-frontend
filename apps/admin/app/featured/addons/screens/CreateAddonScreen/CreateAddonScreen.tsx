@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { AddonForm } from '../../containers/AddonForm';
-import { useCreateAddon } from './hooks/useCreateAddon';
-import { AddonFormValues } from '@/app/(routes)/api/addons/addons.schema';
+import { useRouter } from "next/navigation";
+import { AddonForm } from "../../containers/AddonForm";
+import { useCreateAddon } from "./hooks/useCreateAddon";
+import { AddonFormValues } from "@/app/(routes)/api/addons/addons.schema";
 
 export function CreateAddonScreen() {
   const router = useRouter();
@@ -12,13 +12,13 @@ export function CreateAddonScreen() {
   const handleSubmit = (data: AddonFormValues) => {
     createAddon(data, {
       onSuccess: () => {
-        router.push('/addons');
+        router.push("/addons");
       },
     });
   };
 
   const handleCancel = () => {
-    router.push('/addons');
+    router.push("/addons");
   };
 
   return (

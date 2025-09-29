@@ -1,5 +1,5 @@
+import { PetType } from "@furever/types";
 import { z } from "zod";
-import { PetType } from "../../../featured/pet-types/types";
 
 export const petTypeSchema = z.object({
   id: z.number().optional(),

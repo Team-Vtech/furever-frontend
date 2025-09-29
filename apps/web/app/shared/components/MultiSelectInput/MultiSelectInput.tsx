@@ -7,11 +7,7 @@ import {
   RegisterOptions,
 } from "react-hook-form";
 import { Label } from "@furever/ui/components/label";
-import {
-  MultipleSelector,
-  Option,
-  MultipleSelectorRef,
-} from "@furever/ui/components/multi-select";
+import { MultipleSelector, Option } from "@furever/ui/components/multi-select";
 
 interface MultiSelectInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -27,7 +23,6 @@ interface MultiSelectInputProps<
   description?: string;
   options: Option[];
   maxSelected?: number;
-  searchable?: boolean;
   hideClearAllButton?: boolean;
   emptyIndicator?: React.ReactNode;
   loadingIndicator?: React.ReactNode;
@@ -56,7 +51,6 @@ function MultiSelectInputComponent<
   description,
   options,
   maxSelected = 3,
-  searchable = true,
   hideClearAllButton = false,
   emptyIndicator,
   loadingIndicator,

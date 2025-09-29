@@ -1,6 +1,6 @@
+import { PaginatedJsonResponse } from "@furever/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { PaginatedJsonResponse } from "../types/general";
 import { useSearchParams } from "next/navigation";
 
 /**
@@ -29,9 +29,7 @@ export function usePaginatedRequest<TData = Record<string, unknown>>(
     },
     getPreviousPageParam: (firstPage) => {
       const pagination = firstPage.data.data.pagination;
-      return pagination.previous_page > 0
-        ? pagination.previous_page
-        : undefined;
+      return pagination.prev_page > 0 ? pagination.prev_page : undefined;
     },
   });
 }

@@ -1,9 +1,8 @@
-import { Suspense } from 'react';
-import { EditAddonScreen } from '../../../featured/addons/screens/EditAddonScreen/EditAddonScreen';
-import { server } from '@/app/shared/utils/http.server.utils';
-import { JsonResponse } from '@/app/shared/types/general';
-import { Addon } from '@furever/types';
-import { notFound } from 'next/navigation';
+import { Suspense } from "react";
+import { EditAddonScreen } from "../../../featured/addons/screens/EditAddonScreen/EditAddonScreen";
+import { server } from "@/app/shared/utils/http.server.utils";
+import { Addon, JsonResponse } from "@furever/types";
+import { notFound } from "next/navigation";
 
 interface EditAddonPageProps {
   params: Promise<{
