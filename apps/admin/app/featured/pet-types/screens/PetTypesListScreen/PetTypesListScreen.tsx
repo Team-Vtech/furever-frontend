@@ -5,33 +5,32 @@ import { petTypeColumns } from "./columns/pet-type.columns";
 import { usePetTypesListScreenState } from "./hooks/usePetTypesListScreenState";
 
 export function PetTypesListScreen() {
-  const { data, pagination, isLoading, isError } = usePetTypesListScreenState();
+    const { data, pagination, isLoading, isError } = usePetTypesListScreenState();
 
-  if (isError) {
+    if (isError) {
+        return (
+            <div className="flex h-64 items-center justify-center">
+                <div className="text-center">
+                    <h2 className="text-lg font-semibold text-red-600">Error loading pet types</h2>
+                    <p className="text-muted-foreground text-sm">Please try refreshing the page</p>
+                </div>
+            </div>
+        );
+    }
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <h2 className="text-lg font-semibold text-red-600">
-            Error loading pet types
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Please try refreshing the page
-          </p>
-        </div>
-      </div>
+        <DataTable
+            columns={petTypeColumns}
+            data={data}
+            pagination={pagination}
+            isLoading={isLoading}
+            searchPlaceholder="Search pet types..."
+            showToolbar={true}
+            showSearch={true}
+            showColumnVisibility={true}
+            filters={{
+                config: [],
+                initialData: {},
+            }}
+        />
     );
-  }
-  return (
-    <DataTable
-      columns={petTypeColumns}
-      data={data}
-      pagination={pagination}
-      isLoading={isLoading}
-      searchPlaceholder="Search pet types..."
-      showToolbar={true}
-      showSearch={true}
-      showColumnVisibility={true}
-      filters={[]}
-    />
-  );
 }

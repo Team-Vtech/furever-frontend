@@ -1,67 +1,49 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { UpdatePermissionRequest } from "../../../../(routes)/api/permissions/permissions.schema";
-import { PermissionForm } from "../../containers/PermissionForm";
-import { Permission } from "../../types";
-import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
+import { PermissionFormValues } from "@/app/(routes)/api/permissions/permissions.schema";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
+import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
+import { toastUtils } from "@/app/shared/utils/toast.utils";
+import { Permission } from "@furever/types/index";
+import { useRouter } from "next/navigation";
+import { PermissionForm } from "../../containers/PermissionForm";
 import { useDeletePermission } from "./hooks/usePermissionDelete";
 import { useUpdatePermission } from "./hooks/useUpdatePermission";
 
 type EditPermissionScreenProps = {
-  permission: Permission;
+    permission: Permission;
 };
 
-export function EditPermissionScreen({
-  permission,
-}: EditPermissionScreenProps) {
-  const { isPending, updatePermission } = useUpdatePermission();
-  const { deletePermission, isDeleting } = useDeletePermission();
-  const router = useRouter();
+export function EditPermissionScreen({ permission }: EditPermissionScreenProps) {
+    const { isPending, updatePermission } = useUpdatePermission();
+    const { deletePermission, isDeleting } = useDeletePermission();
+    const router = useRouter();
 
-  const handleSubmit = async (data: UpdatePermissionRequest) => {
-    try {
-      await updatePermission({
-        id: permission.id,
-        data,
-      });
-      toast.success("Permission updated successfully");
-      router.push("/permissions");
-    } catch (error) {
-      toast.error("Failed to update permission");
-      console.error("Error updating permission:", error);
-    }
-  };
+    const handleSubmit = async (data: PermissionFormValues) => {
+        try {
+            await updatePermission({
+                id: permission.id,
+                data,
+            });
+            toastUtils.success.create("Permission");
+            router.push("/permissions");
+        } catch {
+            toastUtils.error.create("Permission");
+        }
+    };
 
-  const handleCancel = () => {
-    router.push("/permissions");
-  };
+    const handleCancel = () => {
+        router.push("/permissions");
+    };
 
-  return (
-    <PageLayout
-      title={`Edit Permission: ${permission.name}`}
-      description="Modify the details of the permission."
-      breadcrumbs={[
-        { label: "Permissions", href: "/permissions" },
-        { label: "Edit" },
-      ]}
-      actions={
-        <DeleteRecordDialog
-          recordName={permission.name}
-          recordId={permission.id}
-          onDelete={deletePermission}
-          isDeleting={isDeleting}
-        />
-      }
-    >
-      <PermissionForm
-        permission={permission}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        isLoading={isPending}
-      />
-    </PageLayout>
-  );
+    return (
+        <PageLayout
+            title={`Edit Permission: ${permission.name}`}
+            description="Modify the details of the permission."
+            breadcrumbs={[{ label: "Permissions", href: "/permissions" }, { label: "Edit" }]}
+            actions={<DeleteRecordDialog recordName={permission.name} recordId={permission.id} onDelete={deletePermission} isDeleting={isDeleting} />}
+        >
+            <PermissionForm permission={permission} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={isPending} />
+        </PageLayout>
+    );
 }

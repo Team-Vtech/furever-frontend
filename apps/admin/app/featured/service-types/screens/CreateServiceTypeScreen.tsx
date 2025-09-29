@@ -1,29 +1,23 @@
 "use client";
 
+import { ServiceTypeFormValues } from "@/app/(routes)/api/service-types/schema";
+import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { useRouter } from "next/navigation";
 import { ServiceTypeForm } from "../components/ServiceTypeForm";
 import { useCreateServiceTypeMutation } from "../hooks/useServiceTypeQueries";
-import { CreateServiceTypeData } from "../types";
-import { toast } from "sonner";
 
 export function CreateServiceTypeScreen() {
-  const router = useRouter();
-  const createServiceTypeMutation = useCreateServiceTypeMutation();
+    const router = useRouter();
+    const createServiceTypeMutation = useCreateServiceTypeMutation();
 
-  const handleSubmit = async (data: CreateServiceTypeData) => {
-    try {
-      await createServiceTypeMutation.mutateAsync(data);
-      router.push("/service-types");
-    } catch (error) {
-      toast.error("Failed to create service type");
-    }
-  };
+    const handleSubmit = async (data: ServiceTypeFormValues) => {
+        try {
+            await createServiceTypeMutation.mutateAsync(data);
+            router.push("/service-types");
+        } catch {
+            toastUtils.error.create("Failed to create service type");
+        }
+    };
 
-  return (
-    <ServiceTypeForm
-      mode="create"
-      onSubmit={handleSubmit}
-      isLoading={createServiceTypeMutation.isPending}
-    />
-  );
+    return <ServiceTypeForm onSubmit={handleSubmit} isLoading={createServiceTypeMutation.isPending} />;
 }

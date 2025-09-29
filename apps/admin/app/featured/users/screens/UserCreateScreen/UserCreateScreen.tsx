@@ -1,45 +1,44 @@
 "use client";
 
-import { CreateUserForm } from "../../containers/CreateUserForm";
-import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
-import { useCreateUser } from "../../hooks/use-users";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { Provider, Role } from "@furever/types";
+import { useRouter } from "next/navigation";
+import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
+import { CreateUserForm } from "../../containers/CreateUserForm";
+import { useCreateUser } from "../../hooks/use-users";
 
 type UserCreateScreenProps = {
-  roles: Role[];
-  providers: Provider[];
+    roles: Role[];
+    providers: Provider[];
 };
 
 export function UserCreateScreen({ roles, providers }: UserCreateScreenProps) {
-  const router = useRouter();
-  const createUserMutation = useCreateUser();
+    const router = useRouter();
+    const createUserMutation = useCreateUser();
 
-  const handleSubmit = async (data: UserFormValues) => {
-    try {
-      await createUserMutation.mutateAsync(data);
-      toast.success("User created successfully");
-      router.push("/users");
-    } catch (error) {
-      toast.error("Failed to create user");
-      console.error("Error creating user:", error);
-    }
-  };
+    const handleSubmit = async (data: UserFormValues) => {
+        try {
+            await createUserMutation.mutateAsync(data);
+            toastUtils.success.create("User created successfully");
+            router.push("/users");
+        } catch {
+            toastUtils.error.create("Failed to create user");
+        }
+    };
 
-  const handleCancel = () => {
-    router.push("/users");
-  };
+    const handleCancel = () => {
+        router.push("/users");
+    };
 
-  return (
-    <div className="bg-white rounded-lg border p-6">
-      <CreateUserForm
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        isLoading={createUserMutation.isPending}
-        roles={roles}
-        providers={providers}
-      />
-    </div>
-  );
+    return (
+        <div className="rounded-lg border bg-white p-6">
+            <CreateUserForm
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+                isLoading={createUserMutation.isPending}
+                roles={roles}
+                providers={providers}
+            />
+        </div>
+    );
 }

@@ -7,24 +7,23 @@ import { providersColumns } from "./columns/providers.columns";
 import { useProvidersListScreenState } from "./hooks/useProvidersListScreenState";
 
 export function ProvidersListScreen() {
-  const { data, pagination, isLoading, isError, refetch } =
-    useProvidersListScreenState();
-  if (isError) {
-    return <ListingErrorState resourceName="providers" onRetry={refetch} />;
-  }
+    const { data, pagination, isLoading, isError, refetch } = useProvidersListScreenState();
+    if (isError) {
+        return <ListingErrorState resourceName="providers" onRetry={refetch} />;
+    }
 
-  return (
-    <DataTable
-      columns={providersColumns}
-      data={data}
-      pagination={pagination}
-      isLoading={isLoading}
-      searchPlaceholder="Search providers..."
-      showToolbar={true}
-      filters={{
-        config: [],
-        initialData: {},
-      }}
-    />
-  );
+    return (
+        <DataTable
+            columns={providersColumns}
+            data={data}
+            pagination={pagination}
+            isLoading={isLoading}
+            searchPlaceholder="Search providers..."
+            showToolbar={true}
+            filters={{
+                config: [],
+                initialData: {},
+            }}
+        />
+    );
 }

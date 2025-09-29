@@ -6,12 +6,13 @@ export function useCreateAddon() {
     const queryClient = useQueryClient();
 
     const { mutateAsync, isPending, isError } = useMutation({
+        mutationKey: ["create-addon"],
         mutationFn: AddonsClient.createAddon,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["list-addons"] });
             toastUtils.success.create("Addon");
         },
-        onError: (error: any) => {
+        onError: () => {
             toastUtils.error.create("Addon");
         },
     });
@@ -20,5 +21,5 @@ export function useCreateAddon() {
         createAddon: mutateAsync,
         isCreating: isPending,
         isError,
-    }
+    };
 }

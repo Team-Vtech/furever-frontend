@@ -1,41 +1,41 @@
 export const ENDPOINTS = {
-  getBookings: {
-    url: "/api/bookings",
-    method: "get",
-  },
-  createBooking: {
-    url: "/api/bookings",
-    method: "post",
-  },
-  updateBooking: {
-    url: (id: number) => `/api/bookings/${id}`,
-    method: "put",
-  },
-  deleteBooking: {
-    url: (id: number) => `/api/bookings/${id}`,
-    method: "delete",
-  },
-  updateBookingStatus: {
-    url: (id: number) => `/api/bookings/${id}/status`,
-    method: "patch",
-  },
+    getBookings: {
+        url: "/api/bookings",
+        method: "get",
+    },
+    createBooking: {
+        url: "/api/bookings",
+        method: "post",
+    },
+    updateBooking: {
+        url: (id: number) => `/api/bookings/${id}`,
+        method: "put",
+    },
+    deleteBooking: {
+        url: (id: number) => `/api/bookings/${id}`,
+        method: "delete",
+    },
+    updateBookingStatus: {
+        url: (id: number) => `/api/bookings/${id}/status`,
+        method: "patch",
+    },
 } as const;
 
 export const BOOKING_STATUS_OPTIONS = [
-  { value: "pending", label: "Pending" },
-  { value: "confirmed", label: "Confirmed" },
-  { value: "in_progress", label: "In Progress" },
-  { value: "completed", label: "Completed" },
-  { value: "cancelled", label: "Cancelled" },
-] as const;
+    { value: "pending", label: "Pending" },
+    { value: "confirmed", label: "Confirmed" },
+    { value: "in_progress", label: "In Progress" },
+    { value: "completed", label: "Completed" },
+    { value: "cancelled", label: "Cancelled" },
+];
 
 export const GENDER_OPTIONS = [
-  { value: "Male", label: "Male" },
-  { value: "Female", label: "Female" },
-] as const;
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+];
 
 export const VACCINATION_STATUS_OPTIONS = [
-  { value: "Yes", label: "Yes" },
-  { value: "No", label: "No" },
-  { value: "Partial", label: "Partial" },
-] as const;
+    { value: "Yes", label: "Yes" },
+    { value: "No", label: "No" },
+    { value: "Partial", label: "Partial" },
+];

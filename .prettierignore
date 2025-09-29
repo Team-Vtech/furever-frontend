@@ -1,0 +1,6 @@
+./packages/ui/src/components/ui/*
+node_modules/
+dist/
+.next/
+apps/*/dist/
+packages/*/dist/

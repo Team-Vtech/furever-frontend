@@ -1,43 +1,37 @@
 "use client";
 
+import { toastUtils } from "@/app/shared/utils/toast.utils";
+import { Permission } from "@furever/types";
 import { useRouter } from "next/navigation";
 import { RoleFormValues } from "../../../../(routes)/api/roles/roles.schema";
-import { useCreateRole } from "../../hooks/use-roles";
-import { toast } from "sonner";
 import { RoleForm } from "../../containers/RoleForm";
-import { Permission } from "@furever/types";
+import { useCreateRole } from "./hooks/useCreateRole";
 
 export type CreateRoleScreenProps = {
-  permissions: Permission[];
+    permissions: Permission[];
 };
 
 export function CreateRoleScreen({ permissions }: CreateRoleScreenProps) {
-  const router = useRouter();
-  const createRoleMutation = useCreateRole();
+    const router = useRouter();
+    const { createRole, isCreating } = useCreateRole();
 
-  const handleSubmit = async (data: RoleFormValues) => {
-    try {
-      await createRoleMutation.mutateAsync(data);
-      toast.success("Role created successfully");
-      router.push("/roles");
-    } catch (error) {
-      toast.error("Failed to create role");
-      console.error("Error creating role:", error);
-    }
-  };
+    const handleSubmit = async (data: RoleFormValues) => {
+        try {
+            await createRole(data);
+            toastUtils.success.create("Role created successfully");
+            router.push("/roles");
+        } catch {
+            toastUtils.error.create("Failed to create role");
+        }
+    };
 
-  const handleCancel = () => {
-    router.push("/roles");
-  };
+    const handleCancel = () => {
+        router.push("/roles");
+    };
 
-  return (
-    <div className="bg-white rounded-lg border p-6">
-      <RoleForm
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        isLoading={createRoleMutation.isPending}
-        permissions={permissions}
-      />
-    </div>
-  );
+    return (
+        <div className="rounded-lg border bg-white p-6">
+            <RoleForm onSubmit={handleSubmit} onCancel={handleCancel} isLoading={isCreating} permissions={permissions} />
+        </div>
+    );
 }

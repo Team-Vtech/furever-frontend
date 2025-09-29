@@ -1,5 +1,5 @@
 ---
-applyTo: '**'
+applyTo: "**"
 ---
 
 ## 1. Business context
@@ -20,12 +20,12 @@ Packages in the monorepo:
 1. Each package owns its own `package.json`, `tsconfig.json`, `CHANGELOG.md`.
 2. Source lives in `src/`, except Next.js which uses `app/`.
 3. **Feature-first** layout inside `apps/<type-of-user>/app/featured/<feature>/`:
-   - `constants.ts` - domain constants/enums.
-   - `clients/` - HTTP / SDK wrappers.
-   - `components/` - stateless UI atoms/molecules.
-   - `screens/` - page-level compositions rendered by routes each one of screen should be named in **PascalCase** (e.g. `PetProfileScreen/PetProfileScreen.tsx`) and inside each screen have package.json file will include just main key with the name of component.
-   - `containers/` - smart components wiring data to presentation like forms.
-   - `hooks/`, `utils/`, `types/` - as names imply.
+    - `constants.ts` - domain constants/enums.
+    - `clients/` - HTTP / SDK wrappers.
+    - `components/` - stateless UI atoms/molecules.
+    - `screens/` - page-level compositions rendered by routes each one of screen should be named in **PascalCase** (e.g. `PetProfileScreen/PetProfileScreen.tsx`) and inside each screen have package.json file will include just main key with the name of component.
+    - `containers/` - smart components wiring data to presentation like forms.
+    - `hooks/`, `utils/`, `types/` - as names imply.
 4. Admin code path: `apps/admin`; customer-facing path: `apps/web`.
 5. Never use a barrel `index.ts`; external code should import from the files directly.
 

@@ -4,56 +4,51 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LoginForm } from "../components/LoginForm";
-
-interface LoginFormData {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
+import { LoginFormData } from "../types/login.types";
 
 export function LoginContainer() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
+    const router = useRouter();
 
-  const handleSubmit = async (data: LoginFormData) => {
-    setIsLoading(true);
-    setError("");
+    const handleSubmit = async (data: LoginFormData) => {
+        setIsLoading(true);
+        setError("");
 
-    try {
-      const result = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
+        try {
+            const result = await signIn("credentials", {
+                email: data.email,
+                password: data.password,
+                redirect: false,
+            });
 
-      if (result?.error) {
-        setError("Invalid email or password");
-      } else {
-        router.push("/");
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+            if (result?.error) {
+                setError("Invalid email or password");
+            } else {
+                router.push("/");
+            }
+        } catch {
+            setError("An error occurred. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-  const handleForgotPassword = () => {
-    router.push("/forgot-password");
-  };
+    const handleForgotPassword = () => {
+        router.push("/forgot-password");
+    };
 
-  const handleCreateAccount = () => {
-    router.push("/register");
-  };
+    const handleCreateAccount = () => {
+        router.push("/register");
+    };
 
-  return (
-    <LoginForm
-      onSubmit={handleSubmit}
-      onForgotPassword={handleForgotPassword}
-      onCreateAccount={handleCreateAccount}
-      isLoading={isLoading}
-      error={error}
-    />
-  );
+    return (
+        <LoginForm
+            onSubmit={handleSubmit}
+            onForgotPassword={handleForgotPassword}
+            onCreateAccount={handleCreateAccount}
+            isLoading={isLoading}
+            error={error}
+        />
+    );
 }

@@ -3,24 +3,18 @@ import { PermissionsProvider } from "../shared/providers/PermissionsProvider";
 import { server } from "../shared/utils/http.server.utils";
 
 export default async function AdminLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  const permissionsResponse = await fetchUserPermissions();
-  const userPermissions = permissionsResponse?.data?.data || [];
-  return (
-    <PermissionsProvider permissions={userPermissions}>
-      {children}
-    </PermissionsProvider>
-  );
+    const permissionsResponse = await fetchUserPermissions();
+    const userPermissions = permissionsResponse?.data?.data || [];
+    return <PermissionsProvider permissions={userPermissions}>{children}</PermissionsProvider>;
 }
 async function fetchUserPermissions() {
-  try {
-    return await (
-      await server()
-    ).get<JsonResponse<string[]>>("/admin/user/permissions");
-  } catch (error) {
-    return null;
-  }
+    try {
+        return await (await server()).get<JsonResponse<string[]>>("/admin/user/permissions");
+    } catch {
+        return null;
+    }
 }

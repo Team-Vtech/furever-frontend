@@ -1,48 +1,37 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "ui": "tui",
-  "globalEnv": [
-    "NODE_ENV",
-    "ANALYZE",
-    "FACEBOOK_CLIENT_ID",
-    "FACEBOOK_CLIENT_SECRET",
-    "GOOGLE_CLIENT_ID",
-    "GOOGLE_CLIENT_SECRET",
-    "NEXTAUTH_SECRET",
-    "NEXTAUTH_URL",
-    "API_BASE_URL"
-  ],
-  "globalDependencies": [
-    "apps/**/.env",
-    "apps/**/.env.local",
-    "**/*.tsconfig.json"
-  ],
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"],
-      "env": [
-        "NODE_ENV",
-        "ANALYZE",
-        "FACEBOOK_CLIENT_ID",
-        "FACEBOOK_CLIENT_SECRET",
-        "GOOGLE_CLIENT_ID",
-        "GOOGLE_CLIENT_SECRET",
-        "NEXTAUTH_SECRET",
-        "NEXTAUTH_URL",
-        "API_BASE_URL"
-      ]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "check-types": {
-      "dependsOn": ["^check-types"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
+    "$schema": "https://turbo.build/schema.json",
+    "ui": "tui",
+    "envMode": "strict",
+    "globalEnv": ["NODE_ENV"],
+    "globalDependencies": ["apps/**/.env.local", "**/*.tsconfig.json"],
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "inputs": ["$TURBO_DEFAULT$", ".env*"],
+            "outputs": [".next/**", "!.next/cache/**"],
+            "env": [
+                "FACEBOOK_CLIENT_ID",
+                "FACEBOOK_CLIENT_SECRET",
+                "GOOGLE_CLIENT_ID",
+                "GOOGLE_CLIENT_SECRET",
+                "NEXTAUTH_SECRET",
+                "NEXTAUTH_URL",
+                "API_BASE_URL",
+                "NEXT_PUBLIC_IMAGE_URL"
+            ]
+        },
+        "lint": {
+            "dependsOn": ["^lint"]
+        },
+        "check-types": {
+            "dependsOn": ["^check-types"]
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "format": {
+            "outputs": []
+        }
     }
-  }
 }

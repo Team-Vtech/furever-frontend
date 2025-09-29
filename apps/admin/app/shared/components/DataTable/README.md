@@ -22,13 +22,13 @@ Each filter is defined using the `FilterConfig` interface:
 
 ```typescript
 interface FilterConfig {
-  key: string;              // The field key to filter on
-  type: FilterType;         // Type of filter (text, select, etc.)
-  label: string;            // Display label for the filter
-  placeholder?: string;     // Placeholder text (optional)
-  options?: FilterOption[]; // Options for select filters (required for select type)
-  defaultValue?: any;       // Default filter value (optional)
-  width?: 'sm' | 'md' | 'lg' | 'xl'; // Filter width (optional, defaults to 'md')
+    key: string; // The field key to filter on
+    type: FilterType; // Type of filter (text, select, etc.)
+    label: string; // Display label for the filter
+    placeholder?: string; // Placeholder text (optional)
+    options?: FilterOption[]; // Options for select filters (required for select type)
+    defaultValue?: any; // Default filter value (optional)
+    width?: "sm" | "md" | "lg" | "xl"; // Filter width (optional, defaults to 'md')
 }
 ```
 
@@ -86,15 +86,18 @@ function MyListScreen() {
 ## Features
 
 ### URL Synchronization
+
 - Filter values are automatically synchronized with URL query parameters
 - Page reloads maintain filter state
 - Changing filters resets pagination to page 1
 
 ### Clear Filters
+
 - A "Clear Filters" button appears when any filters are active
 - Clicking it removes all filter values and updates the URL
 
 ### Responsive Design
+
 - Filters are laid out horizontally and wrap on smaller screens
 - Different width options available for optimal spacing
 
@@ -119,8 +122,8 @@ function MyListScreen() {
 
 ```typescript
 interface FilterOption {
-  label: string;                    // Display text
-  value: string | number | boolean; // Filter value
+    label: string; // Display text
+    value: string | number | boolean; // Filter value
 }
 ```
 
