@@ -26,6 +26,11 @@
         "check-types": {
             "dependsOn": ["^check-types"]
         },
+        "start": {
+            "cache": false,
+            "persistent": true,
+            "inputs": []
+        },
         "dev": {
             "cache": false,
             "persistent": true
