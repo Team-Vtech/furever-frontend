@@ -1,11 +1,15 @@
 "use client";
+import { DateInput } from "@/app/shared/components/DateInput/DateInput";
+import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
+import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
 import { Provider } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { Plus, Trash2 } from "lucide-react";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { getProviderDefaultValues, ProviderFormValues, providerSchema } from "../../../(routes)/api/providers/providers.schema";
 import { PROVIDER_STATUS_OPTIONS } from "../constant";
 
@@ -30,6 +34,11 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading }: Provid
         watch,
         control,
     } = formMethods;
+
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "certificates",
+    });
 
     const watchedStatus = watch("status");
 
@@ -177,6 +186,7 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading }: Provid
                         </div>
                     </div>
 
+                    <UploadMedia control={control} name="media_object_id" mediaObject={provider?.media_object} />
                     {/* Status */}
                     <div>
                         <Label htmlFor="status" className="text-sm font-medium text-gray-700">
@@ -199,6 +209,165 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading }: Provid
                         </Select>
                         {errors.status && <p className="mt-1 text-sm text-red-600">{errors.status.message}</p>}
                     </div>
+                </div>
+                {/* Certificates Information */}
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-medium text-gray-900">Certificates</h3>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                                append({
+                                    certificate_id: 0,
+                                    certificate_number: "",
+                                    issued_by: "",
+                                    issued_at: undefined,
+                                    expires_at: undefined,
+                                    media_object_id: undefined,
+                                    notes: "",
+                                })
+                            }
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Add Certificate
+                        </Button>
+                    </div>
+
+                    {fields.map((field, index) => (
+                        <div key={field.id} className="space-y-4 rounded-lg border border-gray-200 p-4">
+                            <div className="flex items-center justify-between">
+                                <h4 className="text-md font-medium text-gray-900">Certificate {index + 1}</h4>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => remove(index)}
+                                    className="text-red-600 hover:text-red-700"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div>
+                                    <Label htmlFor={`certificates.${index}.certificate_id`} className="text-sm font-medium text-gray-700">
+                                        Certificate ID *
+                                    </Label>
+                                    <TextInput
+                                        id={`certificates.${index}.certificate_id`}
+                                        name={`certificates.${index}.certificate_id`}
+                                        type="number"
+                                        control={control}
+                                        placeholder="Enter certificate ID"
+                                        className="mt-1"
+                                    />
+                                    {errors.certificates?.[index]?.certificate_id && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.certificates[index]?.certificate_id?.message}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <Label htmlFor={`certificates.${index}.certificate_number`} className="text-sm font-medium text-gray-700">
+                                        Certificate Number
+                                    </Label>
+                                    <TextInput
+                                        id={`certificates.${index}.certificate_number`}
+                                        name={`certificates.${index}.certificate_number`}
+                                        control={control}
+                                        placeholder="Enter certificate number"
+                                        className="mt-1"
+                                    />
+                                    {errors.certificates?.[index]?.certificate_number && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.certificates[index]?.certificate_number?.message}</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div>
+                                    <Label htmlFor={`certificates.${index}.issued_by`} className="text-sm font-medium text-gray-700">
+                                        Issued By
+                                    </Label>
+                                    <TextInput
+                                        id={`certificates.${index}.issued_by`}
+                                        name={`certificates.${index}.issued_by`}
+                                        control={control}
+                                        placeholder="Enter issuer"
+                                        className="mt-1"
+                                    />
+                                    {errors.certificates?.[index]?.issued_by && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.certificates[index]?.issued_by?.message}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <Label htmlFor={`certificates.${index}.issued_at`} className="text-sm font-medium text-gray-700">
+                                        Issued At
+                                    </Label>
+                                    <DateInput
+                                        id={`certificates.${index}.issued_at`}
+                                        name={`certificates.${index}.issued_at`}
+                                        control={control}
+                                        className="mt-1"
+                                    />
+                                    {errors.certificates?.[index]?.issued_at && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.certificates[index]?.issued_at?.message}</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div>
+                                    <Label htmlFor={`certificates.${index}.expires_at`} className="text-sm font-medium text-gray-700">
+                                        Expires At
+                                    </Label>
+                                    <DateInput
+                                        id={`certificates.${index}.expires_at`}
+                                        name={`certificates.${index}.expires_at`}
+                                        control={control}
+                                        className="mt-1"
+                                    />
+                                    {errors.certificates?.[index]?.expires_at && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.certificates[index]?.expires_at?.message}</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div>
+                                <Label htmlFor={`certificates.${index}.notes`} className="text-sm font-medium text-gray-700">
+                                    Notes
+                                </Label>
+                                <TextAreaInput
+                                    id={`certificates.${index}.notes`}
+                                    name={`certificates.${index}.notes`}
+                                    control={control}
+                                    placeholder="Enter notes"
+                                    rows={3}
+                                    className="mt-1"
+                                />
+                                {errors.certificates?.[index]?.notes && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.certificates[index]?.notes?.message}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <Label className="text-sm font-medium text-gray-700">Certificate Document</Label>
+                                <UploadMedia
+                                    control={control}
+                                    name={`certificates.${index}.media_object_id`}
+                                    mediaObject={provider?.certificates[index]?.media_object} // We'll need to handle this properly
+                                />
+                            </div>
+                        </div>
+                    ))}
+
+                    {fields.length === 0 && (
+                        <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
+                            <p className="text-gray-500">No certificates added yet. Click "Add Certificate" to add one.</p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex justify-end gap-3 border-t pt-6">

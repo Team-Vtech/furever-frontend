@@ -1,4 +1,4 @@
-import { BookOpen, Calendar, LayoutDashboard, Lock, PawPrint, Plus, Settings, Shield, Star, Users, Wrench } from "lucide-react";
+import { Award, BookOpen, Calendar, LayoutDashboard, Lock, PawPrint, Plus, Settings, Shield, Star, Users, Wrench } from "lucide-react";
 import { NavigationGroup } from "./components/layout/dashboard-layout";
 
 export const APP_NAVIGATION_LINKS: NavigationGroup[] = [
@@ -56,6 +56,11 @@ export const APP_NAVIGATION_LINKS: NavigationGroup[] = [
                 name: "Addons",
                 href: "/addons",
                 icon: Plus,
+            },
+            {
+                name: "Certificates",
+                href: "/certificates",
+                icon: Award,
             },
         ],
     },

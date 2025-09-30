@@ -12,6 +12,30 @@ const locationSchema = z.object({
     longitude: z.string().optional(),
 });
 
+export const certificateSchema = z
+    .object({
+        certificate_id: z.number().int().positive(),
+        certificate_number: z.string().max(255).optional().nullable(),
+        issued_by: z.string().max(255).optional().nullable(),
+        issued_at: z.string().optional(),
+        expires_at: z.string().optional(),
+        media_object_id: z.number().int().positive().optional().nullable(),
+        notes: z.string().optional().nullable(),
+    })
+    .superRefine((obj, ctx) => {
+        if (obj.issued_at && obj.expires_at && obj.expires_at < obj.issued_at) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "expires_at must be after or equal to issued_at",
+                path: ["expires_at"],
+            });
+        }
+    });
+
+export const certificatesSchema = z.array(certificateSchema);
+export type CertificatePayload = z.infer<typeof certificateSchema>;
+export type CertificatesPayload = z.infer<typeof certificatesSchema>;
+
 export const providerSchema = z.object({
     id: z.string().optional(),
     business_name: z.string().min(1, "Business name is required").max(255, "Business name is too long"),
@@ -22,6 +46,8 @@ export const providerSchema = z.object({
     status: z.enum(["pending", "approved", "rejected", "inactive"], {
         required_error: "Status is required",
     }),
+    media_object_id: z.number().min(0, "Media object ID must be a non-negative integer"),
+    certificates: certificatesSchema,
 });
 
 export type ProviderFormValues = z.infer<typeof providerSchema>;
@@ -33,6 +59,7 @@ export function getProviderDefaultValues(provider?: Provider): ProviderFormValue
         contact_person_name: provider?.contact_person_name || "",
         email: provider?.email || "",
         phone_number: provider?.phone_number || "",
+        media_object_id: provider?.media_object?.id || 0,
         location: {
             id: provider?.location?.id?.toString() || "",
             address: provider?.location?.address || "",
@@ -44,5 +71,15 @@ export function getProviderDefaultValues(provider?: Provider): ProviderFormValue
             longitude: provider?.location?.longitude || undefined,
         },
         status: provider?.status || "pending",
+        certificates:
+            provider?.certificates?.map((cert) => ({
+                certificate_id: cert.certificate_id,
+                certificate_number: cert.certificate_number || "",
+                issued_by: cert.issued_by || "",
+                issued_at: cert.issued_at ? cert.issued_at : undefined,
+                expires_at: cert.expires_at ? cert.expires_at : undefined,
+                media_object_id: cert.media_object?.id || undefined,
+                notes: cert.notes || "",
+            })) || [],
     };
 }

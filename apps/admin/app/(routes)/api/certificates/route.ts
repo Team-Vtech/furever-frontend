@@ -1,15 +1,16 @@
 import { FiveHundredError, ValidationError } from "@/app/shared/utils/error.utils";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { NextRequest, NextResponse } from "next/server";
-import { ProviderFormValues, providerSchema } from "./providers.schema";
+import { CertificateFormValues, certificateSchema } from "./certificates.schema";
 
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = request.nextUrl;
 
+        // Proxy request to backend API
         const response = await (
             await server()
-        ).get("/admin/providers", {
+        ).get("/admin/certificates", {
             params: searchParams,
         });
         return NextResponse.json(response.data);
@@ -19,18 +20,16 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-    let body: ProviderFormValues;
-
+    let body: CertificateFormValues;
     try {
         body = await request.json();
-        providerSchema.parse(body);
+        certificateSchema.parse(body);
     } catch (error) {
         return ValidationError(error);
     }
-
     try {
-        const response = await (await server()).post("/admin/providers", body);
-        return NextResponse.json(response.data, { status: response.status });
+        const response = await (await server()).post("/admin/certificates", body);
+        return NextResponse.json(response.data, { status: 201 });
     } catch (error) {
         return FiveHundredError(error);
     }

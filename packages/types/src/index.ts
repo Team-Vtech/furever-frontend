@@ -64,6 +64,22 @@ export enum AddonUnit {
     PER_HOUR = "per hour",
     PER_DAY = "per day",
 }
+
+export enum CertificateCategory {
+    REGULATORY = "regulatory",
+    PROFESSIONAL = "professional",
+    SPECIALIZED = "specialized",
+}
+
+export interface Certificate {
+    id: number;
+    name: string;
+    category: CertificateCategory;
+    description: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export type Addon = {
     id: number;
     name: string;
@@ -186,6 +202,21 @@ export type Location = {
     provider_id: number;
 };
 
+export type ProviderCertificate = {
+    id: number;
+    certificate_id: number;
+    certificate_number: string;
+    issued_by: string;
+    issued_at: string;
+    expires_at: string;
+    status: string;
+    notes: string;
+    media_object: MediaObject;
+    file_path: string;
+    created_at: string;
+    updated_at: string;
+};
+
 export type Provider = {
     id: number;
     business_name: string;
@@ -197,6 +228,9 @@ export type Provider = {
     created_at: string;
     updated_at: string;
     provider_id: number;
+    media_object_id: number;
+    media_object: MediaObject;
+    certificates: Array<ProviderCertificate>;
 };
 
 export type Role = {
@@ -230,6 +264,15 @@ export type ServiceType = {
     updated_at: string;
 };
 
+export type PetBreed = {
+    id: number;
+    name: string;
+    code: string;
+    pet_type_id: number;
+    created_at: string;
+    updated_at: string;
+};
+
 export type PetType = {
     id: number;
     name: string;
@@ -238,6 +281,7 @@ export type PetType = {
     sort_order: number;
     media_object: MediaObject;
     media_object_id: number;
+    pet_breeds: PetBreed[];
 };
 
 export type Service = {
