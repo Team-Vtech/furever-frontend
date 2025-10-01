@@ -1,5 +1,6 @@
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, User } from "@furever/types";
+import { isAxiosError } from "axios";
 import NextAuth, { type NextAuthResult } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -70,7 +71,11 @@ const result = NextAuth({
                         updated_at: "",
                     };
                 } catch (error) {
-                    console.error("Auth error:", error);
+                    if (isAxiosError(error) && error.response) {
+                        console.error("Auth error response:", error.response.data);
+                    } else if (error instanceof Error) {
+                        console.error("Auth error:", error);
+                    }
                     return null;
                 }
             },
