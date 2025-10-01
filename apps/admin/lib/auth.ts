@@ -1,6 +1,6 @@
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, User } from "@furever/types";
-import { isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import NextAuth, { type NextAuthResult } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -36,49 +36,48 @@ const result = NextAuth({
                 email: {},
                 password: {},
             },
+            // @ts-expect-error -next-auth types are wrong
             async authorize(credentials) {
-                console.log("hi");
+                console.log("object");
                 if (!credentials?.email || !credentials?.password) {
                     return null;
                 }
-                return null;
-                // try {
-                //     const response = await (
-                //         await server()
-                //     ).post<
-                //         JsonResponse<{
-                //             user: User;
-                //             access_token: string;
-                //         }>
-                //     >("/auth/login", {
-                //         email: credentials.email,
-                //         password: credentials.password,
-                //     });
-                //     if (response.status !== 200) {
-                //         return null;
-                //     }
-                //     return {
-                //         id: response.data.data.user.id.toString(),
-                //         name: response.data.data.user.name,
-                //         email: response.data.data.user.email,
-                //         phone: response.data.data.user.phone,
-                //         status: response.data.data.user.status,
-                //         access_token: response.data.data.access_token,
-                //         emailVerified: response.data.data.user.emailVerified || null,
-                //         address: "",
-                //         created_at: "",
-                //         roles: [],
-                //         updated_at: "",
-                //     };
-                // } catch (error) {
-                //     if (isAxiosError(error) && error.response) {
-                //         console.error("Auth error response:", error.response.data);
-                //         console.log(error.request);
-                //     } else if (error instanceof Error) {
-                //         console.error("Auth error:", error);
-                //     }
-                //     return null;
-                // }
+
+                try {
+                    const response = await axios.post<
+                        JsonResponse<{
+                            user: User;
+                            access_token: string;
+                        }>
+                    >(process.env.API_BASE_URL + "/api/auth/login", {
+                        email: credentials.email,
+                        password: credentials.password,
+                    });
+                    if (response.status !== 200) {
+                        return null;
+                    }
+                    return {
+                        id: response.data.data.user.id.toString(),
+                        name: response.data.data.user.name,
+                        email: response.data.data.user.email,
+                        phone: response.data.data.user.phone,
+                        status: response.data.data.user.status,
+                        access_token: response.data.data.access_token,
+                        emailVerified: response.data.data.user.emailVerified || null,
+                        address: "",
+                        created_at: "",
+                        roles: [],
+                        updated_at: "",
+                    };
+                } catch (error) {
+                    if (isAxiosError(error) && error.response) {
+                        console.error("Auth error response:", error.response.data);
+                        console.log(error.request);
+                    } else if (error instanceof Error) {
+                        console.error("Auth error:", error);
+                    }
+                    return null;
+                }
             },
         }),
         FacebookProvider({
