@@ -73,6 +73,7 @@ const result = NextAuth({
                 } catch (error) {
                     if (isAxiosError(error) && error.response) {
                         console.error("Auth error response:", error.response.data);
+                        console.log(error.request);
                     } else if (error instanceof Error) {
                         console.error("Auth error:", error);
                     }
