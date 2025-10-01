@@ -36,7 +36,6 @@ const result = NextAuth({
                 email: {},
                 password: {},
             },
-            // @ts-expect-error -next-auth types are wrong
             async authorize(credentials) {
                 console.log("hi");
                 if (!credentials?.email || !credentials?.password) {
