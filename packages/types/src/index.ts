@@ -32,12 +32,23 @@ export enum UserStatus {
     BANNED = "banned",
 }
 
+export type UserLocation = {
+    title: string;
+    street: string;
+    city: string;
+    area: string;
+    latitude: number;
+    longitude: number;
+    is_default: boolean;
+};
+
 export type User = {
     id: number;
     name: string;
     email: string;
     phone: string;
     address: string;
+    location?: UserLocation;
     status: UserStatus;
     emailVerified: string;
     profile_image_id: number | null;
@@ -45,6 +56,7 @@ export type User = {
     updated_at: string;
     deleted_at: string | null;
     is_deleted: boolean;
+    roles: number[]
 };
 
 export enum Status {

@@ -24,18 +24,16 @@ interface CreateUserFormProps {
 
 export function CreateUserForm({ user, onSubmit, onCancel, isLoading, roles = [], providers = [] }: CreateUserFormProps) {
     const defaultValues = getUserDefaultValues(user);
-    const formMethods = useForm<UserFormValues>({
-        resolver: zodResolver(userSchema),
-        defaultValues,
-    });
-
     const {
         handleSubmit,
         formState: { errors },
         setValue,
         watch,
         control,
-    } = formMethods;
+    } = useForm<UserFormValues>({
+        resolver: zodResolver(userSchema),
+        defaultValues,
+    });
 
     const watchedStatus = watch("status");
     const handleFormSubmit = (data: UserFormValues) => {
@@ -83,13 +81,108 @@ export function CreateUserForm({ user, onSubmit, onCancel, isLoading, roles = []
                     {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>}
                 </div>
 
-                <div>
-                    <Label htmlFor="address" className="text-sm font-medium text-gray-700">
-                        Address
-                    </Label>
-                    <TextInput name="address" control={control} placeholder="Enter address" className="mt-1" />
-                    {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address.message}</p>}
+                {/* Location Section */}
+                <div className="border rounded-lg p-4 space-y-4 bg-gray-50">
+                    <h3 className="text-lg font-medium text-gray-900">Location Details</h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <Label htmlFor="location.title" className="text-sm font-medium text-gray-700">
+                                Location Title
+                            </Label>
+                            <TextInput 
+                                name="location.title" 
+                                control={control} 
+                                placeholder="e.g., Home, Office" 
+                                className="mt-1" 
+                            />
+                            {errors.location?.title && <p className="mt-1 text-sm text-red-600">{errors.location.title.message}</p>}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="location.street" className="text-sm font-medium text-gray-700">
+                                Street Address
+                            </Label>
+                            <TextInput 
+                                name="location.street" 
+                                control={control} 
+                                placeholder="Enter street address" 
+                                className="mt-1" 
+                            />
+                            {errors.location?.street && <p className="mt-1 text-sm text-red-600">{errors.location.street.message}</p>}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="location.city" className="text-sm font-medium text-gray-700">
+                                City
+                            </Label>
+                            <TextInput 
+                                name="location.city" 
+                                control={control} 
+                                placeholder="Enter city" 
+                                className="mt-1" 
+                            />
+                            {errors.location?.city && <p className="mt-1 text-sm text-red-600">{errors.location.city.message}</p>}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="location.area" className="text-sm font-medium text-gray-700">
+                                Area
+                            </Label>
+                            <TextInput 
+                                name="location.area" 
+                                control={control} 
+                                placeholder="Enter area/neighborhood" 
+                                className="mt-1" 
+                            />
+                            {errors.location?.area && <p className="mt-1 text-sm text-red-600">{errors.location.area.message}</p>}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="location.latitude" className="text-sm font-medium text-gray-700">
+                                Latitude
+                            </Label>
+                            <TextInput 
+                                name="location.latitude" 
+                                type="number" 
+                                step="any"
+                                control={control} 
+                                placeholder="Enter latitude" 
+                                className="mt-1" 
+                            />
+                            {errors.location?.latitude && <p className="mt-1 text-sm text-red-600">{errors.location.latitude.message}</p>}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="location.longitude" className="text-sm font-medium text-gray-700">
+                                Longitude
+                            </Label>
+                            <TextInput 
+                                name="location.longitude" 
+                                type="number" 
+                                step="any"
+                                control={control} 
+                                placeholder="Enter longitude" 
+                                className="mt-1" 
+                            />
+                            {errors.location?.longitude && <p className="mt-1 text-sm text-red-600">{errors.location.longitude.message}</p>}
+                        </div>
+                    </div>
+
+                    <div>
+                        <Label className="flex items-center space-x-2">
+                            <TextInput 
+                                name="location.is_default" 
+                                type="checkbox" 
+                                control={control} 
+                                className="w-4 h-4" 
+                            />
+                            <span className="text-sm font-medium text-gray-700">Set as default location</span>
+                        </Label>
+                        {errors.location?.is_default && <p className="mt-1 text-sm text-red-600">{errors.location.is_default.message}</p>}
+                    </div>
                 </div>
+
                 <div>
                     <Label htmlFor="addons" className="text-sm font-medium text-gray-700">
                         Roles
@@ -117,7 +210,7 @@ export function CreateUserForm({ user, onSubmit, onCancel, isLoading, roles = []
                         onValueChange={(value) => setValue("provider_id", Number(value))}
                     >
                         <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select status" />
+                            <SelectValue placeholder="Select provider" />
                         </SelectTrigger>
                         <SelectContent>
                             {providers.map((option: Provider) => (
