@@ -6,8 +6,8 @@ const locationSchema = z.object({
     street: z.string().min(1, "Street address is required").max(255, "Street is too long"),
     city: z.string().min(1, "City is required").max(100, "City is too long"),
     area: z.string().min(1, "Area is required").max(100, "Area is too long"),
-    latitude: z.number().min(-90, "Invalid latitude").max(90, "Invalid latitude"),
-    longitude: z.number().min(-180, "Invalid longitude").max(180, "Invalid longitude"),
+    latitude: z.string().min(1, "Latitude is required"),
+    longitude: z.string().min(1, "Longitude is required"),
     is_default: z.boolean(),
 });
 
@@ -55,8 +55,8 @@ export function getUserDefaultValues(user?: User): UserFormValues {
             street: "",
             city: "",
             area: "",
-            latitude: 0,
-            longitude: 0,
+            latitude: "",
+            longitude: "",
             is_default: true,
         },
         profile_image_id: user?.profile_image_id || undefined,

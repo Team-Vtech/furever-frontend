@@ -37,8 +37,8 @@ export type UserLocation = {
     street: string;
     city: string;
     area: string;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     is_default: boolean;
 };
 
