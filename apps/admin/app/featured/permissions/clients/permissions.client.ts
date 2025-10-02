@@ -10,7 +10,7 @@ export const PermissionsClient = {
                 data: Permission[];
             }>
         >(ENDPOINTS.getPermissions.url, {
-            params: queryKey[1],
+            params: new URLSearchParams(queryKey[1]),
         });
         return response.data;
     },

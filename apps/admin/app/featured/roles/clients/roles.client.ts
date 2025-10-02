@@ -11,7 +11,7 @@ export const RolesClient = {
                 data: Role[];
             }>
         >(ENDPOINTS.getRoles.url, {
-            params: queryKey[1],
+            params: new URLSearchParams(queryKey[1]),
         });
         return response.data;
     },
