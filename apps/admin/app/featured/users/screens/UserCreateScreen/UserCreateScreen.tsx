@@ -5,7 +5,7 @@ import { Provider, Role } from "@furever/types";
 import { useRouter } from "next/navigation";
 import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
 import { CreateUserForm } from "../../containers/CreateUserForm";
-import { useCreateUser } from "../../hooks/use-users";
+import { useCreateUser } from "./hooks/useCreateUser";
 
 type UserCreateScreenProps = {
     roles: Role[];
@@ -14,11 +14,11 @@ type UserCreateScreenProps = {
 
 export function UserCreateScreen({ roles, providers }: UserCreateScreenProps) {
     const router = useRouter();
-    const createUserMutation = useCreateUser();
+    const { createUser, isCreatingUser } = useCreateUser();
 
     const handleSubmit = async (data: UserFormValues) => {
         try {
-            await createUserMutation.mutateAsync(data);
+            await createUser(data);
             toastUtils.success.create("User created successfully");
             router.push("/users");
         } catch {
@@ -35,7 +35,7 @@ export function UserCreateScreen({ roles, providers }: UserCreateScreenProps) {
             <CreateUserForm
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
-                isLoading={createUserMutation.isPending}
+                isLoading={isCreatingUser}
                 roles={roles}
                 providers={providers}
             />

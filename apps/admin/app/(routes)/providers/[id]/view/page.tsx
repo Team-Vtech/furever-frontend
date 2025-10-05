@@ -1,16 +1,18 @@
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, Provider } from "@furever/types";
-import { notFound } from "next/navigation";
-import { EditProviderScreen } from "../../../featured/providers/screens/EditProviderScreen/EditProviderScreen";
 import { isAxiosError } from "axios";
+import { notFound } from "next/navigation";
+import { ProviderViewScreen } from "../../../../featured/providers/screens/ProviderViewScreen/ProviderViewScreen";
 
-export default async function EditProviderPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProviderViewPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
     const provider = await getProviderById(id);
+    
     if (!provider) {
         return notFound();
     }
-    return <EditProviderScreen provider={provider.data.data} />;
+    
+    return <ProviderViewScreen provider={provider.data.data} />;
 }
 
 async function getProviderById(id: string) {
@@ -19,7 +21,7 @@ async function getProviderById(id: string) {
     } catch (error) {
         console.log(error, "error");
         if (isAxiosError(error)) {
-                console.log(error.response?.data, "error response");
+            console.log(error.response?.data, "error response");
         }
         return null;
     }

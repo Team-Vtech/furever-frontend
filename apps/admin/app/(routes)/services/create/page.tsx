@@ -36,6 +36,7 @@ async function getServiceType() {
             }>
         >("/admin/service-types");
     } catch {
+        console.log("error fetching service types");
         return null;
     }
 }
@@ -50,6 +51,7 @@ async function getPetTypes() {
             }>
         >("/admin/pet-types");
     } catch {
+        console.log("error fetching pet types");
         return null;
     }
 }
@@ -64,6 +66,7 @@ async function getProviders() {
             }>
         >("/admin/providers");
     } catch {
+        console.log("error fetching providers");
         return null;
     }
 }
@@ -78,6 +81,7 @@ async function getAddons() {
             }>
         >("/admin/addons");
     } catch {
+        console.log("error fetching addons");
         return null;
     }
 }

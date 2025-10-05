@@ -17,24 +17,24 @@ export const toastUtils = {
         /** Show error toast for create operations */
         create: (entityName: string, error?: unknown) => {
             const message = getErrorMessage(error) || `Failed to create ${entityName.toLowerCase()}. Please try again.`;
-            toastUtils.error.create(message);
+            toast.error(message);
         },
         /** Show error toast for update operations */
         update: (entityName: string, error?: unknown) => {
             const message = getErrorMessage(error) || `Failed to update ${entityName.toLowerCase()}. Please try again.`;
-            toastUtils.error.create(message);
+            toast.error(message);
         },
         /** Show error toast for delete operations */
         delete: (entityName: string, error?: unknown) => {
             const message = getErrorMessage(error) || `Failed to delete ${entityName.toLowerCase()}. Please try again.`;
-            toastUtils.error.create(message);
+            toast.error(message);
         },
         /** Show generic error toast */
         generic: (message: string) => toast.error(message),
         /** Extract error message from error object and show toast */
         fromError: (error: unknown) => {
             const message = getErrorMessage(error) || "An unexpected error occurred";
-            toastUtils.error.create(message);
+            toast.error(message);
         },
     },
 };

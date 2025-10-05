@@ -57,6 +57,7 @@ export type User = {
     deleted_at: string | null;
     is_deleted: boolean;
     roles: number[]
+    provider_id?: number
 };
 
 export enum Status {
@@ -243,6 +244,9 @@ export type Provider = {
     media_object_id: number;
     media_object: MediaObject;
     certificates: Array<ProviderCertificate>;
+    bookings?: Array<Booking>;
+    services?: Array<Service>;
+    users?: Array<User>;
 };
 
 export type Role = {

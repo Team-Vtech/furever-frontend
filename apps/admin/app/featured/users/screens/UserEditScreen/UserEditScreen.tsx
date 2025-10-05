@@ -2,12 +2,11 @@
 
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { Provider, Role, User } from "@furever/types";
 import { useRouter } from "next/navigation";
 import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
 import { CreateUserForm } from "../../containers/CreateUserForm";
-import { useDeleteUser, useUpdateUser } from "../../hooks/use-users";
+import { useEditUserScreenState } from "./hooks/useEditUserScreenState";
 
 interface UserEditScreenProps {
     user: User;
@@ -17,36 +16,21 @@ interface UserEditScreenProps {
 
 export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) {
     const router = useRouter();
-    const updateUserMutation = useUpdateUser();
-    const deleteUserMutation = useDeleteUser();
+    const { deleteUser, isDeletingUser, isUpdatingUser, updateUser } = useEditUserScreenState();
 
     const handleSubmit = async (data: UserFormValues) => {
-        try {
-            await updateUserMutation.mutateAsync({
-                id: user.id,
-                data,
-            });
-            toastUtils.success.update("User updated successfully");
-            router.push("/users");
-        } catch {
-            toastUtils.error.update("Failed to update user");
-        }
+        await updateUser({
+            id: user.id,
+            data,
+        });
     };
 
     const handleCancel = () => {
         router.push("/users");
     };
 
-    const handleDelete = (id: number) => {
-        deleteUserMutation.mutate(id, {
-            onSuccess: () => {
-                toastUtils.success.create("User deleted successfully");
-                router.push("/users");
-            },
-            onError: () => {
-                toastUtils.error.create("Failed to delete user");
-            },
-        });
+    const handleDelete = async (id: number) => {
+        await deleteUser(id);
     };
 
     return (
@@ -59,7 +43,7 @@ export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) 
                     recordId={user?.id}
                     recordName={user?.name}
                     onDelete={handleDelete}
-                    isDeleting={deleteUserMutation.isPending}
+                    isDeleting={isDeletingUser}
                     triggerText="Delete User"
                 />
             }
@@ -69,7 +53,7 @@ export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) 
                     user={user}
                     onSubmit={handleSubmit}
                     onCancel={handleCancel}
-                    isLoading={updateUserMutation.isPending}
+                    isLoading={isUpdatingUser}
                     roles={roles}
                     providers={providers}
                 />

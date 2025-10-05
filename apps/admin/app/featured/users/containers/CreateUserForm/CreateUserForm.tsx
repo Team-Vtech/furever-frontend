@@ -1,6 +1,7 @@
 "use client";
 
 import { PasswordInput } from "@/app/shared/components/PasswordInput/PasswordInput";
+import { PhoneInput } from "@/app/shared/components/PhoneInput/PhoneInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
@@ -77,7 +78,7 @@ export function CreateUserForm({ user, onSubmit, onCancel, isLoading, roles = []
                     <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
                         Phone Number
                     </Label>
-                    <TextInput name="phone" control={control} placeholder="Enter phone number" className="mt-1" />
+                    <PhoneInput name="phone" control={control} placeholder="Enter phone number" className="mt-1" />
                     {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>}
                 </div>
 

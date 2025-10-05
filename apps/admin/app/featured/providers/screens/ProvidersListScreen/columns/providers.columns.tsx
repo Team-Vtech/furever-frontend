@@ -4,11 +4,15 @@ import { Provider } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Edit } from "lucide-react";
+import { Edit, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 function ProviderActionsCell({ provider }: { provider: Provider }) {
     const router = useRouter();
+
+    const handleView = () => {
+        router.push(`/providers/${provider.id}/view`);
+    };
 
     const handleEdit = () => {
         router.push(`/providers/${provider.id}`);
@@ -16,6 +20,10 @@ function ProviderActionsCell({ provider }: { provider: Provider }) {
 
     return (
         <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={handleView}>
+                <Eye className="mr-2 h-4 w-4" />
+                View
+            </Button>
             <Button variant="outline" size="sm" onClick={handleEdit}>
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
