@@ -8,8 +8,8 @@ const locationSchema = z.object({
     state: z.string().min(1, "State is required"),
     country: z.string().min(1, "Country is required"),
     postal_code: z.string().min(1, "Postal code is required"),
-    latitude: z.string().optional(),
-    longitude: z.string().optional(),
+    latitude: z.string(),
+    longitude: z.string(),
 });
 
 export const certificateSchema = z
@@ -69,8 +69,8 @@ export function getProviderDefaultValues(provider?: Provider): ProviderFormValue
             state: provider?.location?.state || "",
             country: provider?.location?.country || "",
             postal_code: provider?.location?.postal_code || "",
-            latitude: provider?.location?.latitude || undefined,
-            longitude: provider?.location?.longitude || undefined,
+            latitude: provider?.location?.latitude || "",
+            longitude: provider?.location?.longitude || "",
         },
         status: provider?.status || "pending",
         certificates:

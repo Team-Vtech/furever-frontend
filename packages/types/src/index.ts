@@ -187,6 +187,7 @@ export type MediaObject = {
     file_path: string;
     file_size: number;
     mime_type: string;
+    file_url: string;
     url: string;
     alt_text?: string;
     description?: string;

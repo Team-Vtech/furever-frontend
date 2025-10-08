@@ -1,10 +1,10 @@
 "use client";
+import { MediaImage } from "@/app/shared/components/MediaImage";
 import { Provider } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { Card } from "@furever/ui/components/card";
 import { MapPin, Star } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export type ProviderCardProps = {
@@ -22,17 +22,16 @@ export function ProviderCard({ provider }: ProviderCardProps) {
 
     const serviceTypes = provider.services?.flatMap((service) => service.service_types?.map((st) => st.name) || []) || ["Grooming", "Spa Day"];
     return (
-        <Card className="flex w-full max-w-sm flex-col justify-between overflow-hidden p-0 bg-white shadow-md transition-shadow duration-200 hover:shadow-lg">
+        <Card className="flex w-full max-w-sm flex-col justify-between overflow-hidden bg-white p-0 shadow-md transition-shadow duration-200 hover:shadow-lg">
             <div>
-                <div className="relative h-[273px] w-full">
-                    <Image src={serviceImage} alt={provider.business_name} fill className="object-cover" />
-                </div>
+                <MediaImage mediaObject={provider.galleries[0]} wrapperClassName="h-[273px] w-full" className="object-cover" />
 
-                {/* Provider Avatar - Overlapping the main image */}
                 <div className="relative -mt-8 mb-4 ml-4">
-                    <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-white">
-                        <Image src={avatarImage} alt={`${provider.business_name} avatar`} fill className="object-cover" />
-                    </div>
+                    <MediaImage
+                        mediaObject={provider.media_object}
+                        wrapperClassName="relative h-16 w-16 overflow-hidden rounded-full border-2 border-white"
+                        className="object-cover"
+                    />
                 </div>
             </div>
 

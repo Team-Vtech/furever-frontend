@@ -108,7 +108,7 @@ export function ProviderProfileScreen({ provider }: ProviderProfileScreenProps) 
                                 <h4 className="font-medium text-gray-900">Location</h4>
                             </div>
                             <p className="text-sm text-gray-600">
-                                {provider.location.address}, {provider.location.city}, {provider.location.state} {provider.location.postal_code}
+                                {provider.location?.address}, {provider.location?.city}, {provider.location?.state} {provider.location?.postal_code}
                             </p>
                         </div>
 
