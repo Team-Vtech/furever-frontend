@@ -10,7 +10,7 @@ type AppLogoProps = {
 export function AppLogo({ flexDir, full, className }: AppLogoProps) {
     return (
         <div className={cn("flex items-center justify-start gap-4", flexDir === "col" ? "flex-col" : "flex-row", full ? "w-full" : "", className)}>
-            <AppLogoIcon className="relative size-4 object-cover text-white dark:text-black" />
+            <AppLogoIcon className="relative w-20 h-10 object-cover text-white dark:text-black" />
         </div>
     );
 }

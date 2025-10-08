@@ -7,21 +7,21 @@ export function QuickActions() {
     const quickActions = [
         {
             id: 1,
+            title: "Explore Providers",
+            icon: "search",
+            onClick: () => router.push("/explore"),
+        },
+        {
+            id: 2,
             title: "Book Service",
             icon: "bone",
             onClick: () => console.log("Book Service clicked"),
         },
         {
-            id: 2,
-            title: "Book Pet Taxi",
-            icon: "dog",
-            onClick: () => console.log("Book Pet Taxi clicked"),
-        },
-        {
             id: 3,
             title: "View Pets",
             icon: "paw",
-            onClick: () => console.log("View Pets clicked"),
+            onClick: () => router.push("/pets"),
         },
         {
             id: 4,

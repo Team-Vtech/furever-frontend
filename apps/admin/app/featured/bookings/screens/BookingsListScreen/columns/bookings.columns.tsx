@@ -69,7 +69,7 @@ export const bookingsColumns: ColumnDef<Booking>[] = [
             return (
                 <div>
                     <div className="font-medium">{booking.pet.name}</div>
-                    <div className="text-muted-foreground text-sm">{booking.pet.breed}</div>
+                    <div className="text-muted-foreground text-sm">{booking.pet.pet_breed?.name}</div>
                 </div>
             );
         },

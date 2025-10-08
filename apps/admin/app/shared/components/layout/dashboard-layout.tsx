@@ -21,6 +21,7 @@ import { cn } from "@furever/ui/lib/utils";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { AppLogo } from "../AppLogo/AppLogo";
 import { Breadcrumbs } from "./breadcrumbs";
 
 export interface BreadcrumbItem {
@@ -74,7 +75,9 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
                             <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
                                 <Image src="/logo.png" alt="Logo" width={24} height={24} />
                             </div>
-                            <span className="text-sidebar-foreground text-lg font-semibold">Furever</span>
+                            <span className="text-sidebar-foreground text-lg font-semibold">
+                                <AppLogo />
+                            </span>
                         </div>
                         <Button
                             variant="ghost"

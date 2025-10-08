@@ -1,0 +1,7 @@
+{
+  "name": "@furever/select-input",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SelectInput.tsx",
+  "types": "./SelectInput.tsx"
+}

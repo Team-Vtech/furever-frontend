@@ -1,0 +1,17 @@
+import { server } from "@/app/shared/utils/http.server.utils";
+import { FiveHundredError } from "@/app/shared/utils/error.utils";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+    try {
+      const searchParams = request.nextUrl.searchParams;
+
+        const response = await (await server()).get("/providers", {
+            params: searchParams,
+        });
+        return NextResponse.json(response.data);
+    } catch (error) {
+        console.error("Providers GET API Error:", error);
+        return FiveHundredError(error);
+    }
+}

@@ -1,6 +1,6 @@
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, User } from "@furever/types";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import NextAuth, { type NextAuthResult } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -44,12 +44,14 @@ const result = NextAuth({
                 }
 
                 try {
-                    const response = await axios.post<
+                    const response = await (
+                        await server()
+                    ).post<
                         JsonResponse<{
                             user: User;
                             access_token: string;
                         }>
-                    >(process.env.API_BASE_URL + "/api/auth/login", {
+                    >("/auth/login", {
                         email: credentials.email,
                         password: credentials.password,
                     });

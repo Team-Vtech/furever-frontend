@@ -47,6 +47,7 @@ export const providerSchema = z.object({
         required_error: "Status is required",
     }),
     media_object_id: z.number().min(0, "Media object ID must be a non-negative integer"),
+    gallery_media_object_ids: z.array(z.number().positive("Media object ID must be a positive integer")),
     certificates: certificatesSchema,
 });
 
@@ -60,6 +61,7 @@ export function getProviderDefaultValues(provider?: Provider): ProviderFormValue
         email: provider?.email || "",
         phone_number: provider?.phone_number || "",
         media_object_id: provider?.media_object?.id || 0,
+        gallery_media_object_ids: [],
         location: {
             id: provider?.location?.id?.toString() || "",
             address: provider?.location?.address || "",

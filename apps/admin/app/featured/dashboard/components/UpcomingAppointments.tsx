@@ -39,7 +39,7 @@ export function UpcomingAppointments({ upcomingBookings, className }: UpcomingAp
                             <div className="space-y-1">
                                 <p className="font-medium">{format(booking.booking_time, "hh:mm a")}</p>
                                 <p className="text-muted-foreground text-sm">
-                                    {booking.user.name} ({booking.pet.name} ({booking.pet.pet_type.name}))
+                                    {booking.user.name} ({booking.pet.name} ({booking.pet.pet_type?.name}))
                                 </p>
                             </div>
                             <div className="space-y-1 text-right">

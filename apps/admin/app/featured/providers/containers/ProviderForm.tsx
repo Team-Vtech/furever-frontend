@@ -1,9 +1,11 @@
 "use client";
 import { DateInput } from "@/app/shared/components/DateInput/DateInput";
+import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
+import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia/UploadGalleryMedia";
 import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
-import { Provider } from "@furever/types";
+import { Certificate, Provider } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
@@ -18,9 +20,10 @@ interface ProviderFormProps {
     onSubmit: (data: ProviderFormValues) => void;
     onCancel?: () => void;
     isLoading?: boolean;
+    certificates: Certificate[];
 }
 
-export function ProviderForm({ provider, onSubmit, onCancel, isLoading }: ProviderFormProps) {
+export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certificates = [] }: ProviderFormProps) {
     const defaultValues = getProviderDefaultValues(provider);
     const formMethods = useForm<ProviderFormValues>({
         resolver: zodResolver(providerSchema),
@@ -187,6 +190,16 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading }: Provid
                     </div>
 
                     <UploadMedia control={control} name="media_object_id" mediaObject={provider?.media_object} />
+
+                    {/* Image Gallery */}
+                    <UploadGalleryMedia
+                        control={control}
+                        name="gallery_media_object_ids"
+                        label="Image Gallery"
+                        disabled={isLoading}
+                        initialImages={[]}
+                    />
+
                     {/* Status */}
                     <div>
                         <Label htmlFor="status" className="text-sm font-medium text-gray-700">
@@ -253,15 +266,17 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading }: Provid
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div>
                                     <Label htmlFor={`certificates.${index}.certificate_id`} className="text-sm font-medium text-gray-700">
-                                        Certificate ID *
+                                        Certificate *
                                     </Label>
-                                    <TextInput
-                                        id={`certificates.${index}.certificate_id`}
+                                    <SelectInput
                                         name={`certificates.${index}.certificate_id`}
-                                        type="number"
                                         control={control}
-                                        placeholder="Enter certificate ID"
+                                        placeholder="Enter certificate"
                                         className="mt-1"
+                                        options={certificates.map((certificate) => ({
+                                            label: certificate.name,
+                                            value: certificate.id,
+                                        }))}
                                     />
                                     {errors.certificates?.[index]?.certificate_id && (
                                         <p className="mt-1 text-sm text-red-600">{errors.certificates[index]?.certificate_id?.message}</p>

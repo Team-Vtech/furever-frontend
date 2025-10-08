@@ -1,17 +1,58 @@
 // Base types from Postman collection analysis
 export type BookingStatus = "pending" | "confirmed" | "in_progress" | "completed" | "cancelled";
 
+export type PetBreed = {
+    id: number;
+    name: string;
+    code: string;
+    pet_type_id: number;
+    created_at: string;
+    updated_at: string;
+};
+
 export type Pet = {
     id: number;
     name: string;
-    breed: string;
+    pet_type_id: number;
+    pet_breed_id: number;
     gender: "Male" | "Female";
     date_of_birth: string;
     vaccination_status: "Yes" | "No" | "Partial";
-    weight: number;
+    weight: string;
     notes?: string;
+    profile_image_id?: number;
+    pet_type?: PetType;
+    pet_breed?: PetBreed;
+    media_object?: MediaObject;
+    media_object_id?: number;
+    created_at: string;
+    updated_at: string;
+};
+
+export type CreatePetRequest = {
+    name: string;
     pet_type_id: number;
-    pet_type: PetType;
+    pet_breed_id: number;
+    gender: "Male" | "Female";
+    date_of_birth: string;
+    weight: string;
+    vaccination_status: "Yes" | "No" | "Partial";
+    notes?: string;
+    profile_image_id?: number;
+};
+
+export type UpdatePetRequest = Partial<CreatePetRequest>;
+
+export type PetResponse = {
+    status: string;
+    message: string;
+    data: Pet;
+};
+
+export type PetsListResponse = {
+    status: string;
+    message: string;
+    data: Pet[];
 };
 
 export type BookingAddon = {
@@ -56,8 +97,8 @@ export type User = {
     updated_at: string;
     deleted_at: string | null;
     is_deleted: boolean;
-    roles: number[]
-    provider_id?: number
+    roles: number[];
+    provider_id?: number;
 };
 
 export enum Status {
@@ -140,40 +181,6 @@ export type Plan = {
     transactions: Array<any>;
 };
 
-export type Country = {
-    id: string;
-    name: string;
-    code: string;
-    iso2: string;
-    phone_code: string;
-    currency: string;
-    flag: string;
-    status: Status;
-};
-
-export type City = {
-    id: string;
-    name: string;
-    country: Country;
-    country_id: string;
-    status: Status;
-    latitude: string;
-    longitude: string;
-    boundaries?: Array<[number, number]>;
-};
-
-export type Area = {
-    id: string;
-    name: string;
-    postal_code: string;
-    city: City;
-    city_id: string;
-    status: Status;
-    latitude: string;
-    longitude: string;
-    boundaries?: Array<[number, number]>;
-};
-
 export type MediaObject = {
     id: number;
     file_name: string;
@@ -243,10 +250,16 @@ export type Provider = {
     provider_id: number;
     media_object_id: number;
     media_object: MediaObject;
+    galleries: MediaObject[];
     certificates: Array<ProviderCertificate>;
     bookings?: Array<Booking>;
     services?: Array<Service>;
     users?: Array<User>;
+    start_from: string;
+    rating: {
+        average: number;
+        total: number;
+    };
 };
 
 export type Role = {
@@ -276,15 +289,6 @@ export type ServiceType = {
     sort_order: number;
     media_object_id: number;
     media_object: MediaObject;
-    created_at: string;
-    updated_at: string;
-};
-
-export type PetBreed = {
-    id: number;
-    name: string;
-    code: string;
-    pet_type_id: number;
     created_at: string;
     updated_at: string;
 };
@@ -380,3 +384,16 @@ export interface ReviewBooking {
 }
 
 export * from "./general";
+
+export interface City {
+    label: string;
+    city: string;
+    state: string;
+    country: string;
+}
+
+export interface State {
+    label: string;
+    state: string;
+    country: string;
+}

@@ -1,7 +1,12 @@
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
+import { server } from "@/app/shared/utils/http.server.utils";
+import { JsonResponse } from "@furever/types/general";
+import { Certificate } from "@furever/types/index";
 import { CreateProviderScreen } from "../../../featured/providers/screens/CreateProviderScreen/CreateProviderScreen";
 
-export default function CreateProviderPage() {
+export default async function CreateProviderPage() {
+    const certificates = await getCertificates();
+    console.log(certificates);
     return (
         <PageLayout
             title="Create New Provider"
@@ -11,8 +16,24 @@ export default function CreateProviderPage() {
             ]}
         >
             <div className="rounded-lg border border-gray-200 bg-white p-6">
-                <CreateProviderScreen />
+                <CreateProviderScreen certificates={certificates} />
             </div>
         </PageLayout>
     );
+}
+
+async function getCertificates() {
+    try {
+        const response = await (
+            await server()
+        ).get<JsonResponse<Certificate[]>>("/admin/certificates", {
+            params: {
+                all: true,
+            },
+        });
+        return response.data.data;
+    } catch (error) {
+        console.error("Error fetching certificates:", error);
+        return [];
+    }
 }

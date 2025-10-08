@@ -222,7 +222,7 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                     options={
                                         userPets?.map((pet) => ({
                                             value: pet.id,
-                                            label: `${pet.name} - ${pet.breed} (${pet.gender})`,
+                                            label: `${pet.name} - ${pet.pet_breed?.name} (${pet.gender})`,
                                         })) || []
                                     }
                                     placeholder="Select pet"

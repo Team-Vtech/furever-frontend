@@ -2,7 +2,7 @@ import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInp
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, Upload, X } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -11,10 +11,12 @@ import { getServiceDefaultValues, ServiceFormValues, serviceSchema } from "../..
 import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
+import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia";
 import { getMediaId, useMediaUpload } from "@/app/shared/hooks/use-media-upload";
 import { Addon, GeneralStatus, PetType, Provider, Service, ServiceType } from "@furever/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 import { AddonsSection } from "../components/AddonsSection";
+import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
 
 interface ServiceFormProps {
     service?: Service;
@@ -39,15 +41,7 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
     );
     const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
-    // State for gallery images
-    const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
-    const [galleryPreviews, setGalleryPreviews] = useState<string[]>(
-        service?.gallery
-            ? service.gallery.map((item) => (item.media_object ? process.env.NEXT_PUBLIC_IMAGE_URL + item.media_object.file_path : ""))
-            : [],
-    );
-    const [galleryMediaIds, setGalleryMediaIds] = useState<number[]>([]);
-    const galleryInputRef = useRef<HTMLInputElement>(null);
+
 
     const methods = useForm<ServiceFormValues>({
         resolver: zodResolver(serviceSchema),
@@ -64,15 +58,7 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
 
     const status = watch("status");
 
-    // Initialize media state for existing service
-    useEffect(() => {
-        if (service) {
-            // Initialize gallery media IDs if they exist
-            if (service.media_object_ids && service.media_object_ids.length > 0) {
-                setGalleryMediaIds(service.media_object_ids);
-            }
-        }
-    }, [service]);
+
 
     // Thumbnail upload handlers
     const handleThumbnailUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,50 +95,7 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
         }
     };
 
-    // Gallery upload handlers
-    const handleGalleryUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(event.target.files || []);
-        if (files.length === 0) return;
 
-        const newGalleryFiles = [...galleryFiles, ...files];
-        setGalleryFiles(newGalleryFiles);
-
-        // Create previews
-        const newPreviews = [...galleryPreviews];
-        const newMediaIds = [...galleryMediaIds];
-
-        for (const file of files) {
-            // Create preview
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                newPreviews.push(reader.result as string);
-                setGalleryPreviews([...newPreviews]);
-            };
-            reader.readAsDataURL(file);
-
-            // Upload file
-            try {
-                const result = await uploadMedia.mutateAsync({ file });
-                const mediaId = getMediaId(result);
-                newMediaIds.push(mediaId);
-                setGalleryMediaIds([...newMediaIds]);
-                setValue("media_object_ids", [...newMediaIds]);
-            } catch (error) {
-                console.error("Gallery upload failed:", error);
-            }
-        }
-    };
-
-    const removeGalleryImage = (index: number) => {
-        const newFiles = galleryFiles.filter((_, i) => i !== index);
-        const newPreviews = galleryPreviews.filter((_, i) => i !== index);
-        const newMediaIds = galleryMediaIds.filter((_, i) => i !== index);
-
-        setGalleryFiles(newFiles);
-        setGalleryPreviews(newPreviews);
-        setGalleryMediaIds(newMediaIds);
-        setValue("media_object_ids", newMediaIds);
-    };
 
     const onFormSubmit = async (data: ServiceFormValues) => {
         try {
@@ -196,92 +139,19 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
                     </div>
 
                     {/* Thumbnail Image */}
-                    <div className="flex flex-col gap-y-2">
-                        <Label>Thumbnail Image</Label>
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-4">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => thumbnailInputRef.current?.click()}
-                                    className="flex items-center gap-2"
-                                    disabled={uploadMedia.isPending || isLoading}
-                                >
-                                    <Upload className="h-4 w-4" />
-                                    {uploadMedia.isPending ? "Uploading..." : "Choose Thumbnail"}
-                                </Button>
-                                <input ref={thumbnailInputRef} type="file" accept="image/*" onChange={handleThumbnailUpload} className="hidden" />
-                                {thumbnailFile && <span className="text-muted-foreground text-sm">{thumbnailFile.name}</span>}
-                            </div>
-
-                            {thumbnailPreview && (
-                                <div className="relative inline-block">
-                                    <div className="relative h-32 w-32 overflow-hidden rounded-lg border">
-                                        <Image src={thumbnailPreview} alt="Thumbnail preview" fill className="h-full w-full object-cover" />
-                                    </div>
-                                    <Button
-                                        type="button"
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={removeThumbnail}
-                                        className="absolute -right-2 -top-2 h-6 w-6 rounded-full p-0"
-                                        disabled={isLoading}
-                                    >
-                                        <X className="h-3 w-3" />
-                                    </Button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <UploadMedia control={control} name="thumbnail_media_object_id" mediaObject={service?.thumbnail_media_object} />
 
                     {/* Image Gallery */}
-                    <div className="flex flex-col gap-y-2">
-                        <Label>Image Gallery</Label>
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-4">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => galleryInputRef.current?.click()}
-                                    className="flex items-center gap-2"
-                                    disabled={uploadMedia.isPending || isLoading}
-                                >
-                                    <Plus className="h-4 w-4" />
-                                    Add Gallery Images
-                                </Button>
-                                <input
-                                    ref={galleryInputRef}
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    onChange={handleGalleryUpload}
-                                    className="hidden"
-                                />
-                            </div>
-
-                            {galleryPreviews.length > 0 && (
-                                <div className="flex flex-row gap-4">
-                                    {galleryPreviews.map((preview, index) => (
-                                        <div key={index} className="relative">
-                                            <div className="relative h-24 w-24 overflow-hidden rounded-lg border">
-                                                <Image src={preview} alt={`Gallery image ${index + 1}`} fill className="h-full w-full object-cover" />
-                                            </div>
-                                            <Button
-                                                type="button"
-                                                variant="destructive"
-                                                size="sm"
-                                                onClick={() => removeGalleryImage(index)}
-                                                className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0"
-                                                disabled={isLoading}
-                                            >
-                                                <X className="h-3 w-3" />
-                                            </Button>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <UploadGalleryMedia
+                        control={control}
+                        name="media_object_ids"
+                        label="Image Gallery"
+                        disabled={isLoading}
+                        initialImages={service?.gallery?.map((item) => ({
+                            id: item.media_object.id,
+                            file_path: item.media_object.file_path,
+                        })) || []}
+                    />
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col gap-y-2">

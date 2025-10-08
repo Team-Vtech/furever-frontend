@@ -1,58 +1,80 @@
-import { Button } from "@furever/ui/components/button";
-import { Calendar, ChevronDown, DollarSign, MapPin, PawPrint } from "lucide-react";
+import { useFilter } from "@/app/shared/hooks/useFilter";
+import { City, PetType } from "@furever/types";
+import { Input } from "@furever/ui/components/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
+import { MapPin, PawPrint, Search } from "lucide-react";
+import { useExploreFilter } from "../hooks/use-filters-query";
 
-export function FilterDropdowns() {
+type ExploreFilter = ReturnType<typeof useExploreFilter>["filters"];
+
+type ExploreFiltersProps = {
+    filters: ExploreFilter;
+};
+
+export function ExploreFilters({ filters }: ExploreFiltersProps) {
+    const { addFilter, getFilter } = useFilter();
+
     return (
         <div className="border border-gray-200/60 bg-gray-50/50 p-4 shadow-sm">
-            {/* Mobile: Stack filters vertically */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-                {/* Location Filter */}
-                <Button
-                    variant="outline"
-                    className="h-10 justify-between border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-gray-700"
-                >
-                    <div className="flex items-center space-x-2">
-                        <MapPin size={16} className="text-gray-500" />
-                        <span>Location</span>
+            {/* Search and Filters Layout */}
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                {/* Search Box - Left Side */}
+                <div className="flex-1 lg:max-w-md">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+                        <Input
+                            placeholder="Search providers or services..."
+                            value={getFilter("q") || ""}
+                            onChange={(e) => addFilter("q", e.target.value)}
+                            className="h-10 border-gray-200 bg-white pl-10"
+                        />
                     </div>
-                    <ChevronDown size={16} className="text-gray-400" />
-                </Button>
+                </div>
 
-                {/* Date & Time Filter */}
-                <Button
-                    variant="outline"
-                    className="h-10 justify-between border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-gray-700"
-                >
-                    <div className="flex items-center space-x-2">
-                        <Calendar size={16} className="text-gray-500" />
-                        <span>Date & Time</span>
-                    </div>
-                    <ChevronDown size={16} className="text-gray-400" />
-                </Button>
+                {/* Filter Dropdowns - Right Side */}
+                <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+                    {/* Location Filter */}
+                    <Select
+                        value={getFilter("location") || "all-locations"}
+                        onValueChange={(value) => addFilter("location", value === "all-locations" ? "" : value)}
+                    >
+                        <SelectTrigger className="h-10 border-gray-200 bg-white">
+                            <div className="flex items-center space-x-2 text-gray-600">
+                                <MapPin size={16} className="text-gray-500" />
+                                <SelectValue placeholder="Location" />
+                            </div>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all-locations">All Locations</SelectItem>
+                            {filters?.locations?.cities?.map((city: City) => (
+                                <SelectItem key={city.city} value={city.state.toLowerCase()}>
+                                    {city.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
 
-                {/* Pet Type Filter */}
-                <Button
-                    variant="outline"
-                    className="h-10 justify-between border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-gray-700"
-                >
-                    <div className="flex items-center space-x-2">
-                        <PawPrint size={16} className="text-gray-500" />
-                        <span>Pet Type</span>
-                    </div>
-                    <ChevronDown size={16} className="text-gray-400" />
-                </Button>
-
-                {/* Price Range Filter */}
-                <Button
-                    variant="outline"
-                    className="h-10 justify-between border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-gray-700"
-                >
-                    <div className="flex items-center space-x-2">
-                        <DollarSign size={16} className="text-gray-500" />
-                        <span>Price Range</span>
-                    </div>
-                    <ChevronDown size={16} className="text-gray-400" />
-                </Button>
+                    {/* Pet Type Filter */}
+                    <Select
+                        value={getFilter("pet_type") || "all-pets"}
+                        onValueChange={(value) => addFilter("pet_type", value === "all-pets" ? "" : value)}
+                    >
+                        <SelectTrigger className="h-10 border-gray-200 bg-white">
+                            <div className="flex items-center space-x-2 text-gray-600">
+                                <PawPrint size={16} className="text-gray-500" />
+                                <SelectValue placeholder="Pet Type" />
+                            </div>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all-pets">All Pet Types</SelectItem>
+                            {filters?.pet_types?.map((petType: PetType) => (
+                                <SelectItem key={petType.id} value={String(petType.id)}>
+                                    {petType.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
         </div>
     );

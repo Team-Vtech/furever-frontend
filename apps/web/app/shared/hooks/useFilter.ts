@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-export type FilterValue = string | string[] | number | boolean | null;
+export type FilterValue = string;
 
 export interface FilterState {
     [key: string]: FilterValue;
@@ -78,26 +78,7 @@ export function useFilter(options: UseFilterOptions = {}): UseFilterReturn {
         const filterState: FilterState = {};
 
         for (const [key, value] of searchParams.entries()) {
-            // Handle array values (multiple params with same key)
-            const existingValue = filterState[key];
-            if (existingValue) {
-                if (Array.isArray(existingValue)) {
-                    existingValue.push(value);
-                } else {
-                    filterState[key] = [existingValue as string, value];
-                }
-            } else {
-                // Try to parse as number or boolean
-                if (value === "true") {
-                    filterState[key] = true;
-                } else if (value === "false") {
-                    filterState[key] = false;
-                } else if (!isNaN(Number(value)) && value !== "") {
-                    filterState[key] = Number(value);
-                } else {
-                    filterState[key] = value;
-                }
-            }
+            filterState[key] = value;
         }
 
         return filterState;
@@ -109,9 +90,9 @@ export function useFilter(options: UseFilterOptions = {}): UseFilterReturn {
             return "";
         }
         if (Array.isArray(value)) {
-            return value.map((v) => String(v));
+            return value;
         }
-        return String(value);
+        return value;
     }, []);
 
     // Helper function to update URL
@@ -211,7 +192,7 @@ export function useFilter(options: UseFilterOptions = {}): UseFilterReturn {
     // Get a specific filter value
     const getFilter = useCallback(
         (key: string): FilterValue => {
-            return filters[key] || null;
+            return filters[key] || "";
         },
         [filters],
     );

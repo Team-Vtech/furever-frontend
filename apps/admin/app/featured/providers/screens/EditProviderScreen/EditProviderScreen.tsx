@@ -2,7 +2,7 @@
 
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Provider } from "@furever/types";
+import { Certificate, Provider } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Eye } from "lucide-react";
 import Link from "next/link";
@@ -14,9 +14,10 @@ import { useProviderMutation } from "./hooks/useProviderMutation";
 
 interface EditProviderScreenProps {
     provider: Provider;
+    certificates: Certificate[];
 }
 
-export function EditProviderScreen({ provider }: EditProviderScreenProps) {
+export function EditProviderScreen({ provider, certificates }: EditProviderScreenProps) {
     const router = useRouter();
 
     const { updateProvider, isUpdating } = useProviderMutation();
@@ -56,7 +57,7 @@ export function EditProviderScreen({ provider }: EditProviderScreenProps) {
                 { label: "Edit", href: "#" },
             ]}
         >
-            <ProviderForm provider={provider} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={isUpdating} />
+            <ProviderForm certificates={certificates} provider={provider} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={isUpdating} />
         </PageLayout>
     );
 }

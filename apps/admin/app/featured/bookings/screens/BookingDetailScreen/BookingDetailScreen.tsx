@@ -185,14 +185,14 @@ export function BookingDetailScreen({ booking }: BookingDetailScreenProps) {
                                 <PawPrint className="h-4 w-4 text-gray-500" />
                                 <div>
                                     <span className="text-sm font-medium text-gray-500">Species</span>
-                                    <p className="text-sm font-medium">{booking.pet.pet_type.name}</p>
+                                    <p className="text-sm font-medium">{booking.pet.pet_type?.name}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Heart className="h-4 w-4 text-gray-500" />
                                 <div>
                                     <span className="text-sm font-medium text-gray-500">Breed</span>
-                                    <p className="text-sm font-medium">{booking.pet.breed}</p>
+                                    <p className="text-sm font-medium">{booking.pet.pet_breed?.name}</p>
                                 </div>
                             </div>
                         </div>
