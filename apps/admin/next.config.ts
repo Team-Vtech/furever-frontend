@@ -6,12 +6,7 @@ const nextConfig: NextConfig = {
         serverComponentsHmrCache: false, // defaults to true
     },
     images: {
-        remotePatterns: [
-            {
-                hostname: process.env.IMAGE_HOSTNAME || "localhost",
-                pathname: "/**",
-            },
-        ],
+        domains: ["localhost", process.env.IMAGE_HOSTNAME || "localhost"],
     },
 };
 

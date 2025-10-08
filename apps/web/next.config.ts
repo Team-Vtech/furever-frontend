@@ -3,12 +3,7 @@ import { NextConfig } from "next";
 const nextConfig: NextConfig = {
     transpilePackages: ["@furever/ui"],
     images: {
-        remotePatterns: [
-            {
-                hostname: process.env.IMAGE_HOSTNAME || "localhost",
-                pathname: "/**",
-            },
-        ],
+        domains: ["localhost", process.env.IMAGE_HOSTNAME || "localhost"],
     },
 };
 
