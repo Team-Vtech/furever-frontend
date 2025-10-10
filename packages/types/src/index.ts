@@ -17,7 +17,7 @@ export type Pet = {
     pet_breed_id: number;
     gender: "Male" | "Female";
     date_of_birth: string;
-    vaccination_status: "Yes" | "No" | "Partial";
+    vaccination_status: "Yes" | "No" | "Not Sure";
     weight: string;
     notes?: string;
     profile_image_id?: number;
@@ -27,32 +27,6 @@ export type Pet = {
     media_object_id?: number;
     created_at: string;
     updated_at: string;
-};
-
-export type CreatePetRequest = {
-    name: string;
-    pet_type_id: number;
-    pet_breed_id: number;
-    gender: "Male" | "Female";
-    date_of_birth: string;
-    weight: string;
-    vaccination_status: "Yes" | "No" | "Partial";
-    notes?: string;
-    profile_image_id?: number;
-};
-
-export type UpdatePetRequest = Partial<CreatePetRequest>;
-
-export type PetResponse = {
-    status: string;
-    message: string;
-    data: Pet;
-};
-
-export type PetsListResponse = {
-    status: string;
-    message: string;
-    data: Pet[];
 };
 
 export type BookingAddon = {
@@ -99,6 +73,8 @@ export type User = {
     is_deleted: boolean;
     roles: number[];
     provider_id?: number;
+    roles_details: Role[];
+    media_object: MediaObject;
 };
 
 export enum Status {
@@ -186,27 +162,13 @@ export type MediaObject = {
     file_name: string;
     file_path: string;
     file_size: number;
-    mime_type: string;
+    file_type: string;
     file_url: string;
     url: string;
     alt_text?: string;
     description?: string;
     created_at: string;
     updated_at: string;
-};
-
-export type CreateMediaObjectData = {
-    file: File;
-    alt_text?: string;
-    description?: string;
-};
-
-export type MediaUploadResponse = {
-    id: number;
-    url: string;
-    file_name: string;
-    file_size: number;
-    mime_type: string;
 };
 
 export type Location = {
@@ -221,6 +183,23 @@ export type Location = {
     created_at: string;
     updated_at: string;
     provider_id: number;
+};
+
+export type UserSettingsLocation = {
+    id: number;
+    title: string;
+    street: string;
+    city: string;
+    area: string;
+    latitude: string;
+    longitude: string;
+    gps_coordinates: {
+        latitude: number;
+        longitude: number;
+    };
+    is_default: boolean;
+    created_at: string;
+    updated_at: string;
 };
 
 export type ProviderCertificate = {
@@ -238,6 +217,14 @@ export type ProviderCertificate = {
     updated_at: string;
 };
 
+export type WorkingHour = {
+    day_of_week: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+    start_time?: string;
+    end_time?: string;
+    is_closed: boolean;
+    notes?: string;
+};
+
 export type Provider = {
     id: number;
     business_name: string;
@@ -253,6 +240,7 @@ export type Provider = {
     media_object: MediaObject;
     galleries: MediaObject[];
     certificates: Array<ProviderCertificate>;
+    working_hours?: Array<WorkingHour>;
     bookings?: Array<Booking>;
     services?: Array<Service>;
     users?: Array<User>;

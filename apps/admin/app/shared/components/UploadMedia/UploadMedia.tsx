@@ -10,9 +10,10 @@ import { getMediaId, useMediaUpload } from "../../hooks/use-media-upload";
 
 type UploadMediaProps<T extends FieldValues> = ControlledInputProps<T> & {
     mediaObject?: MediaObject;
+    accept?: string;
 };
 
-export function UploadMedia<T extends FieldValues>({ control, name, rules, mediaObject }: UploadMediaProps<T>) {
+export function UploadMedia<T extends FieldValues>({ control, name, rules, mediaObject, accept = "image/*" }: UploadMediaProps<T>) {
     const { field, fieldState } = useController({
         name,
         control,
@@ -23,6 +24,7 @@ export function UploadMedia<T extends FieldValues>({ control, name, rules, media
     const [previewUrl, setPreviewUrl] = useState<string | null>(
         mediaObject?.file_path ? process.env.NEXT_PUBLIC_IMAGE_URL + mediaObject.file_path : null,
     );
+    const [media, setMedia] = useState<MediaObject | null>(mediaObject || null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -41,11 +43,13 @@ export function UploadMedia<T extends FieldValues>({ control, name, rules, media
                 const result = await uploadMedia.mutateAsync({ file });
                 const mediaId = getMediaId(result);
                 field.onChange(mediaId);
+                setMedia(result.data);
             } catch (error) {
                 console.error("File upload failed:", error);
                 // Reset the file selection on error
                 setSelectedFile(null);
                 setPreviewUrl(null);
+                field.onChange(0);
             }
         }
     };
@@ -79,7 +83,7 @@ export function UploadMedia<T extends FieldValues>({ control, name, rules, media
                         <Upload className="h-4 w-4" />
                         {uploadMedia.isPending ? "Uploading..." : "Choose Image"}
                     </Button>
-                    <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
+                    <input ref={fileInputRef} type="file" accept={accept} onChange={handleFileSelect} className="hidden" />
                     {selectedFile && <span className="text-muted-foreground text-sm">{selectedFile.name}</span>}
                 </div>
 
@@ -87,7 +91,19 @@ export function UploadMedia<T extends FieldValues>({ control, name, rules, media
                 {previewUrl && (
                     <div className="relative inline-block">
                         <div className="relative h-32 w-32 overflow-hidden rounded-lg border">
-                            <Image src={previewUrl} alt="Pet type preview" className="h-full w-full object-cover" fill />
+                            {media?.file_type && !media.file_type.startsWith("image/") ? (
+                                <div className="flex h-full w-full items-center justify-center bg-gray-100">
+                                    <span className="text-sm text-gray-500">
+                                        Preview not available
+                                        <br />
+                                        <a href={media.file_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                                            Download File
+                                        </a>
+                                    </span>
+                                </div>
+                            ) : (
+                                <Image src={previewUrl} alt="Pet type preview" className="h-full w-full object-cover" fill />
+                            )}
                         </div>
                         <Button
                             type="button"

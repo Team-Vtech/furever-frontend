@@ -14,15 +14,15 @@ type UserCreateScreenProps = {
 
 export function UserCreateScreen({ roles, providers }: UserCreateScreenProps) {
     const router = useRouter();
-    const { createUser, isCreatingUser } = useCreateUser();
+    const { createUser, isCreatingUser, isError, error } = useCreateUser();
 
     const handleSubmit = async (data: UserFormValues) => {
         try {
             await createUser(data);
             toastUtils.success.create("User created successfully");
             router.push("/users");
-        } catch {
-            toastUtils.error.create("Failed to create user");
+        } catch (error) {
+            throw error;
         }
     };
 
@@ -33,6 +33,8 @@ export function UserCreateScreen({ roles, providers }: UserCreateScreenProps) {
     return (
         <div className="rounded-lg border bg-white p-6">
             <CreateUserForm
+                isError={isError}
+                error={error}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
                 isLoading={isCreatingUser}

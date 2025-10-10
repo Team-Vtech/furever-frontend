@@ -1,11 +1,11 @@
+import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UsersClient } from "../../../clients/users.client";
-import { toastUtils } from "@/app/shared/utils/toast.utils";
 
 export function useCreateUser() {
     const queryClient = useQueryClient();
 
-    const { mutateAsync, isPending } = useMutation({
+    const { mutateAsync, isPending, isError, error } = useMutation({
         mutationFn: UsersClient.createUser,
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -16,8 +16,8 @@ export function useCreateUser() {
         },
         onError: () => {
             toastUtils.error.create("User");
-        }
+        },
     });
 
-    return { createUser: mutateAsync, isCreatingUser: isPending };
+    return { createUser: mutateAsync, isCreatingUser: isPending, isError, error };
 }

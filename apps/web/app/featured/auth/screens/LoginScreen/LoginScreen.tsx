@@ -39,18 +39,7 @@ export function LoginScreen() {
         }
     };
 
-    const handleSignUp = () => {
-        const params = new URLSearchParams();
-        if (redirectTo !== "/dashboard") {
-            params.set("callbackUrl", redirectTo);
-        }
-        const url = params.toString() ? `/register?${params.toString()}` : "/register";
-        router.push(url);
-    };
 
-    const handleForgotPassword = () => {
-        router.push("/forgot-password");
-    };
 
     const handleGoogleSignIn = async () => {
         setIsLoading(true);
@@ -60,19 +49,6 @@ export function LoginScreen() {
             });
         } catch {
             setError("Google sign-in failed. Please try again.");
-            setIsLoading(false);
-        }
-    };
-
-    const handleAppleSignIn = async () => {
-        setIsLoading(true);
-        try {
-            // Apple sign-in would be implemented here
-            // For now, we'll show an error as it's not configured
-            setError("Apple sign-in is not available at the moment.");
-        } catch {
-            setError("Apple sign-in failed. Please try again.");
-        } finally {
             setIsLoading(false);
         }
     };
@@ -92,20 +68,18 @@ export function LoginScreen() {
     return (
         <div id="page-layout" className="flex min-h-screen bg-gray-50">
             {/* Left Side - Hero Section */}
-            <section id="hero-section" className="hidden bg-white lg:flex lg:flex-1">
+            <section id="hero-section" className="hidden lg:flex lg:flex-1">
                 <LoginHeroSection />
             </section>
 
             {/* Right Side - Login Form */}
-            <main id="login-form-section" className="flex flex-1 items-center justify-center px-8 py-12 lg:w-[500px] lg:flex-none">
-                <div className="w-full max-w-[400px]">
+            <main id="login-form-section" className="flex flex-1 items-center justify-center px-8 py-12 lg:w-[700px] lg:flex-none">
+                <div className="w-full max-w-[500px]">
                     <Suspense>
                         <LoginForm
                             onSubmit={handleSubmit}
-                            onSignUp={handleSignUp}
-                            onForgotPassword={handleForgotPassword}
+   
                             onGoogleSignIn={handleGoogleSignIn}
-                            onAppleSignIn={handleAppleSignIn}
                             onFacebookSignIn={handleFacebookSignIn}
                             isLoading={isLoading}
                             error={error}

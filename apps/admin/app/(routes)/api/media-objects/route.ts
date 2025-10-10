@@ -9,23 +9,6 @@ export async function POST(request: NextRequest) {
         const alt_text = formData.get("alt_text") as string;
         const description = formData.get("description") as string;
 
-        // Validate file
-        if (!file) {
-            return NextResponse.json({ error: "File is required" }, { status: 400 });
-        }
-
-        // Validate file type (images only)
-        if (!file.type.startsWith("image/")) {
-            return NextResponse.json({ error: "Only image files are allowed" }, { status: 400 });
-        }
-
-        // Validate file size (max 10MB)
-        const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-        if (file.size > MAX_FILE_SIZE) {
-            return NextResponse.json({ error: "File size must be less than 10MB" }, { status: 400 });
-        }
-
-        // Create FormData for backend
         const backendFormData = new FormData();
         backendFormData.append("file", file);
         if (alt_text) backendFormData.append("alt_text", alt_text);

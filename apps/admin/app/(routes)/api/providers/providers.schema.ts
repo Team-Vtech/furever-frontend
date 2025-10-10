@@ -36,6 +36,44 @@ export const certificatesSchema = z.array(certificateSchema);
 export type CertificatePayload = z.infer<typeof certificateSchema>;
 export type CertificatesPayload = z.infer<typeof certificatesSchema>;
 
+const workingHourSchema = z.object({
+    day_of_week: z.enum(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"], {
+        required_error: "Day of week is required",
+    }),
+    start_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH:MM format").optional(),
+    end_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "End time must be in HH:MM format").optional(),
+    is_closed: z.boolean(),
+    notes: z.string().optional().nullable(),
+}).superRefine((obj, ctx) => {
+    if (!obj.is_closed && (!obj.start_time || !obj.end_time)) {
+        if (!obj.start_time) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Start time is required when not closed",
+                path: ["start_time"],
+            });
+        }
+        if (!obj.end_time) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "End time is required when not closed",
+                path: ["end_time"],
+            });
+        }
+    }
+    if (obj.start_time && obj.end_time && obj.start_time >= obj.end_time) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "End time must be after start time",
+            path: ["end_time"],
+        });
+    }
+});
+
+const workingHoursSchema = z.array(workingHourSchema).optional();
+export type WorkingHourPayload = z.infer<typeof workingHourSchema>;
+export type WorkingHoursPayload = z.infer<typeof workingHoursSchema>;
+
 export const providerSchema = z.object({
     id: z.string().optional(),
     business_name: z.string().min(1, "Business name is required").max(255, "Business name is too long"),
@@ -49,6 +87,7 @@ export const providerSchema = z.object({
     media_object_id: z.number().min(0, "Media object ID must be a non-negative integer"),
     gallery_media_object_ids: z.array(z.number().positive("Media object ID must be a positive integer")),
     certificates: certificatesSchema,
+    working_hours: workingHoursSchema,
 });
 
 export type ProviderFormValues = z.infer<typeof providerSchema>;
@@ -83,5 +122,54 @@ export function getProviderDefaultValues(provider?: Provider): ProviderFormValue
                 media_object_id: cert.media_object?.id || undefined,
                 notes: cert.notes || "",
             })) || [],
+        working_hours: provider?.working_hours || [
+            {
+                day_of_week: "monday",
+                start_time: "09:00",
+                end_time: "17:00",
+                is_closed: false,
+                notes: "Regular hours"
+            },
+            {
+                day_of_week: "tuesday",
+                start_time: "09:00",
+                end_time: "17:00",
+                is_closed: false,
+                notes: "Regular hours"
+            },
+            {
+                day_of_week: "wednesday",
+                start_time: "09:00",
+                end_time: "17:00",
+                is_closed: false,
+                notes: "Regular hours"
+            },
+            {
+                day_of_week: "thursday",
+                start_time: "09:00",
+                end_time: "17:00",
+                is_closed: false,
+                notes: "Regular hours"
+            },
+            {
+                day_of_week: "friday",
+                start_time: "09:00",
+                end_time: "17:00",
+                is_closed: false,
+                notes: "Regular hours"
+            },
+            {
+                day_of_week: "saturday",
+                start_time: "10:00",
+                end_time: "15:00",
+                is_closed: false,
+                notes: "Weekend hours"
+            },
+            {
+                day_of_week: "sunday",
+                is_closed: true,
+                notes: "Closed on Sundays"
+            }
+        ],
     };
 }

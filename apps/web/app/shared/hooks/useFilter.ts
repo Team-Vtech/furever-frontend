@@ -34,7 +34,7 @@ export interface UseFilterReturn {
     /**
      * Add or update a filter
      */
-    addFilter: (key: string, value: FilterValue) => void;
+    addFilter: (key: string, value: FilterValue, withoutUpdateURL?: boolean) => void;
     /**
      * Remove a specific filter
      */
@@ -113,7 +113,7 @@ export function useFilter(options: UseFilterOptions = {}): UseFilterReturn {
 
     // Add or update a filter
     const addFilter = useCallback(
-        (key: string, value: FilterValue) => {
+        (key: string, value: FilterValue, withoutUpdateURL?: boolean) => {
             const newParams = new URLSearchParams(searchParams.toString());
 
             if (value === null || value === undefined || value === "") {
@@ -131,7 +131,7 @@ export function useFilter(options: UseFilterOptions = {}): UseFilterReturn {
                     newParams.set(key, serializedValue);
                 }
             }
-
+            if (withoutUpdateURL) return;
             updateURL(newParams);
         },
         [searchParams, serializeValue, updateURL],

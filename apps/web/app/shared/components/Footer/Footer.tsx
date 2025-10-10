@@ -42,7 +42,7 @@ export function Footer({ className }: FooterProps) {
         className
       )}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto container px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Social Media Icons */}
           <div className="flex flex-col items-start">

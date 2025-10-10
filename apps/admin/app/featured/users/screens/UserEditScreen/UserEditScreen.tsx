@@ -12,11 +12,12 @@ interface UserEditScreenProps {
     user: User;
     roles: Role[];
     providers: Provider[];
+
 }
 
 export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) {
     const router = useRouter();
-    const { deleteUser, isDeletingUser, isUpdatingUser, updateUser } = useEditUserScreenState();
+    const { deleteUser, isDeletingUser, isUpdatingUser, updateUser, error, isError } = useEditUserScreenState();
 
     const handleSubmit = async (data: UserFormValues) => {
         await updateUser({
@@ -55,6 +56,8 @@ export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) 
                     onCancel={handleCancel}
                     isLoading={isUpdatingUser}
                     roles={roles}
+                    error={error}
+                    isError={isError}
                     providers={providers}
                 />
             </div>

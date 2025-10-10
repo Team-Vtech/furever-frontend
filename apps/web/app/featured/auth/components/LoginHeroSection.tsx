@@ -2,10 +2,10 @@ import Image from "next/image";
 
 export function LoginHeroSection() {
     return (
-        <div className="relative flex h-full w-full flex-col items-center justify-center bg-[#F5FAF5] px-8 py-12 text-center">
+        <div className="relative flex h-full w-full flex-col items-center justify-center px-8 py-12 text-center">
             {/* Pet Image */}
             <div className="mb-8">
-                <Image src="/pet-hero-image-4525b6.png" alt="Pet care illustration" width={160} height={120} className="mx-auto" />
+                <Image src="/images/image.png" alt="Pet care illustration" width={160} height={120} className="mx-auto" />
             </div>
 
             {/* Main Heading */}

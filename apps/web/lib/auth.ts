@@ -87,8 +87,10 @@ const result = NextAuth({
     callbacks: {
         async jwt({ token, user, trigger, session }) {
             if (trigger === "update" && session) {
+                console.log(session, user);
                 if (token.user) {
-                    token.user = session.user;
+                    token.user = user as User;
+                    token.access_token = user?.access_token;
                 }
                 return token;
             } else {

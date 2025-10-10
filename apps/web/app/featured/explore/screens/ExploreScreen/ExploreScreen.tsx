@@ -13,9 +13,7 @@ export function ExploreScreen() {
 
     return (
         <div>
-            {/* Hero Banner */}
             <HeroBanner />
-
             <div className="mx-auto max-w-7xl">
                 <div className="mx-auto max-w-6xl">
                     <div className="px-4 lg:px-6 xl:px-8">

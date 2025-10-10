@@ -15,9 +15,8 @@ function UserActionsCell({ user }: { user: User }) {
     if (status === "loading" || status === "unauthenticated") {
         return <Skeleton className="h-10 w-10" />;
     }
-    console.log(user.id, session?.user?.id);
     return (
-        <Authorize permission="update user" condition={user.id === session?.user?.id}>
+        <Authorize permissions={["edit any users", "edit own users"]} condition={user.id === session?.user?.id}>
             <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" asChild>
                     <Link href={`/users/${user.id}`}>
@@ -60,16 +59,20 @@ export const usersColumns: ColumnDef<User>[] = [
         },
     },
     {
-        accessorKey: "address",
-        header: "Address",
+        accessorKey: "roles_details",
+        header: "Roles",
         cell: ({ row }: { row: Row<User> }) => {
-            const address = row.getValue("address") as string;
+            const roles = row.getValue("roles_details") as { id: number; name: string }[];
             return (
-                <div className="max-w-[200px] truncate text-sm" title={address}>
-                    {address}
+                <div className="flex flex-wrap gap-1">
+                    {roles.map((role) => (
+                        <Badge key={role.id} variant="outline" className="text-xs">
+                            {role.name}
+                        </Badge>
+                    ))}
                 </div>
             );
-        },
+        }
     },
     {
         accessorKey: "status",

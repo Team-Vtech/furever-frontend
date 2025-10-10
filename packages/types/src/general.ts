@@ -5,6 +5,7 @@ export type JsonResponse<T = Record<string, unknown>> = {
     data: T;
     status: string;
     message: string;
+    errors?: Record<string, string[]>;
 };
 
 export interface PaginatedJsonResponse<T = Record<string, string>> {

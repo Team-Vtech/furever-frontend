@@ -1,38 +1,27 @@
 "use client";
 
+import { PasswordInput } from "@/app/shared/components/PasswordInput/PasswordInput";
+import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
-import { Input } from "@furever/ui/components/input";
 import { Label } from "@furever/ui/components/label";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { AppleButton } from "../components/AppleButton";
 import { FacebookButton } from "../components/FacebookButton";
 import { GoogleButton } from "../components/GoogleButton";
 import { LoginFormData, LoginFormSchema } from "../utils/auth.schemas";
 
 interface LoginFormProps {
     onSubmit: (data: LoginFormData) => void;
-    onSignUp: () => void;
-    onForgotPassword: () => void;
     onGoogleSignIn: () => void;
-    onAppleSignIn: () => void;
     onFacebookSignIn: () => void;
     isLoading?: boolean;
     error?: string;
 }
 
-export function LoginForm({
-    onSubmit,
-    onSignUp,
-    onForgotPassword,
-    onGoogleSignIn,
-    onAppleSignIn,
-    onFacebookSignIn,
-    isLoading = false,
-    error,
-}: LoginFormProps) {
+export function LoginForm({ onSubmit, onGoogleSignIn, onFacebookSignIn, isLoading = false, error }: LoginFormProps) {
     const {
-        register,
+        control,
         handleSubmit,
         formState: { errors },
     } = useForm<LoginFormData>({
@@ -54,7 +43,6 @@ export function LoginForm({
             {/* Social Login Buttons - Moved to top */}
             <div className="flex justify-center gap-3">
                 <GoogleButton onClick={onGoogleSignIn} disabled={isLoading} />
-                <AppleButton onClick={onAppleSignIn} disabled={isLoading} />
                 <FacebookButton onClick={onFacebookSignIn} disabled={isLoading} />
             </div>
 
@@ -80,12 +68,11 @@ export function LoginForm({
                         Email or Phone
                     </Label>
                     <div className="relative">
-                        <Input
-                            id="emailOrPhone"
+                        <TextInput
                             type="text"
+                            control={control}
+                            name="emailOrPhone"
                             placeholder="Enter your email or phone"
-                            className="font-nunito h-10 rounded-lg border-[#E9ECEF] bg-[#F8F9FA] text-[14px] placeholder:text-[#565D6D] focus:border-[#C4B5FD] focus:ring-[#C4B5FD]"
-                            {...register("emailOrPhone")}
                         />
                     </div>
                     {errors.emailOrPhone && <p className="mt-1 text-sm text-red-600">{errors.emailOrPhone.message}</p>}
@@ -97,12 +84,11 @@ export function LoginForm({
                         Password
                     </Label>
                     <div className="relative">
-                        <Input
+                        <PasswordInput
                             id="password"
-                            type="password"
+                            name="password"
+                            control={control}
                             placeholder="Enter your password"
-                            className="font-nunito h-10 rounded-lg border-[#E9ECEF] bg-[#F8F9FA] text-[14px] placeholder:text-[#565D6D] focus:border-[#C4B5FD] focus:ring-[#C4B5FD]"
-                            {...register("password")}
                         />
                     </div>
                     {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
@@ -123,18 +109,13 @@ export function LoginForm({
                         type="button"
                         variant="link"
                         className="font-nunito p-0 text-[14px] font-medium text-[#6D28D9] hover:text-[#5B21B6]"
-                        onClick={onSignUp}
+                        asChild
                     >
-                        Don&apos;t have an account? Sign Up
+                        <Link href="/register">Don&apos;t have an account? Sign Up</Link>
                     </Button>
 
-                    <Button
-                        type="button"
-                        variant="link"
-                        className="font-nunito p-0 text-[14px] font-medium text-[#565D6D] hover:text-[#374151]"
-                        onClick={onForgotPassword}
-                    >
-                        Forgot Password?
+                    <Button type="button" variant="link" className="font-nunito p-0 text-[14px] font-medium text-[#565D6D] hover:text-[#374151]">
+                        <Link href="/forgot-password">Forgot Password?</Link>
                     </Button>
                 </div>
             </form>

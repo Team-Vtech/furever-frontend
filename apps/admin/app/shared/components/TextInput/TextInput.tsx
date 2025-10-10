@@ -1,12 +1,28 @@
 "use client";
 import { ControlledInputProps } from "@furever/types";
 import { Input } from "@furever/ui/components/input";
+import { Label } from "@furever/ui/components/label";
 import { FieldValues, useController } from "react-hook-form";
 
-type TextInputProps<T extends FieldValues> = React.ComponentProps<"input"> & ControlledInputProps<T>;
+export type TextInputProps<T extends FieldValues> = React.ComponentProps<"input"> &
+    ControlledInputProps<T> & {
+        label?: string;
+    };
 
 export function TextInput<T extends FieldValues>(props: TextInputProps<T>) {
     const { name, control, rules, ...inputProps } = props;
-    const { field } = useController({ control, name, rules });
-    return <Input autoCapitalize="none" defaultValue={(field.value as string) || ""} {...inputProps} {...field} />;
+    const {
+        field,
+        fieldState: { error },
+    } = useController({ control, name, rules });
+    const isRequired = inputProps?.required ? true : false;
+    return (
+        <div className="flex flex-col w-full">
+            <Label htmlFor={name} className="text-sm mb-2 font-medium text-gray-700">
+                {inputProps.label} {isRequired && "*"}
+            </Label>
+            <Input autoCapitalize="none" defaultValue={(field.value as string) || ""} {...inputProps} {...field} />
+            {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
+        </div>
+    );
 }

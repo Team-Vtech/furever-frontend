@@ -24,7 +24,6 @@ export function PetForm({ pet, onSubmit, onCancel, isLoading }: PetFormProps) {
     const { data: petTypes = [] } = usePetTypes();
 
     const {
-        register,
         handleSubmit,
         watch,
         control,

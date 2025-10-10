@@ -6,7 +6,7 @@ import { UsersClient } from "../../../clients/users.client";
 export function useEditUserScreenState() {
     const queryClient = useQueryClient();
     const router = useRouter();
-    const { mutateAsync: updateUser, isPending: isUpdatingUser } = useMutation({
+    const { mutateAsync: updateUser, isPending: isUpdatingUser, error, isError } = useMutation({
         mutationFn: UsersClient.updateUser,
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -39,5 +39,7 @@ export function useEditUserScreenState() {
         isUpdatingUser,
         deleteUser,
         isDeletingUser,
+        isError,
+        error,
     };
 }

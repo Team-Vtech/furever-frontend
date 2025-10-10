@@ -16,15 +16,35 @@ export function ProviderProfileScreen({ provider }: ProviderProfileScreenProps) 
     // Use actual services from provider, fallback to empty array if none
     const services = provider.services || [];
 
-    const operatingHours = [
-        { day: "Monday", hours: "9:00 AM - 6:00 PM" },
-        { day: "Tuesday", hours: "9:00 AM - 6:00 PM" },
-        { day: "Wednesday", hours: "Closed", closed: true },
-        { day: "Thursday", hours: "9:00 AM - 6:00 PM" },
-        { day: "Friday", hours: "9:00 AM - 6:00 PM" },
-        { day: "Saturday", hours: "10:00 AM - 5:00 PM" },
-        { day: "Sunday", hours: "Closed", closed: true },
-    ];
+    // Helper function to format time from 24h to 12h format
+    const formatTime = (time: string) => {
+        if (!time) return '';
+        const [hours, minutes] = time.split(':');
+        if (!hours || !minutes) return time;
+        const hour = parseInt(hours, 10);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${minutes} ${ampm}`;
+    };
+
+    // Get operating hours from provider data, fallback to default schedule
+    const operatingHours = provider.working_hours?.length 
+        ? provider.working_hours.map(wh => ({
+            day: wh.day_of_week.charAt(0).toUpperCase() + wh.day_of_week.slice(1),
+            hours: wh.is_closed 
+                ? "Closed" 
+                : `${formatTime(wh.start_time!)} - ${formatTime(wh.end_time!)}`,
+            closed: wh.is_closed
+        }))
+        : [
+            { day: "Monday", hours: "9:00 AM - 6:00 PM" },
+            { day: "Tuesday", hours: "9:00 AM - 6:00 PM" },
+            { day: "Wednesday", hours: "Closed", closed: true },
+            { day: "Thursday", hours: "9:00 AM - 6:00 PM" },
+            { day: "Friday", hours: "9:00 AM - 6:00 PM" },
+            { day: "Saturday", hours: "10:00 AM - 5:00 PM" },
+            { day: "Sunday", hours: "Closed", closed: true },
+        ];
 
     // Get unique pet types from all services
     const petTypes = services.reduce((acc: string[], service) => {

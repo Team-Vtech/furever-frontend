@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback } from "@furever/ui/components/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@furever/ui/components/avatar";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import {
@@ -17,6 +17,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AppLogo } from "../AppLogo/AppLogo";
+import Image from "next/image";
 
 const navigationItems = [
     {
@@ -63,12 +64,12 @@ export function Header() {
 
     return (
         <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto container px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center">
-                        <Link href="/" className="flex-shrink-0">
-                            <AppLogo className="h-8 w-auto" />
+                        <Link href="/" className="flex-shrink-0 relative h-12  md:w-20">
+                            <Image src="/images/image.png" alt="Furever Logo" fill />
                         </Link>
                     </div>
 
@@ -110,6 +111,10 @@ export function Header() {
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="flex h-auto items-center gap-2 px-2 py-1">
                                         <Avatar className="h-8 w-8">
+                                            <AvatarImage
+                                                src={session.user.media_object?.file_url || undefined}
+                                                alt={session.user.name || "User Avatar"}
+                                            />
                                             <AvatarFallback className="bg-purple-100 text-purple-600">
                                                 {session.user.name?.charAt(0)?.toUpperCase() || "U"}
                                             </AvatarFallback>
@@ -124,13 +129,19 @@ export function Header() {
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild>
-                                        <Link href="/profile" className="flex items-center">
+                                        <Link href="/settings/profile" className="flex items-center">
                                             <UserIcon className="mr-2 h-4 w-4" />
                                             Edit Profile
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
-                                        <Link href="/settings" className="flex items-center">
+                                        <Link href="/settings/locations" className="flex items-center">
+                                            <HomeIcon className="mr-2 h-4 w-4" />
+                                            My Locations
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/settings/profile" className="flex items-center">
                                             <SettingsIcon className="mr-2 h-4 w-4" />
                                             Settings
                                         </Link>

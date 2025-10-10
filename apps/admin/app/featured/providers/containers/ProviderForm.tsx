@@ -10,7 +10,7 @@ import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, Trash2 } from "lucide-react";
+import { Clock, Plus, Trash2 } from "lucide-react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { getProviderDefaultValues, ProviderFormValues, providerSchema } from "../../../(routes)/api/providers/providers.schema";
 import { PROVIDER_STATUS_OPTIONS } from "../constant";
@@ -38,9 +38,22 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
         control,
     } = formMethods;
 
-    const { fields, append, remove } = useFieldArray({
+    const { 
+        fields: certificateFields, 
+        append: appendCertificate, 
+        remove: removeCertificate 
+    } = useFieldArray({
         control,
         name: "certificates",
+    });
+
+    const { 
+        fields: workingHourFields, 
+        append: appendWorkingHour, 
+        remove: removeWorkingHour 
+    } = useFieldArray({
+        control,
+        name: "working_hours",
     });
 
     const watchedStatus = watch("status");
@@ -223,6 +236,152 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
                         {errors.status && <p className="mt-1 text-sm text-red-600">{errors.status.message}</p>}
                     </div>
                 </div>
+
+                {/* Working Hours Section */}
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <Clock className="h-5 w-5 text-gray-400" />
+                            <h3 className="text-lg font-medium text-gray-900">Working Hours</h3>
+                        </div>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                                appendWorkingHour({
+                                    day_of_week: "monday",
+                                    start_time: "09:00",
+                                    end_time: "17:00",
+                                    is_closed: false,
+                                    notes: "",
+                                })
+                            }
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Add Working Day
+                        </Button>
+                    </div>
+
+                    {workingHourFields.map((field, index) => (
+                        <div key={field.id} className="space-y-4 rounded-lg border border-gray-200 p-4">
+                            <div className="flex items-center justify-between">
+                                <h4 className="text-md font-medium text-gray-900">
+                                    Working Day {index + 1}
+                                </h4>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => removeWorkingHour(index)}
+                                    className="text-red-600 hover:text-red-700"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div>
+                                    <Label htmlFor={`working_hours.${index}.day_of_week`} className="text-sm font-medium text-gray-700">
+                                        Day of Week *
+                                    </Label>
+                                    <SelectInput
+                                        name={`working_hours.${index}.day_of_week`}
+                                        control={control}
+                                        placeholder="Select day"
+                                        className="mt-1"
+                                        options={[
+                                            { value: "monday", label: "Monday" },
+                                            { value: "tuesday", label: "Tuesday" },
+                                            { value: "wednesday", label: "Wednesday" },
+                                            { value: "thursday", label: "Thursday" },
+                                            { value: "friday", label: "Friday" },
+                                            { value: "saturday", label: "Saturday" },
+                                            { value: "sunday", label: "Sunday" },
+                                        ]}
+                                    />
+                                    {errors.working_hours?.[index]?.day_of_week && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.working_hours[index]?.day_of_week?.message}</p>
+                                    )}
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                    <input
+                                        type="checkbox"
+                                        id={`working_hours.${index}.is_closed`}
+                                        {...formMethods.register(`working_hours.${index}.is_closed`)}
+                                        className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                    />
+                                    <Label htmlFor={`working_hours.${index}.is_closed`} className="text-sm font-medium text-gray-700">
+                                        Closed this day
+                                    </Label>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div>
+                                    <Label htmlFor={`working_hours.${index}.start_time`} className="text-sm font-medium text-gray-700">
+                                        Start Time
+                                    </Label>
+                                    <TextInput
+                                        id={`working_hours.${index}.start_time`}
+                                        name={`working_hours.${index}.start_time`}
+                                        type="time"
+                                        control={control}
+                                        placeholder="09:00"
+                                        className="mt-1"
+                                        disabled={watch(`working_hours.${index}.is_closed`)}
+                                    />
+                                    {errors.working_hours?.[index]?.start_time && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.working_hours[index]?.start_time?.message}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <Label htmlFor={`working_hours.${index}.end_time`} className="text-sm font-medium text-gray-700">
+                                        End Time
+                                    </Label>
+                                    <TextInput
+                                        id={`working_hours.${index}.end_time`}
+                                        name={`working_hours.${index}.end_time`}
+                                        type="time"
+                                        control={control}
+                                        placeholder="17:00"
+                                        className="mt-1"
+                                        disabled={watch(`working_hours.${index}.is_closed`)}
+                                    />
+                                    {errors.working_hours?.[index]?.end_time && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.working_hours[index]?.end_time?.message}</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div>
+                                <Label htmlFor={`working_hours.${index}.notes`} className="text-sm font-medium text-gray-700">
+                                    Notes
+                                </Label>
+                                <TextAreaInput
+                                    id={`working_hours.${index}.notes`}
+                                    name={`working_hours.${index}.notes`}
+                                    control={control}
+                                    placeholder="Add any notes about working hours"
+                                    rows={2}
+                                    className="mt-1"
+                                />
+                                {errors.working_hours?.[index]?.notes && (
+                                    <p className="mt-1 text-sm text-red-600">{errors.working_hours[index]?.notes?.message}</p>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+
+                    {workingHourFields.length === 0 && (
+                        <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
+                            <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+                            <p className="text-gray-500">No working hours defined yet. Click "Add Working Day" to add one.</p>
+                        </div>
+                    )}
+                </div>
                 {/* Certificates Information */}
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
@@ -232,7 +391,7 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
                             variant="outline"
                             size="sm"
                             onClick={() =>
-                                append({
+                                appendCertificate({
                                     certificate_id: 0,
                                     certificate_number: "",
                                     issued_by: "",
@@ -248,7 +407,7 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
                         </Button>
                     </div>
 
-                    {fields.map((field, index) => (
+                    {certificateFields.map((field, index) => (
                         <div key={field.id} className="space-y-4 rounded-lg border border-gray-200 p-4">
                             <div className="flex items-center justify-between">
                                 <h4 className="text-md font-medium text-gray-900">Certificate {index + 1}</h4>
@@ -256,7 +415,7 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
                                     type="button"
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => remove(index)}
+                                    onClick={() => removeCertificate(index)}
                                     className="text-red-600 hover:text-red-700"
                                 >
                                     <Trash2 className="h-4 w-4" />
@@ -373,12 +532,13 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
                                     control={control}
                                     name={`certificates.${index}.media_object_id`}
                                     mediaObject={provider?.certificates[index]?.media_object} // We'll need to handle this properly
+                                    accept="image/png, image/jpeg,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                 />
                             </div>
                         </div>
                     ))}
 
-                    {fields.length === 0 && (
+                    {certificateFields.length === 0 && (
                         <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
                             <p className="text-gray-500">No certificates added yet. Click "Add Certificate" to add one.</p>
                         </div>

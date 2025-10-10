@@ -5,7 +5,7 @@ import { Provider } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@furever/ui/components/card";
-import { Building2, CalendarDays, Edit, Mail, MapPin, Phone, Users } from "lucide-react";
+import { Building2, CalendarDays, Clock, Edit, Mail, MapPin, Phone, Users } from "lucide-react";
 import Link from "next/link";
 import { ProviderBookingsSection } from "../../components/ProviderBookingsSection/ProviderBookingsSection";
 import { ProviderServicesSection } from "../../components/ProviderServicesSection/ProviderServicesSection";
@@ -107,6 +107,59 @@ export function ProviderViewScreen({ provider }: ProviderViewScreenProps) {
                                 <p className="font-medium">{new Date(provider.created_at).toLocaleDateString()}</p>
                             </div>
                         </div>
+                    </CardContent>
+                </Card>
+
+                {/* Working Hours Section */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Clock className="h-5 w-5" />
+                            Working Hours
+                        </CardTitle>
+                        <CardDescription>Provider availability and operating schedule</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {provider.working_hours && provider.working_hours.length > 0 ? (
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                {provider.working_hours.map((workingHour, index) => (
+                                    <div key={index} className="rounded-lg border border-gray-200 p-4">
+                                        <div className="flex items-center justify-between">
+                                            <h4 className="font-medium capitalize text-gray-900">
+                                                {workingHour.day_of_week}
+                                            </h4>
+                                            {workingHour.is_closed && (
+                                                <Badge variant="outline" className="text-red-600 border-red-200">
+                                                    Closed
+                                                </Badge>
+                                            )}
+                                        </div>
+                                        
+                                        {!workingHour.is_closed && workingHour.start_time && workingHour.end_time && (
+                                            <div className="mt-2">
+                                                <p className="text-sm text-gray-600">
+                                                    {workingHour.start_time} - {workingHour.end_time}
+                                                </p>
+                                            </div>
+                                        )}
+                                        
+                                        {workingHour.notes && (
+                                            <div className="mt-2">
+                                                <p className="text-xs text-gray-500 italic">
+                                                    {workingHour.notes}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8">
+                                <Clock className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                                <p className="text-gray-500">No working hours defined</p>
+                                <p className="text-sm text-gray-400">Working hours can be added when editing the provider</p>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
 
