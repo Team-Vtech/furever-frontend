@@ -12,7 +12,7 @@ export default async function HomePage() {
     );
 }
 
-export async function getServicesTypes() {
+async function getServicesTypes() {
     try {
         const response = await (await server()).get<JsonResponse<ServiceType[]>>("/service-types");
         return response.data.data;
