@@ -118,7 +118,23 @@ const result = NextAuth({
                 return true;
             }
             if (auth) {
-                return true;
+                try {
+                    const response = await (
+                        await server()
+                    ).get<
+                        JsonResponse<{
+                            user: User;
+                            access_token: string;
+                        }>
+                    >("/user");
+                    if (response.status !== 200) {
+                        return false;
+                    }
+                    return true;
+                } catch (error) {
+                    console.error("Auth error:", error);
+                    return false;
+                }
             }
             return false;
         },
