@@ -1,4 +1,5 @@
-import { CreateMediaObjectData, JsonResponse, MediaObject, MediaUploadResponse } from "@furever/types";
+import { MediaObjectFormValues } from "@/app/(routes)/api/media-objects/schema";
+import { JsonResponse, MediaObject } from "@furever/types";
 import { client } from "../utils/http.client.utils";
 export const MEDIA_ENDPOINTS = {
     uploadMedia: {
@@ -16,19 +17,11 @@ export const MEDIA_ENDPOINTS = {
 } as const;
 
 export const MediaClient = {
-    async uploadMedia(data: CreateMediaObjectData): Promise<JsonResponse<MediaUploadResponse>> {
+    async uploadMedia(data: MediaObjectFormValues): Promise<JsonResponse<MediaObject>> {
         const formData = new FormData();
         formData.append("file", data.file);
 
-        if (data.alt_text) {
-            formData.append("alt_text", data.alt_text);
-        }
-
-        if (data.description) {
-            formData.append("description", data.description);
-        }
-
-        const response = await client().post<JsonResponse<MediaUploadResponse>>(MEDIA_ENDPOINTS.uploadMedia.url, formData, {
+        const response = await client().post<JsonResponse<MediaObject>>(MEDIA_ENDPOINTS.uploadMedia.url, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },

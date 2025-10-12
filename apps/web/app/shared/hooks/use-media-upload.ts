@@ -1,8 +1,8 @@
-import { CreateMediaObjectData, MediaUploadResponse } from "@furever/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { toastUtils } from "../utils/toast.utils";
+import { JsonResponse, MediaObject } from "@furever/types";
 import { MediaClient } from "../clients/media.client";
+import { toastUtils } from "../utils/toast.utils";
 
 const QUERY_KEYS = {
     media: ["media"] as const,
@@ -13,7 +13,7 @@ export function useMediaUpload() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (data: CreateMediaObjectData) => MediaClient.uploadMedia(data),
+        mutationFn: MediaClient.uploadMedia,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: QUERY_KEYS.media });
             toastUtils.success.create("Media");
@@ -58,7 +58,7 @@ export function useDeleteMediaMutation() {
  * @param response - The response from useMediaUpload
  * @returns The media object ID
  */
-export function getMediaId(response: { data: MediaUploadResponse }): number {
+export function getMediaId(response: JsonResponse<MediaObject>): number {
     return response.data.id;
 }
 
@@ -67,6 +67,6 @@ export function getMediaId(response: { data: MediaUploadResponse }): number {
  * @param response - The response from useMediaUpload
  * @returns The media object URL
  */
-export function getMediaUrl(response: { data: MediaUploadResponse }): string {
+export function getMediaUrl(response: JsonResponse<MediaObject>): string {
     return response.data.url;
 }

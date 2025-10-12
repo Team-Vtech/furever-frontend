@@ -57,8 +57,6 @@ export function ProfileImageUpload({ user, onImageUpdate, className }: ProfileIm
             // Upload media with alt text for profile image
             const result = await uploadMedia.mutateAsync({
                 file,
-                alt_text: `Profile image for ${user?.name || "user"}`,
-                description: "User profile picture",
             });
 
             // Get the media ID using the shared utility
@@ -79,12 +77,7 @@ export function ProfileImageUpload({ user, onImageUpdate, className }: ProfileIm
             <div className="flex items-center space-x-4">
                 <div className="relative">
                     <Avatar className="h-20 w-20">
-                        <AvatarImage
-                            src={
-                                previewUrl ||
-                                (user?.media_object?.file_url ? user?.media_object?.file_url : undefined)
-                            }
-                        />
+                        <AvatarImage src={previewUrl || (user?.media_object?.file_url ? user?.media_object?.file_url : undefined)} />
                         <AvatarFallback className="text-lg">{user?.name ? getInitials(user.name) : "U"}</AvatarFallback>
                     </Avatar>
                     {isLoading && (
