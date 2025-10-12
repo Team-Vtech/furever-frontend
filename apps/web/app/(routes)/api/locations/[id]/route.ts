@@ -46,37 +46,19 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-    try {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
         const session = await auth();
         if (!session?.user) {
             return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
         }
 
-        const locationId = parseInt(params.id);
-        if (isNaN(locationId)) {
-            return NextResponse.json({ status: "error", message: "Invalid location ID" }, { status: 400 });
-        }
-
+    try {
         const api = await server();
-        const response = await api.delete<JsonResponse<void>>(`/settings/locations/${locationId}`);
+        const response = await api.delete<JsonResponse<void>>(`/settings/locations/${id}`);
 
         return NextResponse.json(response.data);
-    } catch (error: any) {
-        console.error("Error deleting location:", error);
-
-        if (error?.response?.status === 401) {
-            return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
-        }
-
-        if (error?.response?.status === 404) {
-            return NextResponse.json({ status: "error", message: "Location not found" }, { status: 404 });
-        }
-
-        if (error?.response?.status === 400) {
-            return NextResponse.json({ status: "error", message: error.response.data.message || "Bad request" }, { status: 400 });
-        }
-
-        return NextResponse.json({ status: "error", message: "Failed to delete location" }, { status: 500 });
+    } catch (error) {
+        return FiveHundredError(error);
     }
 }
