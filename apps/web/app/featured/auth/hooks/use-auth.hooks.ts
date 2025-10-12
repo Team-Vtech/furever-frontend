@@ -1,6 +1,6 @@
+import { RegisterFormValues } from "@/app/(routes)/api/auth/register/register.schema";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { RegisterFormValues } from "@/app/(routes)/api/auth/register/register.schema";
 import { AuthClient } from "../clients/auth.client";
 
 export function useRegisterMutation() {

@@ -12,11 +12,13 @@ export type GetProvidersParams = {
 };
 
 export const ProvidersClient = {
-    async getProviders({queryKey}: {queryKey: string[]}) {
-        return await client().get<PaginatedJsonResponse<{
-            data: Provider[]
-        }>>("/api/providers", {
-            params: new URLSearchParams(queryKey[1])
+    async getProviders({ queryKey }: { queryKey: string[] }) {
+        return await client().get<
+            PaginatedJsonResponse<{
+                data: Provider[];
+            }>
+        >("/api/providers", {
+            params: new URLSearchParams(queryKey[1]),
         });
     },
 

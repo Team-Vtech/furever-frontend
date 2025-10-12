@@ -7,11 +7,11 @@ import { ProviderViewScreen } from "../../../../featured/providers/screens/Provi
 export default async function ProviderViewPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
     const provider = await getProviderById(id);
-    
+
     if (!provider) {
         return notFound();
     }
-    
+
     return <ProviderViewScreen provider={provider.data.data} />;
 }
 

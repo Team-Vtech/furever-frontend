@@ -1,19 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { ValidationError } from "@/app/shared/utils/error.utils";
-import { changePasswordSchema } from "./password.schema";
-import { ZodError } from "zod";
 import { server } from "@/app/shared/utils/http.server.utils";
+import { auth } from "@/lib/auth";
 import { JsonResponse } from "@furever/types";
+import { NextRequest, NextResponse } from "next/server";
+import { ZodError } from "zod";
+import { changePasswordSchema } from "./password.schema";
 
 export async function PUT(request: NextRequest) {
     try {
         const session = await auth();
         if (!session?.user) {
-            return NextResponse.json(
-                { status: "error", message: "Unauthorized" },
-                { status: 401 }
-            );
+            return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
         }
 
         const body = await request.json();
@@ -37,33 +34,21 @@ export async function PUT(request: NextRequest) {
         if (error instanceof ZodError) {
             return ValidationError(error);
         }
-        
+
         console.error("Error changing password:", error);
-        
+
         if (error?.response?.status === 401) {
-            return NextResponse.json(
-                { status: "error", message: "Unauthorized" },
-                { status: 401 }
-            );
+            return NextResponse.json({ status: "error", message: "Unauthorized" }, { status: 401 });
         }
-        
+
         if (error?.response?.status === 400) {
-            return NextResponse.json(
-                { status: "error", message: error.response.data?.message || "Invalid current password" },
-                { status: 400 }
-            );
+            return NextResponse.json({ status: "error", message: error.response.data?.message || "Invalid current password" }, { status: 400 });
         }
-        
+
         if (error?.response?.status === 422) {
-            return NextResponse.json(
-                { status: "error", message: "Validation failed", details: error.response.data },
-                { status: 422 }
-            );
+            return NextResponse.json({ status: "error", message: "Validation failed", details: error.response.data }, { status: 422 });
         }
-        
-        return NextResponse.json(
-            { status: "error", message: "Failed to change password" },
-            { status: 500 }
-        );
+
+        return NextResponse.json({ status: "error", message: "Failed to change password" }, { status: 500 });
     }
 }

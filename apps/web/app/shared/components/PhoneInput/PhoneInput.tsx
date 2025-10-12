@@ -73,4 +73,6 @@ function PhoneInputComponent<TFieldValues extends FieldValues = FieldValues>({
 }
 
 // Create the properly typed export
-export const PhoneInput = PhoneInputComponent as <TFieldValues extends FieldValues = FieldValues>(props: PhoneInputProps<TFieldValues>) => ReactElement;
+export const PhoneInput = PhoneInputComponent as <TFieldValues extends FieldValues = FieldValues>(
+    props: PhoneInputProps<TFieldValues>,
+) => ReactElement;

@@ -2,9 +2,6 @@ import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInp
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Upload, X } from "lucide-react";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { getServiceDefaultValues, ServiceFormValues, serviceSchema } from "../../../(routes)/api/services/services.schema";
 
@@ -12,11 +9,10 @@ import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia";
-import { getMediaId, useMediaUpload } from "@/app/shared/hooks/use-media-upload";
+import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
 import { Addon, GeneralStatus, PetType, Provider, Service, ServiceType } from "@furever/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 import { AddonsSection } from "../components/AddonsSection";
-import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
 
 interface ServiceFormProps {
     service?: Service;
@@ -29,19 +25,7 @@ interface ServiceFormProps {
 }
 
 export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTypes, providers, addons }: ServiceFormProps) {
-    const uploadMedia = useMediaUpload();
-
-    // Always use create schema for form structure, transform on submit
     const defaultValues = getServiceDefaultValues(service);
-
-    // State for thumbnail image
-    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
-    const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
-        service?.thumbnail_media_object?.file_path ? process.env.NEXT_PUBLIC_IMAGE_URL + service.thumbnail_media_object.file_path : null,
-    );
-    const thumbnailInputRef = useRef<HTMLInputElement>(null);
-
-
 
     const methods = useForm<ServiceFormValues>({
         resolver: zodResolver(serviceSchema),
@@ -57,45 +41,6 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
     } = methods;
 
     const status = watch("status");
-
-
-
-    // Thumbnail upload handlers
-    const handleThumbnailUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-
-        setThumbnailFile(file);
-
-        // Create preview
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setThumbnailPreview(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-
-        // Upload file
-        try {
-            const result = await uploadMedia.mutateAsync({ file });
-            const mediaId = getMediaId(result);
-            setValue("thumbnail_media_object_id", mediaId);
-        } catch (error) {
-            console.error("Thumbnail upload failed:", error);
-            setThumbnailFile(null);
-            setThumbnailPreview(null);
-        }
-    };
-
-    const removeThumbnail = () => {
-        setThumbnailFile(null);
-        setThumbnailPreview(null);
-        setValue("thumbnail_media_object_id", 0);
-        if (thumbnailInputRef.current) {
-            thumbnailInputRef.current.value = "";
-        }
-    };
-
-
 
     const onFormSubmit = async (data: ServiceFormValues) => {
         try {
@@ -147,10 +92,12 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
                         name="media_object_ids"
                         label="Image Gallery"
                         disabled={isLoading}
-                        initialImages={service?.gallery?.map((item) => ({
-                            id: item.media_object.id,
-                            file_path: item.media_object.file_path,
-                        })) || []}
+                        initialImages={
+                            service?.gallery?.map((item) => ({
+                                id: item.media_object.id,
+                                file_path: item.media_object.file_path,
+                            })) || []
+                        }
                     />
 
                     <div className="grid grid-cols-2 gap-4">

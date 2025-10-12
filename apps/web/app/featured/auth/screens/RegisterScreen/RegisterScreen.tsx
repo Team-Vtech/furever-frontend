@@ -1,11 +1,11 @@
 "use client";
 
+import { RegisterFormValues } from "@/app/(routes)/api/auth/register/register.schema";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { RegisterHeroSection } from "../../components/RegisterHeroSection/RegisterHeroSection";
 import { RegisterContainer } from "../../containers/RegisterContainer";
-import { RegisterFormValues } from "@/app/(routes)/api/auth/register/register.schema";
 import { useRegisterMutation } from "../../hooks/use-auth.hooks";
 
 export function RegisterScreen() {

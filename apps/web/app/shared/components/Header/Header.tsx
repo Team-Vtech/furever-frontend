@@ -13,11 +13,10 @@ import {
 } from "@furever/ui/components/dropdown-menu";
 import { BellIcon, CalendarIcon, HeartIcon, HomeIcon, LogOutIcon, MenuIcon, SearchIcon, SettingsIcon, UserIcon, XIcon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { AppLogo } from "../AppLogo/AppLogo";
-import Image from "next/image";
 
 const navigationItems = [
     {
@@ -64,11 +63,11 @@ export function Header() {
 
     return (
         <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
-            <div className="mx-auto container px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center">
-                        <Link href="/" className="flex-shrink-0 relative h-12  md:w-20">
+                        <Link href="/" className="relative h-12 flex-shrink-0 md:w-20">
                             <Image src="/images/image.png" alt="Furever Logo" fill />
                         </Link>
                     </div>

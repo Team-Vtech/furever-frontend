@@ -1,18 +1,13 @@
-'use client';
+"use client";
 
 export function HeroBanner() {
     return (
-        <div className="relative bg-[#F6F2FD] overflow-hidden">
+        <div className="relative overflow-hidden bg-[#F6F2FD]">
             <div className="relative min-h-[229px] px-4 py-12 lg:py-16">
                 {/* Decorative Paw Print - Left (smaller) */}
-                <div className="absolute left-[25%] top-4 opacity-30 hidden md:block">
+                <div className="absolute left-[25%] top-4 hidden opacity-30 md:block">
                     <div className="relative h-[76px] w-[76px] rounded-full bg-white p-1">
-                        <svg
-                            viewBox="0 0 76 76"
-                            className="h-full w-full"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg viewBox="0 0 76 76" className="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g>
                                 <circle cx="31.15" cy="9.51" r="9.51" fill="#8A56DF" />
                                 <circle cx="53.32" cy="22.17" r="9.51" fill="#8A56DF" />
@@ -24,14 +19,9 @@ export function HeroBanner() {
                 </div>
 
                 {/* Decorative Paw Print - Right (larger) */}
-                <div className="absolute right-[15%] top-[92px] opacity-30 hidden lg:block">
+                <div className="absolute right-[15%] top-[92px] hidden opacity-30 lg:block">
                     <div className="relative h-[114px] w-[114px] rounded-full bg-white p-1">
-                        <svg
-                            viewBox="0 0 114 114"
-                            className="h-full w-full"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg viewBox="0 0 114 114" className="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g>
                                 <circle cx="47.21" cy="14.25" r="14.25" fill="#8A56DF" />
                                 <circle cx="80.46" cy="33.25" r="14.25" fill="#8A56DF" />

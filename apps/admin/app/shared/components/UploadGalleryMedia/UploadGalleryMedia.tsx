@@ -1,23 +1,23 @@
 "use client";
+import { getMediaId, useMediaUpload } from "@/app/shared/hooks/use-media-upload";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";
 import { Plus, X } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { Control, FieldValues, Path, useController } from "react-hook-form";
-import { getMediaId, useMediaUpload } from "@/app/shared/hooks/use-media-upload";
 
 /**
  * UploadGalleryMedia Component
- * 
+ *
  * A reusable component for uploading and managing multiple gallery images.
  * Integrates with react-hook-form and handles image upload, preview, and removal.
- * 
+ *
  * @example
  * ```tsx
  * // In your form component:
  * import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia";
- * 
+ *
  * // Usage with react-hook-form:
  * <UploadGalleryMedia
  *   control={control}
@@ -26,7 +26,7 @@ import { getMediaId, useMediaUpload } from "@/app/shared/hooks/use-media-upload"
  *   disabled={isLoading}
  *   initialImages={existingImages}
  * />
- * 
+ *
  * // Form schema should include:
  * const schema = z.object({
  *   media_object_ids: z.array(z.number()).optional(),
@@ -72,11 +72,9 @@ export function UploadGalleryMedia<T extends FieldValues>({
     // Initialize with existing images
     useEffect(() => {
         if (initialImages.length > 0 && galleryPreviews.length === 0) {
-            const previews = initialImages.map((item) => 
-                process.env.NEXT_PUBLIC_IMAGE_URL + item.file_path
-            );
+            const previews = initialImages.map((item) => process.env.NEXT_PUBLIC_IMAGE_URL + item.file_path);
             setGalleryPreviews(previews);
-            
+
             if (value && Array.isArray(value) && value.length > 0) {
                 setGalleryMediaIds(value);
             }
@@ -155,21 +153,14 @@ export function UploadGalleryMedia<T extends FieldValues>({
                         <Plus className="h-4 w-4" />
                         {isUploading ? "Uploading..." : "Add Gallery Images"}
                     </Button>
-                    <input
-                        ref={galleryInputRef}
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleGalleryUpload}
-                        className="hidden"
-                    />
+                    <input ref={galleryInputRef} type="file" accept="image/*" multiple onChange={handleGalleryUpload} className="hidden" />
                 </div>
 
                 {/* Gallery Preview */}
                 {galleryPreviews.length > 0 && (
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                         {galleryPreviews.map((preview, index) => (
-                            <div key={index} className="relative group">
+                            <div key={index} className="group relative">
                                 <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
                                     <Image
                                         src={preview}
@@ -194,22 +185,14 @@ export function UploadGalleryMedia<T extends FieldValues>({
                 )}
 
                 {/* Upload Progress */}
-                {isUploading && (
-                    <div className="text-sm text-gray-500">
-                        Uploading images...
-                    </div>
-                )}
+                {isUploading && <div className="text-sm text-gray-500">Uploading images...</div>}
 
                 {/* Error Message */}
-                {error && (
-                    <p className="text-sm text-red-500">{error.message}</p>
-                )}
+                {error && <p className="text-sm text-red-500">{error.message}</p>}
 
                 {/* Helper Text */}
                 {galleryPreviews.length === 0 && !isUploading && (
-                    <p className="text-sm text-gray-500">
-                        Add multiple images to showcase your content. Supported formats: JPG, PNG, GIF
-                    </p>
+                    <p className="text-sm text-gray-500">Add multiple images to showcase your content. Supported formats: JPG, PNG, GIF</p>
                 )}
             </div>
         </div>

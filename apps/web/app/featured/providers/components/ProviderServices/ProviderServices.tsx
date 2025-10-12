@@ -44,7 +44,7 @@ export function ProviderServices({ services }: ProviderServicesProps) {
                         <div key={service.id} className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
                             {/* Service Image Carousel */}
                             <ServiceImageCarousel service={service} />
-                            
+
                             <div className="mb-4">
                                 {service.service_types && service.service_types.length > 0 && (
                                     <span className="inline-flex rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800">

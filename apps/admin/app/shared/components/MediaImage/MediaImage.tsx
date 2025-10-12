@@ -36,9 +36,7 @@ export const MediaImage = forwardRef<HTMLImageElement, MediaImageProps>(
         }
 
         // Construct the image source URL
-        const src = mediaObject?.file_path 
-            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${mediaObject.file_path}`
-            : fallbackSrc;
+        const src = mediaObject?.file_path ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${mediaObject.file_path}` : fallbackSrc;
 
         // Use alt text from media object or fallback
         const alt = mediaObject?.alt_text || fallbackAlt;
@@ -48,17 +46,8 @@ export const MediaImage = forwardRef<HTMLImageElement, MediaImageProps>(
             return null;
         }
 
-        return (
-            <Image
-                ref={ref}
-                src={src}
-                alt={alt}
-                className={cn(className)}
-                title={mediaObject?.description}
-                {...props}
-            />
-        );
-    }
+        return <Image ref={ref} src={src} alt={alt} className={cn(className)} title={mediaObject?.description} {...props} />;
+    },
 );
 
 MediaImage.displayName = "MediaImage";

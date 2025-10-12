@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ProfileClient } from "../clients/profile.client";
-import { ProfileFormValues } from "../../../(routes)/api/settings/profile/profile.schema";
-import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { ProfileFormValues } from "../../../(routes)/api/settings/profile/profile.schema";
+import { ProfileClient } from "../clients/profile.client";
 
 export const PROFILE_QUERY_KEY = "profile";
 
@@ -22,22 +22,22 @@ export function useUpdateProfileMutation() {
         onSuccess: async (data) => {
             // Update the cached profile data
             queryClient.setQueryData([PROFILE_QUERY_KEY], data);
-            
+
             // Invalidate and refetch profile query to ensure we have the latest data
             queryClient.invalidateQueries({ queryKey: [PROFILE_QUERY_KEY] });
-            
+
             // Update the NextAuth session with the new user data
             try {
                 if (data.data) {
                     await update({
-                        user: data.data
+                        user: data.data,
                     });
                 }
             } catch (sessionError) {
                 console.warn("Failed to update session:", sessionError);
                 // Don't show error to user as the profile update was successful
             }
-            
+
             toast.success("Profile updated successfully");
         },
         onError: (error: any) => {
@@ -56,22 +56,22 @@ export function usePatchProfileMutation() {
         onSuccess: async (data) => {
             // Update the cached profile data
             queryClient.setQueryData([PROFILE_QUERY_KEY], data);
-            
+
             // Invalidate and refetch profile query to ensure we have the latest data
             queryClient.invalidateQueries({ queryKey: [PROFILE_QUERY_KEY] });
-            
+
             // Update the NextAuth session with the new user data
             try {
                 if (data.data) {
                     await update({
-                        user: data.data
+                        user: data.data,
                     });
                 }
             } catch (sessionError) {
                 console.warn("Failed to update session:", sessionError);
                 // Don't show error to user as the profile update was successful
             }
-            
+
             toast.success("Profile image updated successfully");
         },
         onError: (error: any) => {

@@ -4,11 +4,11 @@ export const ENDPOINTS = {
         method: "GET",
     },
     updateProfile: {
-        url: "/api/settings/profile", 
+        url: "/api/settings/profile",
         method: "PUT",
     },
     patchProfile: {
         url: "/api/settings/profile",
-        method: "PATCH", 
+        method: "PATCH",
     },
 } as const;

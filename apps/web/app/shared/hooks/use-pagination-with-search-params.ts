@@ -1,28 +1,28 @@
 "use client";
 
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
 export interface UsePaginationWithSearchParamsOptions {
-  defaultPage?: number;
-  defaultPerPage?: number;
+    defaultPage?: number;
+    defaultPerPage?: number;
 }
 
 export interface UsePaginationWithSearchParamsReturn {
-  currentPage: number;
-  perPage: number;
-  setPage: (page: number) => void;
-  setPerPage: (perPage: number) => void;
-  setPageAndPerPage: (page: number, perPage: number) => void;
-  resetToFirstPage: () => void;
+    currentPage: number;
+    perPage: number;
+    setPage: (page: number) => void;
+    setPerPage: (perPage: number) => void;
+    setPageAndPerPage: (page: number, perPage: number) => void;
+    resetToFirstPage: () => void;
 }
 
 /**
  * Hook for managing pagination state with URL search parameters in Next.js
- * 
+ *
  * @param options - Configuration options
  * @returns Object containing current pagination state and setters
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
@@ -30,9 +30,9 @@ export interface UsePaginationWithSearchParamsReturn {
  *     defaultPage: 1,
  *     defaultPerPage: 10
  *   });
- *   
+ *
  *   const totalPages = Math.ceil(totalItems / perPage);
- *   
+ *
  *   return (
  *     <Pagination
  *       currentPage={currentPage}
@@ -46,86 +46,86 @@ export interface UsePaginationWithSearchParamsReturn {
  * ```
  */
 export function usePaginationWithSearchParams({
-  defaultPage = 1,
-  defaultPerPage = 10,
+    defaultPage = 1,
+    defaultPerPage = 10,
 }: UsePaginationWithSearchParamsOptions = {}): UsePaginationWithSearchParamsReturn {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
-  // Get current values from URL or use defaults
-  const currentPage = useMemo(() => {
-    const pageParam = searchParams.get("page");
-    const page = pageParam ? parseInt(pageParam, 10) : defaultPage;
-    return page > 0 ? page : defaultPage;
-  }, [searchParams, defaultPage]);
+    // Get current values from URL or use defaults
+    const currentPage = useMemo(() => {
+        const pageParam = searchParams.get("page");
+        const page = pageParam ? parseInt(pageParam, 10) : defaultPage;
+        return page > 0 ? page : defaultPage;
+    }, [searchParams, defaultPage]);
 
-  const perPage = useMemo(() => {
-    const perPageParam = searchParams.get("per_page");
-    const perPageValue = perPageParam ? parseInt(perPageParam, 10) : defaultPerPage;
-    return perPageValue > 0 ? perPageValue : defaultPerPage;
-  }, [searchParams, defaultPerPage]);
+    const perPage = useMemo(() => {
+        const perPageParam = searchParams.get("per_page");
+        const perPageValue = perPageParam ? parseInt(perPageParam, 10) : defaultPerPage;
+        return perPageValue > 0 ? perPageValue : defaultPerPage;
+    }, [searchParams, defaultPerPage]);
 
-  // Helper function to update URL search params
-  const updateSearchParams = useCallback(
-    (updates: Record<string, string | number | null>) => {
-      const newSearchParams = new URLSearchParams(searchParams.toString());
-      
-      Object.entries(updates).forEach(([key, value]) => {
-        if (value === null || value === undefined) {
-          newSearchParams.delete(key);
-        } else {
-          newSearchParams.set(key, value.toString());
-        }
-      });
+    // Helper function to update URL search params
+    const updateSearchParams = useCallback(
+        (updates: Record<string, string | number | null>) => {
+            const newSearchParams = new URLSearchParams(searchParams.toString());
 
-      const newUrl = `${pathname}?${newSearchParams.toString()}`;
-      router.push(newUrl, { scroll: false });
-    },
-    [router, pathname, searchParams]
-  );
+            Object.entries(updates).forEach(([key, value]) => {
+                if (value === null || value === undefined) {
+                    newSearchParams.delete(key);
+                } else {
+                    newSearchParams.set(key, value.toString());
+                }
+            });
 
-  // Set page only
-  const setPage = useCallback(
-    (page: number) => {
-      updateSearchParams({ page: page > 0 ? page : 1 });
-    },
-    [updateSearchParams]
-  );
+            const newUrl = `${pathname}?${newSearchParams.toString()}`;
+            router.push(newUrl, { scroll: false });
+        },
+        [router, pathname, searchParams],
+    );
 
-  // Set per page only (reset to page 1 when changing per page)
-  const setPerPage = useCallback(
-    (newPerPage: number) => {
-      updateSearchParams({ 
-        page: 1, 
-        per_page: newPerPage > 0 ? newPerPage : defaultPerPage 
-      });
-    },
-    [updateSearchParams, defaultPerPage]
-  );
+    // Set page only
+    const setPage = useCallback(
+        (page: number) => {
+            updateSearchParams({ page: page > 0 ? page : 1 });
+        },
+        [updateSearchParams],
+    );
 
-  // Set both page and per page
-  const setPageAndPerPage = useCallback(
-    (page: number, newPerPage: number) => {
-      updateSearchParams({
-        page: page > 0 ? page : 1,
-        per_page: newPerPage > 0 ? newPerPage : defaultPerPage,
-      });
-    },
-    [updateSearchParams, defaultPerPage]
-  );
+    // Set per page only (reset to page 1 when changing per page)
+    const setPerPage = useCallback(
+        (newPerPage: number) => {
+            updateSearchParams({
+                page: 1,
+                per_page: newPerPage > 0 ? newPerPage : defaultPerPage,
+            });
+        },
+        [updateSearchParams, defaultPerPage],
+    );
 
-  // Reset to first page (useful for search/filter operations)
-  const resetToFirstPage = useCallback(() => {
-    updateSearchParams({ page: 1 });
-  }, [updateSearchParams]);
+    // Set both page and per page
+    const setPageAndPerPage = useCallback(
+        (page: number, newPerPage: number) => {
+            updateSearchParams({
+                page: page > 0 ? page : 1,
+                per_page: newPerPage > 0 ? newPerPage : defaultPerPage,
+            });
+        },
+        [updateSearchParams, defaultPerPage],
+    );
 
-  return {
-    currentPage,
-    perPage,
-    setPage,
-    setPerPage,
-    setPageAndPerPage,
-    resetToFirstPage,
-  };
+    // Reset to first page (useful for search/filter operations)
+    const resetToFirstPage = useCallback(() => {
+        updateSearchParams({ page: 1 });
+    }, [updateSearchParams]);
+
+    return {
+        currentPage,
+        perPage,
+        setPage,
+        setPerPage,
+        setPageAndPerPage,
+        resetToFirstPage,
+    };
 }

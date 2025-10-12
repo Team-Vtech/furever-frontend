@@ -39,8 +39,6 @@ export function LoginScreen() {
         }
     };
 
-
-
     const handleGoogleSignIn = async () => {
         setIsLoading(true);
         try {
@@ -78,7 +76,6 @@ export function LoginScreen() {
                     <Suspense>
                         <LoginForm
                             onSubmit={handleSubmit}
-   
                             onGoogleSignIn={handleGoogleSignIn}
                             onFacebookSignIn={handleFacebookSignIn}
                             isLoading={isLoading}

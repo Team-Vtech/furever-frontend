@@ -1,27 +1,31 @@
 # Forgot Password Feature
 
 ## Overview
+
 The forgot password feature allows users to reset their password by providing their email address. A password reset link will be sent to their email.
 
 ## Components
 
 ### ForgotPasswordForm
+
 - **Location**: `apps/web/app/featured/password/components/ForgotPasswordForm/`
 - **Purpose**: Handles the email input and form submission
 - **Features**:
-  - Email validation using Zod schema
-  - Loading states during submission
-  - Success state showing confirmation message
-  - Error handling with toast notifications
-  - Option to go back to login or try another email
+    - Email validation using Zod schema
+    - Loading states during submission
+    - Success state showing confirmation message
+    - Error handling with toast notifications
+    - Option to go back to login or try another email
 
 ### ForgotPasswordScreen
+
 - **Location**: `apps/web/app/featured/password/screens/ForgotPasswordScreen/`
 - **Purpose**: Layout wrapper for the forgot password form
 
 ## API Endpoints
 
 ### POST /api/auth/forgot-password
+
 - **Purpose**: Processes forgot password requests
 - **Request Body**: `{ email: string }`
 - **Response**: Success message (same response regardless of whether email exists for security)
@@ -30,18 +34,21 @@ The forgot password feature allows users to reset their password by providing th
 ## Usage
 
 ### Accessing the Page
+
 Users can access the forgot password page in two ways:
+
 1. Navigate directly to `/forgot-password`
 2. Click "Forgot Password?" link on the login page
 
 ### Flow
+
 1. User enters their email address
 2. Form validates the email format
 3. API request is sent to reset endpoint
 4. User sees confirmation message
 5. User can either:
-   - Try another email address
-   - Return to login page
+    - Try another email address
+    - Return to login page
 
 ## Implementation Notes
 
@@ -53,6 +60,7 @@ Users can access the forgot password page in two ways:
 ## Files Modified/Created
 
 ### New Files
+
 - `/apps/web/app/(routes)/forgot-password/page.tsx`
 - `/apps/web/app/(routes)/api/auth/forgot-password/route.ts`
 - `/apps/web/app/(routes)/api/auth/forgot-password/forgot-password.schema.ts`
@@ -60,6 +68,7 @@ Users can access the forgot password page in two ways:
 - `/apps/web/app/featured/password/screens/ForgotPasswordScreen/`
 
 ### Modified Files
+
 - `/apps/web/app/featured/password/constants.ts` - Added forgot password endpoint
 - `/apps/web/app/featured/password/clients/password.client.ts` - Added forgot password client method
 - `/apps/web/app/featured/password/hooks/use-password.hooks.ts` - Added forgot password mutation hook

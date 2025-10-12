@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { PasswordClient } from "../clients/password.client";
-import { ChangePasswordFormValues } from "../../../(routes)/api/settings/password/password.schema";
-import { ForgotPasswordFormValues } from "../../../(routes)/api/auth/forgot-password/forgot-password.schema";
 import { toast } from "sonner";
+import { ForgotPasswordFormValues } from "../../../(routes)/api/auth/forgot-password/forgot-password.schema";
+import { ChangePasswordFormValues } from "../../../(routes)/api/settings/password/password.schema";
+import { PasswordClient } from "../clients/password.client";
 
 export function useChangePasswordMutation() {
     return useMutation({

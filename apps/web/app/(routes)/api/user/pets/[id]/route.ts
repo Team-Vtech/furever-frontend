@@ -5,7 +5,7 @@ import { PetFormValues, petSchema } from "../pets.schema";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    
+
     try {
         const response = await (await server()).get(`/pets/${id}`);
         return NextResponse.json(response.data);
@@ -35,7 +35,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    
+
     try {
         const response = await (await server()).delete(`/pets/${id}`);
         return NextResponse.json(response.data, { status: 204 });

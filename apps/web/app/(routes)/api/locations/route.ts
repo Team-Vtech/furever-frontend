@@ -1,7 +1,7 @@
 import { FiveHundredError, ValidationError } from "@/app/shared/utils/error.utils";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { auth } from "@/lib/auth";
-import { JsonResponse, PaginatedJsonResponse, UserSettingsLocation } from "@furever/types";
+import { JsonResponse, UserSettingsLocation } from "@furever/types";
 import { NextRequest, NextResponse } from "next/server";
 import { LocationFormValues, locationSchema } from "./locations.schema";
 
@@ -12,9 +12,7 @@ export async function GET(request: NextRequest) {
     }
     try {
         const api = await server();
-        const response = await api.get<
-            JsonResponse<UserSettingsLocation[]>
-        >("/settings/locations");
+        const response = await api.get<JsonResponse<UserSettingsLocation[]>>("/settings/locations");
 
         return NextResponse.json(response.data);
     } catch (error) {

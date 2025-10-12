@@ -30,7 +30,7 @@ export function DeleteRecordDialog({ recordName, triggerText = "Delete Record", 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="destructive" className="flex gap-2 items-center">
+                <Button variant="destructive" className="flex items-center gap-2">
                     <Trash2 className="h-4 w-4" />
                     {triggerText}
                 </Button>

@@ -4,28 +4,27 @@ import { Button } from "@furever/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@furever/ui/components/card";
 import { Skeleton } from "@furever/ui/components/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@furever/ui/components/table";
-import { CalendarDays, Download, FileText, ExternalLink } from "lucide-react";
+import { CalendarDays, Download, ExternalLink, FileText } from "lucide-react";
 import Link from "next/link";
 
 interface ProviderDocumentsSectionProps {
-    providerId: number;
     documents: ProviderCertificate[];
     isLoading: boolean;
 }
 
-export function ProviderDocumentsSection({ providerId, documents, isLoading }: ProviderDocumentsSectionProps) {
+export function ProviderDocumentsSection({ documents, isLoading }: ProviderDocumentsSectionProps) {
     const getStatusBadgeVariant = (status: string) => {
         switch (status) {
-            case 'active':
-            case 'verified':
-                return 'default';
-            case 'pending':
-                return 'secondary';
-            case 'expired':
-            case 'rejected':
-                return 'destructive';
+            case "active":
+            case "verified":
+                return "default";
+            case "pending":
+                return "secondary";
+            case "expired":
+            case "rejected":
+                return "destructive";
             default:
-                return 'outline';
+                return "outline";
         }
     };
 
@@ -72,9 +71,7 @@ export function ProviderDocumentsSection({ providerId, documents, isLoading }: P
             </CardHeader>
             <CardContent>
                 {documents.length === 0 ? (
-                    <div className="text-center py-8 text-muted-foreground">
-                        No documents found for this provider.
-                    </div>
+                    <div className="text-muted-foreground py-8 text-center">No documents found for this provider.</div>
                 ) : (
                     <Table>
                         <TableHeader>
@@ -92,12 +89,10 @@ export function ProviderDocumentsSection({ providerId, documents, isLoading }: P
                             {documents.map((doc) => {
                                 const expired = isExpired(doc.expires_at);
                                 const expiringSoon = isExpiringSoon(doc.expires_at);
-                                
+
                                 return (
                                     <TableRow key={doc.id}>
-                                        <TableCell className="font-medium">
-                                            {doc.certificate_number}
-                                        </TableCell>
+                                        <TableCell className="font-medium">{doc.certificate_number}</TableCell>
                                         <TableCell>{doc.certificate_number}</TableCell>
                                         <TableCell>{doc.issued_by}</TableCell>
                                         <TableCell>
@@ -107,9 +102,11 @@ export function ProviderDocumentsSection({ providerId, documents, isLoading }: P
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className={`flex items-center gap-1 ${
-                                                expired ? 'text-destructive' : expiringSoon ? 'text-orange-600' : ''
-                                            }`}>
+                                            <div
+                                                className={`flex items-center gap-1 ${
+                                                    expired ? "text-destructive" : expiringSoon ? "text-orange-600" : ""
+                                                }`}
+                                            >
                                                 <CalendarDays className="h-3 w-3" />
                                                 {new Date(doc.expires_at).toLocaleDateString()}
                                                 {expired && <span className="text-xs">(Expired)</span>}
@@ -117,35 +114,21 @@ export function ProviderDocumentsSection({ providerId, documents, isLoading }: P
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <Badge variant={getStatusBadgeVariant(
-                                                expired ? 'expired' : doc.status
-                                            )}>
-                                                {expired ? 'expired' : doc.status}
+                                            <Badge variant={getStatusBadgeVariant(expired ? "expired" : doc.status)}>
+                                                {expired ? "expired" : doc.status}
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2">
                                                 {doc.media_object && (
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                        asChild
-                                                    >
-                                                        <Link 
-                                                            href={doc.media_object.url} 
-                                                            target="_blank" 
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            <Download className="h-3 w-3 mr-1" />
+                                                    <Button variant="outline" size="sm" asChild>
+                                                        <Link href={doc.media_object.url} target="_blank" rel="noopener noreferrer">
+                                                            <Download className="mr-1 h-3 w-3" />
                                                             View
                                                         </Link>
                                                     </Button>
                                                 )}
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    asChild
-                                                >
+                                                <Button variant="ghost" size="sm" asChild>
                                                     <Link href={`/certificates/${doc.id}`}>
                                                         <ExternalLink className="h-3 w-3" />
                                                     </Link>

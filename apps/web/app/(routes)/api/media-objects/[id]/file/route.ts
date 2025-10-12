@@ -11,7 +11,7 @@ interface RouteContext {
 
 export async function GET(request: NextRequest, { params }: RouteContext) {
     const { id } = await params;
-    
+
     try {
         const session = await auth();
         if (!session?.user) {
@@ -20,13 +20,13 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 
         // First get the media object info to get the backend file path
         const mediaResponse = await (await server()).get(`/admin/media-objects/${id}`);
-        
+
         if (!mediaResponse.data || !mediaResponse.data.data) {
             return NextResponse.json({ error: "Media not found" }, { status: 404 });
         }
 
         const mediaObject = mediaResponse.data.data;
-        
+
         // Proxy the actual file from the backend
         const fileResponse = await fetch(`${process.env.BACKEND_URL}/admin/media-objects/${id}/file`, {
             headers: {

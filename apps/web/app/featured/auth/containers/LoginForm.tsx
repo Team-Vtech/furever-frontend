@@ -68,12 +68,7 @@ export function LoginForm({ onSubmit, onGoogleSignIn, onFacebookSignIn, isLoadin
                         Email or Phone
                     </Label>
                     <div className="relative">
-                        <TextInput
-                            type="text"
-                            control={control}
-                            name="emailOrPhone"
-                            placeholder="Enter your email or phone"
-                        />
+                        <TextInput type="text" control={control} name="emailOrPhone" placeholder="Enter your email or phone" />
                     </div>
                     {errors.emailOrPhone && <p className="mt-1 text-sm text-red-600">{errors.emailOrPhone.message}</p>}
                 </div>
@@ -84,12 +79,7 @@ export function LoginForm({ onSubmit, onGoogleSignIn, onFacebookSignIn, isLoadin
                         Password
                     </Label>
                     <div className="relative">
-                        <PasswordInput
-                            id="password"
-                            name="password"
-                            control={control}
-                            placeholder="Enter your password"
-                        />
+                        <PasswordInput id="password" name="password" control={control} placeholder="Enter your password" />
                     </div>
                     {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
                 </div>

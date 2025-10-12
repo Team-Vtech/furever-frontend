@@ -17,8 +17,8 @@ export function TextInput<T extends FieldValues>(props: TextInputProps<T>) {
     } = useController({ control, name, rules });
     const isRequired = inputProps?.required ? true : false;
     return (
-        <div className="flex flex-col w-full">
-            <Label htmlFor={name} className="text-sm mb-2 font-medium text-gray-700">
+        <div className="flex w-full flex-col">
+            <Label htmlFor={name} className="mb-2 text-sm font-medium text-gray-700">
                 {inputProps.label} {isRequired && "*"}
             </Label>
             <Input autoCapitalize="none" defaultValue={(field.value as string) || ""} {...inputProps} {...field} />

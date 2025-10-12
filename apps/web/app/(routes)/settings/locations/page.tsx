@@ -1,6 +1,6 @@
-import { Suspense } from "react";
 import LocationManagementScreen from "@/app/featured/locations/screens/LocationManagementScreen/LocationManagementScreen";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "My Locations - Furever",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function SettingsLocationsPage() {
     return (
-        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+        <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
             <LocationManagementScreen />
         </Suspense>
     );

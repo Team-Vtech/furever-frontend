@@ -1,7 +1,7 @@
 import { client } from "@/app/shared/utils/http.client.utils";
 import { JsonResponse } from "@furever/types";
-import { ChangePasswordFormValues } from "../../../(routes)/api/settings/password/password.schema";
 import { ForgotPasswordFormValues } from "../../../(routes)/api/auth/forgot-password/forgot-password.schema";
+import { ChangePasswordFormValues } from "../../../(routes)/api/settings/password/password.schema";
 import { ENDPOINTS } from "../constants";
 
 export const PasswordClient = {

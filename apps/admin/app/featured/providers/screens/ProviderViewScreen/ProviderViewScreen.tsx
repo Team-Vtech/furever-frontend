@@ -125,16 +125,14 @@ export function ProviderViewScreen({ provider }: ProviderViewScreenProps) {
                                 {provider.working_hours.map((workingHour, index) => (
                                     <div key={index} className="rounded-lg border border-gray-200 p-4">
                                         <div className="flex items-center justify-between">
-                                            <h4 className="font-medium capitalize text-gray-900">
-                                                {workingHour.day_of_week}
-                                            </h4>
+                                            <h4 className="font-medium capitalize text-gray-900">{workingHour.day_of_week}</h4>
                                             {workingHour.is_closed && (
-                                                <Badge variant="outline" className="text-red-600 border-red-200">
+                                                <Badge variant="outline" className="border-red-200 text-red-600">
                                                     Closed
                                                 </Badge>
                                             )}
                                         </div>
-                                        
+
                                         {!workingHour.is_closed && workingHour.start_time && workingHour.end_time && (
                                             <div className="mt-2">
                                                 <p className="text-sm text-gray-600">
@@ -142,20 +140,18 @@ export function ProviderViewScreen({ provider }: ProviderViewScreenProps) {
                                                 </p>
                                             </div>
                                         )}
-                                        
+
                                         {workingHour.notes && (
                                             <div className="mt-2">
-                                                <p className="text-xs text-gray-500 italic">
-                                                    {workingHour.notes}
-                                                </p>
+                                                <p className="text-xs italic text-gray-500">{workingHour.notes}</p>
                                             </div>
                                         )}
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-center py-8">
-                                <Clock className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                            <div className="py-8 text-center">
+                                <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                                 <p className="text-gray-500">No working hours defined</p>
                                 <p className="text-sm text-gray-400">Working hours can be added when editing the provider</p>
                             </div>
@@ -170,8 +166,6 @@ export function ProviderViewScreen({ provider }: ProviderViewScreenProps) {
                     <ProviderServicesSection services={provider.services || []} />
 
                     <ProviderUsersSection users={provider.users || []} />
-
-                    {/* <ProviderDocumentsSection documents={documents} /> */}
                 </div>
             </div>
         </PageLayout>

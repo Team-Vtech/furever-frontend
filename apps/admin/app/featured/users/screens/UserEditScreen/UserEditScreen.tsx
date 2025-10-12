@@ -12,7 +12,6 @@ interface UserEditScreenProps {
     user: User;
     roles: Role[];
     providers: Provider[];
-
 }
 
 export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) {

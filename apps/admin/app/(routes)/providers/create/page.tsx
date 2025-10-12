@@ -2,23 +2,25 @@ import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse } from "@furever/types/general";
 import { Certificate } from "@furever/types/index";
+import { Suspense } from "react";
 import { CreateProviderScreen } from "../../../featured/providers/screens/CreateProviderScreen/CreateProviderScreen";
 
 export default async function CreateProviderPage() {
     const certificates = await getCertificates();
-    console.log(certificates);
     return (
-        <PageLayout
-            title="Create New Provider"
-            breadcrumbs={[
-                { label: "Providers", href: "/providers" },
-                { label: "Create", href: "/providers/create" },
-            ]}
-        >
-            <div className="rounded-lg border border-gray-200 bg-white p-6">
-                <CreateProviderScreen certificates={certificates} />
-            </div>
-        </PageLayout>
+        <Suspense>
+            <PageLayout
+                title="Create New Provider"
+                breadcrumbs={[
+                    { label: "Providers", href: "/providers" },
+                    { label: "Create", href: "/providers/create" },
+                ]}
+            >
+                <div className="rounded-lg border border-gray-200 bg-white p-6">
+                    <CreateProviderScreen certificates={certificates} />
+                </div>
+            </PageLayout>
+        </Suspense>
     );
 }
 

@@ -1,9 +1,10 @@
+import { Provider } from "@furever/types";
 import { useQuery } from "@tanstack/react-query";
 import { BookingsClient } from "../../../../bookings/clients/bookings.client";
 import { ServicesClient } from "../../../../services/clients/services.client";
 import { UsersClient } from "../../../../users/clients/users.client";
 
-export function useProviderViewScreenState(providerId: number, provider?: any) {
+export function useProviderViewScreenState(providerId: number, provider?: Provider) {
     // Fetch provider bookings
     const {
         data: bookingsData,

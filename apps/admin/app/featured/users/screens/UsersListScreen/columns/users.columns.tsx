@@ -72,7 +72,7 @@ export const usersColumns: ColumnDef<User>[] = [
                     ))}
                 </div>
             );
-        }
+        },
     },
     {
         accessorKey: "status",

@@ -1,16 +1,20 @@
 "use client";
 
+import {
+    ForgotPasswordFormValues,
+    forgotPasswordSchema,
+    getForgotPasswordDefaultValues,
+} from "@/app/(routes)/api/auth/forgot-password/forgot-password.schema";
+import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { useState } from "react";
-import { Loader2, Mail, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2, Mail } from "lucide-react";
 import Link from "next/link";
-import { ForgotPasswordFormValues, forgotPasswordSchema, getForgotPasswordDefaultValues } from "@/app/(routes)/api/auth/forgot-password/forgot-password.schema";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { PasswordClient } from "../../clients/password.client";
-import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 
 interface ForgotPasswordFormProps {
     onSuccess?: () => void;
@@ -18,7 +22,7 @@ interface ForgotPasswordFormProps {
 
 export function ForgotPasswordForm({ onSuccess }: ForgotPasswordFormProps) {
     const [isSubmitted, setIsSubmitted] = useState(false);
-    
+
     const {
         control,
         handleSubmit,
@@ -50,8 +54,8 @@ export function ForgotPasswordForm({ onSuccess }: ForgotPasswordFormProps) {
             <div className="w-full space-y-4 rounded-xl bg-white p-6 shadow-lg">
                 {/* Success Header */}
                 <div className="space-y-2 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
-                        <Mail className="w-8 h-8 text-green-600" />
+                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                        <Mail className="h-8 w-8 text-green-600" />
                     </div>
                     <h2 className="font-nunito text-[24px] font-bold leading-tight text-[#171A1F]">Check your email</h2>
                     <p className="font-nunito text-[14px] leading-5 text-[#565D6D]">
@@ -67,7 +71,7 @@ export function ForgotPasswordForm({ onSuccess }: ForgotPasswordFormProps) {
                         <button
                             type="button"
                             onClick={() => setIsSubmitted(false)}
-                            className="font-nunito text-[#6D28D9] hover:text-[#5B21B6] font-medium"
+                            className="font-nunito font-medium text-[#6D28D9] hover:text-[#5B21B6]"
                         >
                             try another email address
                         </button>
@@ -77,11 +81,11 @@ export function ForgotPasswordForm({ onSuccess }: ForgotPasswordFormProps) {
                 {/* Back to Login */}
                 <div className="pt-2">
                     <Link href="/login">
-                        <Button 
-                            variant="outline" 
+                        <Button
+                            variant="outline"
                             className="font-nunito h-10 w-full rounded-lg border-[#E9ECEF] bg-white text-[16px] font-semibold text-[#6D28D9] hover:bg-[#F8F9FA]"
                         >
-                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            <ArrowLeft className="mr-2 h-4 w-4" />
                             Back to login
                         </Button>
                     </Link>
@@ -132,11 +136,7 @@ export function ForgotPasswordForm({ onSuccess }: ForgotPasswordFormProps) {
                 {/* Secondary Actions */}
                 <div className="flex items-center justify-center pt-2 text-center">
                     <Link href="/login">
-                        <Button
-                            type="button"
-                            variant="link"
-                            className="font-nunito p-0 text-[14px] font-medium text-[#565D6D] hover:text-[#374151]"
-                        >
+                        <Button type="button" variant="link" className="font-nunito p-0 text-[14px] font-medium text-[#565D6D] hover:text-[#374151]">
                             Remember your password? Sign in
                         </Button>
                     </Link>

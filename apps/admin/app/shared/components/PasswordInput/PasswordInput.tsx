@@ -30,7 +30,12 @@ export function PasswordInput<T extends FieldValues>(props: PasswordInputProps<T
                 {...inputProps}
             />
             {showToggle && (
-                <Button type="button" onClick={togglePasswordVisibility} className="rounded-l-none" aria-label={showPassword ? "Hide password" : "Show password"}>
+                <Button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="rounded-l-none"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
             )}

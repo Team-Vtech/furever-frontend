@@ -8,7 +8,7 @@ export const ENDPOINTS = {
         method: "POST",
     },
     forgotPassword: {
-        url: "/api/auth/forgot-password", 
+        url: "/api/auth/forgot-password",
         method: "POST",
     },
 } as const;

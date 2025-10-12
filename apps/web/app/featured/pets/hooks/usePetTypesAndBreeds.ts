@@ -7,12 +7,14 @@ export function usePetTypesAndBreedsQuery() {
         queryFn: ExploreClients.getFilters,
         select: (data) => ({
             petTypes: data.data.data.pet_types || [],
-            petBreeds: data.data.data.pet_types?.flatMap(type => 
-                type.pet_breeds?.map(breed => ({
-                    ...breed,
-                    pet_type_id: type.id
-                })) || []
-            ) || [],
+            petBreeds:
+                data.data.data.pet_types?.flatMap(
+                    (type) =>
+                        type.pet_breeds?.map((breed) => ({
+                            ...breed,
+                            pet_type_id: type.id,
+                        })) || [],
+                ) || [],
         }),
     });
 }

@@ -1,14 +1,17 @@
 "use client";
 
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@furever/ui/components/card";
-import { Loader2, KeyIcon, ShieldCheckIcon } from "lucide-react";
-import { ChangePasswordFormValues, changePasswordSchema, getChangePasswordDefaultValues } from "../../../../(routes)/api/settings/password/password.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { KeyIcon, Loader2, ShieldCheckIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import {
+    ChangePasswordFormValues,
+    changePasswordSchema,
+    getChangePasswordDefaultValues,
+} from "../../../../(routes)/api/settings/password/password.schema";
 import { useChangePasswordMutation } from "../../hooks/use-password.hooks";
-import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 
 export function ChangePasswordForm() {
     const changePasswordMutation = useChangePasswordMutation();
@@ -38,11 +41,11 @@ export function ChangePasswordForm() {
             <CardContent>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     {/* Security Notice */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+                    <div className="rounded-md border border-blue-200 bg-blue-50 p-4">
                         <div className="flex items-start gap-3">
-                            <ShieldCheckIcon className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                            <ShieldCheckIcon className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
                             <div className="text-sm text-blue-800">
-                                <p className="font-medium mb-1">Password Requirements:</p>
+                                <p className="mb-1 font-medium">Password Requirements:</p>
                                 <ul className="space-y-1 text-xs">
                                     <li>• At least 8 characters long</li>
                                     <li>• One uppercase letter (A-Z)</li>
@@ -82,19 +85,11 @@ export function ChangePasswordForm() {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex justify-end space-x-4 pt-4 border-t">
-                        <Button 
-                            type="button" 
-                            variant="outline"
-                            onClick={() => form.reset()}
-                        >
+                    <div className="flex justify-end space-x-4 border-t pt-4">
+                        <Button type="button" variant="outline" onClick={() => form.reset()}>
                             Cancel
                         </Button>
-                        <Button 
-                            type="submit" 
-                            disabled={changePasswordMutation.isPending}
-                            className="min-w-[140px]"
-                        >
+                        <Button type="submit" disabled={changePasswordMutation.isPending} className="min-w-[140px]">
                             {changePasswordMutation.isPending ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

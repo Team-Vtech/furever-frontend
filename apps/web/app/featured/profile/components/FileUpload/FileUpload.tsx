@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Card, CardContent } from "@furever/ui/components/card";
 import { Button } from "@furever/ui/components/button";
+import { Card, CardContent } from "@furever/ui/components/card";
 import { Progress } from "@furever/ui/components/progress";
-import { Camera, Upload, X } from "lucide-react";
 import { cn } from "@furever/ui/lib/utils";
+import { Camera, Upload, X } from "lucide-react";
+import { useState } from "react";
 
 interface FileUploadProps {
     onFileSelect: (file: File) => void;
@@ -26,7 +26,7 @@ export function FileUpload({
     isUploading = false,
     uploadProgress = 0,
     className,
-    variant = "default"
+    variant = "default",
 }: FileUploadProps) {
     const [isDragOver, setIsDragOver] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -36,7 +36,7 @@ export function FileUpload({
 
         const file = files[0];
         if (!file) return;
-        
+
         setError(null);
 
         // Validate file type
@@ -77,21 +77,8 @@ export function FileUpload({
     if (variant === "avatar") {
         return (
             <div className={cn("relative", className)}>
-                <input
-                    type="file"
-                    accept={accept}
-                    onChange={handleInputChange}
-                    className="hidden"
-                    id="avatar-upload"
-                    disabled={isUploading}
-                />
-                <label
-                    htmlFor="avatar-upload"
-                    className={cn(
-                        "cursor-pointer transition-opacity",
-                        isUploading && "cursor-not-allowed opacity-50"
-                    )}
-                >
+                <input type="file" accept={accept} onChange={handleInputChange} className="hidden" id="avatar-upload" disabled={isUploading} />
+                <label htmlFor="avatar-upload" className={cn("cursor-pointer transition-opacity", isUploading && "cursor-not-allowed opacity-50")}>
                     <Button type="button" variant="outline" className="gap-2" asChild>
                         <span>
                             <Camera className="h-4 w-4" />
@@ -102,14 +89,10 @@ export function FileUpload({
                 {isUploading && (
                     <div className="mt-2">
                         <Progress value={uploadProgress} className="h-2" />
-                        <p className="text-xs text-muted-foreground mt-1">
-                            Uploading... {Math.round(uploadProgress)}%
-                        </p>
+                        <p className="text-muted-foreground mt-1 text-xs">Uploading... {Math.round(uploadProgress)}%</p>
                     </div>
                 )}
-                {error && (
-                    <p className="text-xs text-destructive mt-1">{error}</p>
-                )}
+                {error && <p className="text-destructive mt-1 text-xs">{error}</p>}
             </div>
         );
     }
@@ -118,38 +101,27 @@ export function FileUpload({
         <div className={className}>
             <Card
                 className={cn(
-                    "border-2 border-dashed transition-colors cursor-pointer",
+                    "cursor-pointer border-2 border-dashed transition-colors",
                     isDragOver && "border-primary bg-primary/5",
                     isUploading && "cursor-not-allowed opacity-50",
-                    error && "border-destructive"
+                    error && "border-destructive",
                 )}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
             >
                 <CardContent className="flex flex-col items-center justify-center space-y-4 p-6">
-                    <input
-                        type="file"
-                        accept={accept}
-                        onChange={handleInputChange}
-                        className="hidden"
-                        id="file-upload"
-                        disabled={isUploading}
-                    />
-                    
+                    <input type="file" accept={accept} onChange={handleInputChange} className="hidden" id="file-upload" disabled={isUploading} />
+
                     {preview ? (
                         <div className="relative">
-                            <img 
-                                src={preview} 
-                                alt="Preview" 
-                                className="max-h-48 max-w-full rounded-lg object-contain"
-                            />
+                            <img src={preview} alt="Preview" className="max-h-48 max-w-full rounded-lg object-contain" />
                             {onFileRemove && !isUploading && (
                                 <Button
                                     type="button"
                                     variant="destructive"
                                     size="sm"
-                                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                                    className="absolute -right-2 -top-2 h-6 w-6 rounded-full p-0"
                                     onClick={onFileRemove}
                                 >
                                     <X className="h-3 w-3" />
@@ -157,34 +129,26 @@ export function FileUpload({
                             )}
                         </div>
                     ) : (
-                        <Upload className="h-12 w-12 text-muted-foreground" />
+                        <Upload className="text-muted-foreground h-12 w-12" />
                     )}
-                    
+
                     {isUploading ? (
-                        <div className="text-center space-y-2">
-                            <Progress value={uploadProgress} className="w-48 h-2" />
-                            <p className="text-sm text-muted-foreground">
-                                Uploading... {Math.round(uploadProgress)}%
-                            </p>
+                        <div className="space-y-2 text-center">
+                            <Progress value={uploadProgress} className="h-2 w-48" />
+                            <p className="text-muted-foreground text-sm">Uploading... {Math.round(uploadProgress)}%</p>
                         </div>
                     ) : (
-                        <div className="text-center space-y-2">
+                        <div className="space-y-2 text-center">
                             <label htmlFor="file-upload" className="cursor-pointer">
-                                <p className="text-sm font-medium">
-                                    {preview ? "Change file" : "Drop files here or click to browse"}
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                    Max file size: {maxSize}MB
-                                </p>
+                                <p className="text-sm font-medium">{preview ? "Change file" : "Drop files here or click to browse"}</p>
+                                <p className="text-muted-foreground text-xs">Max file size: {maxSize}MB</p>
                             </label>
                         </div>
                     )}
                 </CardContent>
             </Card>
-            
-            {error && (
-                <p className="text-sm text-destructive mt-2">{error}</p>
-            )}
+
+            {error && <p className="text-destructive mt-2 text-sm">{error}</p>}
         </div>
     );
 }

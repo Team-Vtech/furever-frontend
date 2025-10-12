@@ -36,39 +36,47 @@ export const certificatesSchema = z.array(certificateSchema);
 export type CertificatePayload = z.infer<typeof certificateSchema>;
 export type CertificatesPayload = z.infer<typeof certificatesSchema>;
 
-const workingHourSchema = z.object({
-    day_of_week: z.enum(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"], {
-        required_error: "Day of week is required",
-    }),
-    start_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH:MM format").optional(),
-    end_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "End time must be in HH:MM format").optional(),
-    is_closed: z.boolean(),
-    notes: z.string().optional().nullable(),
-}).superRefine((obj, ctx) => {
-    if (!obj.is_closed && (!obj.start_time || !obj.end_time)) {
-        if (!obj.start_time) {
-            ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: "Start time is required when not closed",
-                path: ["start_time"],
-            });
+const workingHourSchema = z
+    .object({
+        day_of_week: z.enum(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"], {
+            required_error: "Day of week is required",
+        }),
+        start_time: z
+            .string()
+            .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH:MM format")
+            .optional(),
+        end_time: z
+            .string()
+            .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "End time must be in HH:MM format")
+            .optional(),
+        is_closed: z.boolean(),
+        notes: z.string().optional().nullable(),
+    })
+    .superRefine((obj, ctx) => {
+        if (!obj.is_closed && (!obj.start_time || !obj.end_time)) {
+            if (!obj.start_time) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "Start time is required when not closed",
+                    path: ["start_time"],
+                });
+            }
+            if (!obj.end_time) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "End time is required when not closed",
+                    path: ["end_time"],
+                });
+            }
         }
-        if (!obj.end_time) {
+        if (obj.start_time && obj.end_time && obj.start_time >= obj.end_time) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: "End time is required when not closed",
+                message: "End time must be after start time",
                 path: ["end_time"],
             });
         }
-    }
-    if (obj.start_time && obj.end_time && obj.start_time >= obj.end_time) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "End time must be after start time",
-            path: ["end_time"],
-        });
-    }
-});
+    });
 
 const workingHoursSchema = z.array(workingHourSchema).optional();
 export type WorkingHourPayload = z.infer<typeof workingHourSchema>;
@@ -128,48 +136,48 @@ export function getProviderDefaultValues(provider?: Provider): ProviderFormValue
                 start_time: "09:00",
                 end_time: "17:00",
                 is_closed: false,
-                notes: "Regular hours"
+                notes: "Regular hours",
             },
             {
                 day_of_week: "tuesday",
                 start_time: "09:00",
                 end_time: "17:00",
                 is_closed: false,
-                notes: "Regular hours"
+                notes: "Regular hours",
             },
             {
                 day_of_week: "wednesday",
                 start_time: "09:00",
                 end_time: "17:00",
                 is_closed: false,
-                notes: "Regular hours"
+                notes: "Regular hours",
             },
             {
                 day_of_week: "thursday",
                 start_time: "09:00",
                 end_time: "17:00",
                 is_closed: false,
-                notes: "Regular hours"
+                notes: "Regular hours",
             },
             {
                 day_of_week: "friday",
                 start_time: "09:00",
                 end_time: "17:00",
                 is_closed: false,
-                notes: "Regular hours"
+                notes: "Regular hours",
             },
             {
                 day_of_week: "saturday",
                 start_time: "10:00",
                 end_time: "15:00",
                 is_closed: false,
-                notes: "Weekend hours"
+                notes: "Weekend hours",
             },
             {
                 day_of_week: "sunday",
                 is_closed: true,
-                notes: "Closed on Sundays"
-            }
+                notes: "Closed on Sundays",
+            },
         ],
     };
 }

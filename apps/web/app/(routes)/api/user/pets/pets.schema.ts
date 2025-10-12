@@ -9,7 +9,7 @@ export const petSchema = z.object({
     gender: z.enum(["Male", "Female"], { errorMap: () => ({ message: "Gender must be Male or Female" }) }),
     date_of_birth: z.string().min(1, "Date of birth is required"),
     vaccination_status: z.enum(["Yes", "No", "Not Sure"], {
-        errorMap: () => ({ message: "Vaccination status must be Yes, No, or Not Sure" })
+        errorMap: () => ({ message: "Vaccination status must be Yes, No, or Not Sure" }),
     }),
     weight: z.string().min(1, "Weight is required").max(10, "Weight must be less than 10 characters"),
     notes: z.string().max(1000, "Notes must be less than 1000 characters").optional(),

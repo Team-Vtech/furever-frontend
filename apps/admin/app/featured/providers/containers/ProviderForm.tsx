@@ -38,19 +38,19 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
         control,
     } = formMethods;
 
-    const { 
-        fields: certificateFields, 
-        append: appendCertificate, 
-        remove: removeCertificate 
+    const {
+        fields: certificateFields,
+        append: appendCertificate,
+        remove: removeCertificate,
     } = useFieldArray({
         control,
         name: "certificates",
     });
 
-    const { 
-        fields: workingHourFields, 
-        append: appendWorkingHour, 
-        remove: removeWorkingHour 
+    const {
+        fields: workingHourFields,
+        append: appendWorkingHour,
+        remove: removeWorkingHour,
     } = useFieldArray({
         control,
         name: "working_hours",
@@ -266,9 +266,7 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
                     {workingHourFields.map((field, index) => (
                         <div key={field.id} className="space-y-4 rounded-lg border border-gray-200 p-4">
                             <div className="flex items-center justify-between">
-                                <h4 className="text-md font-medium text-gray-900">
-                                    Working Day {index + 1}
-                                </h4>
+                                <h4 className="text-md font-medium text-gray-900">Working Day {index + 1}</h4>
                                 <Button
                                     type="button"
                                     variant="outline"

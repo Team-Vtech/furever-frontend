@@ -1,17 +1,16 @@
 "use client";
 
+import { getRegisterDefaultValues, RegisterFormValues, registerSchema } from "@/app/(routes)/api/auth/register/register.schema";
+import { PasswordInput } from "@/app/shared/components/PasswordInput/PasswordInput";
+import { PhoneInput } from "@/app/shared/components/PhoneInput/PhoneInput";
+import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { RegisterFormValues, registerSchema, getRegisterDefaultValues } from "@/app/(routes)/api/auth/register/register.schema";
-import { useRegisterMutation } from "../../hooks/use-auth.hooks";
-import { GoogleButton } from "../GoogleButton";
+import { useForm } from "react-hook-form";
 import { AppleButton } from "../AppleButton";
 import { FacebookButton } from "../FacebookButton";
-import { TextInput } from "@/app/shared/components/TextInput/TextInput";
-import { PhoneInput } from "@/app/shared/components/PhoneInput/PhoneInput";
-import { PasswordInput } from "@/app/shared/components/PasswordInput/PasswordInput";
+import { GoogleButton } from "../GoogleButton";
 
 interface RegisterFormProps {
     onSubmit: (data: RegisterFormValues) => void;
@@ -23,15 +22,7 @@ interface RegisterFormProps {
     error?: string;
 }
 
-export function RegisterForm({
-    onSubmit,
-    onSignIn,
-    onGoogleSignIn,
-    onAppleSignIn,
-    onFacebookSignIn,
-    isLoading = false,
-    error,
-}: RegisterFormProps) {
+export function RegisterForm({ onSubmit, onSignIn, onGoogleSignIn, onAppleSignIn, onFacebookSignIn, isLoading = false, error }: RegisterFormProps) {
     const {
         control,
         handleSubmit,

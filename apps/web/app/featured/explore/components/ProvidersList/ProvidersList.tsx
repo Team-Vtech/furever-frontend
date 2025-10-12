@@ -43,7 +43,7 @@ export function ProvidersList({ providers, pagination, isLoading }: ProvidersLis
     }
 
     return (
-        <div className="space-y-8 mb-10">
+        <div className="mb-10 space-y-8">
             {/* Providers Grid */}
             <div className="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {providers.map((provider) => (

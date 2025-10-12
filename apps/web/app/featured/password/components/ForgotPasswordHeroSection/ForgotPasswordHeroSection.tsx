@@ -9,9 +9,7 @@ export function ForgotPasswordHeroSection() {
             </div>
 
             {/* Main Heading */}
-            <h1 className="font-nunito mb-4 max-w-[400px] text-[32px] font-extrabold leading-tight text-[#19191F]">
-                Reset Your Password
-            </h1>
+            <h1 className="font-nunito mb-4 max-w-[400px] text-[32px] font-extrabold leading-tight text-[#19191F]">Reset Your Password</h1>
 
             {/* Subtitle */}
             <p className="font-nunito max-w-[450px] text-[20px] leading-relaxed text-[#19191F] opacity-80">
