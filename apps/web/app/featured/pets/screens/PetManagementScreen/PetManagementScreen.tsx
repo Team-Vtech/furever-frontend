@@ -12,8 +12,7 @@ export default function PetManagementScreen() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingPet, setEditingPet] = useState<Pet | undefined>();
 
-    const { data: petsResponse, isLoading: petsLoading } = usePetsQuery();
-    const pets = Array.isArray(petsResponse) ? petsResponse : petsResponse?.data || [];
+    const { data: pets, isLoading: petsLoading } = usePetsQuery();
 
     // Mutations
     const createPetMutation = useCreatePetMutation();
@@ -73,7 +72,7 @@ export default function PetManagementScreen() {
             </div>
 
             <PetsList
-                pets={pets}
+                pets={pets ?? []}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onAdd={handleAdd}

@@ -3,9 +3,14 @@ import { server } from "@/app/shared/utils/http.server.utils";
 import { NextRequest, NextResponse } from "next/server";
 import { PetFormValues, petSchema } from "./pets.schema";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+    const { searchParams } = request.nextUrl;
     try {
-        const response = await (await server()).get("/pets");
+        const response = await (
+            await server()
+        ).get("/pets", {
+            params: searchParams,
+        });
         return NextResponse.json(response.data);
     } catch (error) {
         return FiveHundredError(error);

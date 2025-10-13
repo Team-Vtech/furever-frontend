@@ -8,13 +8,21 @@ export type ServiceTypesGridProps = {
 };
 
 export function ServiceTypesGrid({ types }: ServiceTypesGridProps) {
-    const { addFilter, getFilter } = useFilter();
+    const { addFilter, getFilter, removeFilter } = useFilter();
     return (
         <div className="flex items-center justify-between gap-x-4">
             {types.map((type) => {
                 return (
                     <div
-                        onClick={() => addFilter("service_type", String(type.id))}
+                        onClick={() => {
+                            if (getFilter("service_type") === String(type.id)) {
+                                // Remove filter
+                                removeFilter("service_type");
+                            } else {
+                                // Add filter
+                                addFilter("service_type", String(type.id));
+                            }
+                        }}
                         key={type.id}
                         className={
                             `group flex h-full flex-1 flex-col items-center rounded-lg border p-4 transition-shadow hover:shadow-md ` +

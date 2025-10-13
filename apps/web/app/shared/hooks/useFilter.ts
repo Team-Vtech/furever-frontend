@@ -44,6 +44,10 @@ export interface UseFilterReturn {
      */
     clearFilters: () => void;
     /**
+     * Reset all filters (alias for clearFilters)
+     */
+    resetFilters: () => void;
+    /**
      * Update multiple filters at once
      */
     updateFilters: (filters: Partial<FilterState>) => void;
@@ -51,6 +55,10 @@ export interface UseFilterReturn {
      * Check if a filter exists and has a value
      */
     hasFilter: (key: string) => boolean;
+    /**
+     * Check if any filters are currently active
+     */
+    hasActiveFilters: () => boolean;
     /**
      * Get a specific filter value
      */
@@ -189,6 +197,11 @@ export function useFilter(options: UseFilterOptions = {}): UseFilterReturn {
         [searchParams],
     );
 
+    // Check if any filters are currently active
+    const hasActiveFilters = useCallback(() => {
+        return searchParams.toString().length > 0;
+    }, [searchParams]);
+
     // Get a specific filter value
     const getFilter = useCallback(
         (key: string): FilterValue => {
@@ -212,8 +225,10 @@ export function useFilter(options: UseFilterOptions = {}): UseFilterReturn {
         addFilter,
         removeFilter,
         clearFilters,
+        resetFilters: clearFilters, // Alias for clearFilters
         updateFilters,
         hasFilter,
+        hasActiveFilters,
         getFilter,
         getSearchParams,
         getSearchParamsObject,

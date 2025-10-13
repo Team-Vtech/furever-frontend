@@ -5,8 +5,9 @@ import { PetFormValues } from "../schemas/pet.schema";
 const http = client();
 
 export const PetsClient = {
-    async getPets() {
-        return http.get<JsonResponse<Pet[]>>("/api/user/pets");
+    async getPets({ queryKey }: { queryKey: (string | undefined)[] }) {
+        const [_key, searchParams] = queryKey;
+        return http.get<JsonResponse<Pet[]>>("/api/user/pets", { params: new URLSearchParams(searchParams) });
     },
 
     async getPet(id: string | number) {

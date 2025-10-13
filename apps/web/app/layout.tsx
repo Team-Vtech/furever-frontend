@@ -1,6 +1,5 @@
-import { Geist, Geist_Mono } from "next/font/google";
-
 import "@furever/ui/globals.css";
+import { Geist, Geist_Mono } from "next/font/google";
 import { HttpProvider } from "./shared/providers/HttpProvider";
 import { NextAuthProvider } from "./shared/providers/NextAuthProvider";
 import { ThemeProvider } from "./shared/providers/ThemeProvider";

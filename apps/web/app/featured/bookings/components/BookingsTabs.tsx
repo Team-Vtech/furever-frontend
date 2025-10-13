@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
+import { useBookingsTab } from "../hooks/useBookingsList";
 
 const tabs = [
     { id: "upcoming", label: "Upcoming" },
@@ -9,7 +11,18 @@ const tabs = [
 ];
 
 export function BookingsTabs() {
-    const [activeTab, setActiveTab] = useState("upcoming");
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const { activeTab } = useBookingsTab();
+
+    const handleTabChange = useCallback(
+        (tabId: string) => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("status", tabId);
+            router.push(`/bookings?${params.toString()}`);
+        },
+        [router, searchParams],
+    );
 
     return (
         <div className="mb-8">
@@ -17,7 +30,7 @@ export function BookingsTabs() {
                 {tabs.map((tab) => (
                     <button
                         key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
+                        onClick={() => handleTabChange(tab.id)}
                         className={`flex-1 rounded-md px-6 py-3 text-sm font-medium transition-all duration-200 ${
                             activeTab === tab.id
                                 ? "bg-white font-semibold text-purple-700 shadow-sm"

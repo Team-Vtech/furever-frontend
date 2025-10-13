@@ -3,13 +3,15 @@
 import { Service } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { ChevronRight, PawPrint } from "lucide-react";
+import Link from "next/link";
 import { ServiceImageCarousel } from "../ServiceImageCarousel/ServiceImageCarousel";
 
 interface ProviderServicesProps {
     services: Service[];
+    providerId: number;
 }
 
-export function ProviderServices({ services }: ProviderServicesProps) {
+export function ProviderServices({ services, providerId }: ProviderServicesProps) {
     // Helper function to format duration
     const formatDuration = (minutes: number) => {
         if (minutes < 60) {
@@ -104,7 +106,9 @@ export function ProviderServices({ services }: ProviderServicesProps) {
                             )}
 
                             <div className="border-t border-gray-200 pt-4">
-                                <Button className="w-full bg-purple-600 hover:bg-purple-700">Book this service</Button>
+                                <Link href={`/bookings/new?provider_id=${providerId}&service_id=${service.id}`}>
+                                    <Button className="w-full bg-purple-600 hover:bg-purple-700">Book this service</Button>
+                                </Link>
                             </div>
                         </div>
                     ))}

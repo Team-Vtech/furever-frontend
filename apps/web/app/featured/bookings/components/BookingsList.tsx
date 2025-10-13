@@ -1,54 +1,75 @@
+"use client";
+
+import { Skeleton } from "@furever/ui/components/skeleton";
+import { useBookingsList, useBookingsTab } from "../hooks/useBookingsList";
 import { BookingCard } from "./BookingCard";
 
-// Mock data based on the Figma design
-const mockBookings = [
-    {
-        id: "1",
-        serviceName: "Full Grooming Deluxe",
-        providerName: "Pawsome Pet Spa",
-        petName: "Sheru",
-        petBreed: "Golden Retriever",
-        date: "Wednesday, May 15, 2024",
-        time: "10:00 AM",
-        status: "upcoming" as const,
-        providerAvatar: "",
-        providerColor: "#4AC9BC",
-    },
-    {
-        id: "2",
-        serviceName: "Routine Vet Checkup",
-        providerName: "VetCare Clinic",
-        petName: "Munni",
-        petBreed: "Siamese Cat",
-        date: "Friday, May 17, 2024",
-        time: "02:30 PM",
-        status: "upcoming" as const,
-        providerAvatar: "",
-        providerColor: "#F2EC36",
-    },
-    {
-        id: "3",
-        serviceName: "Puppy Training Session",
-        providerName: "SmartPaws Trainers",
-        petName: "Raja",
-        petBreed: "Beagle",
-        date: "Saturday, May 18, 2024",
-        time: "11:00 AM",
-        status: "upcoming" as const,
-        providerAvatar: "",
-        providerColor: "#9727EC",
-    },
-];
-
 export function BookingsList() {
+    const { activeTab } = useBookingsTab();
+    const { data, isLoading, isError } = useBookingsList();
+
+    // Loading state
+    if (isLoading) {
+        return (
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                {Array.from({ length: 6 }).map((_, index) => (
+                    <div key={index} className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+                        <div className="flex items-center space-x-4">
+                            <Skeleton className="h-12 w-12 rounded-full" />
+                            <div className="flex-1 space-y-2">
+                                <Skeleton className="h-4 w-3/4" />
+                                <Skeleton className="h-3 w-1/2" />
+                                <Skeleton className="h-3 w-2/3" />
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
+    // Error state
+    if (isError) {
+        return (
+            <div className="py-12 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                    <svg className="h-8 w-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 className="mb-2 text-lg font-medium text-gray-900">Error loading bookings</h3>
+                <p className="mb-4 text-gray-600">There was an error loading your bookings. Please try again.</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="rounded-md bg-purple-600 px-6 py-2 text-white transition-colors hover:bg-purple-700"
+                >
+                    Try Again
+                </button>
+            </div>
+        );
+    }
+    console.log(data);
+
     return (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-            {mockBookings.map((booking) => (
-                <BookingCard key={booking.id} booking={booking} />
-            ))}
+        <div className="space-y-6">
+            {/* Bookings Count */}
+            {data?.bookings && data.bookings.length > 0 && (
+                <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-600">
+                        {data.bookings.length} {activeTab} booking{data.bookings.length !== 1 ? "s" : ""}
+                    </p>
+                </div>
+            )}
+
+            {/* Bookings Grid */}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                {data?.bookings?.map((booking) => (
+                    <BookingCard key={booking.id} booking={booking} />
+                ))}
+            </div>
 
             {/* Empty State */}
-            {mockBookings.length === 0 && (
+            {data?.bookings && data.bookings.length === 0 && (
                 <div className="py-12 text-center">
                     <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
                         <svg className="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

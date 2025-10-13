@@ -8,13 +8,16 @@ const QUERY_KEYS = {
 };
 
 export function usePetsQuery() {
-    return useQuery({
-        queryKey: QUERY_KEYS.pets,
-        queryFn: async () => {
-            const response = await PetsClient.getPets();
-            return response.data;
-        },
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["listPets"],
+        queryFn: PetsClient.getPets,
+        select: (data) => data.data.data,
     });
+    return {
+        data,
+        isLoading,
+        isError,
+    };
 }
 
 export function usePetQuery(id: string | number) {

@@ -60,6 +60,7 @@ export function Header() {
     const handleSignOut = async () => {
         await signOut({ callbackUrl: "/" });
     };
+    console.log(session, "session");
 
     return (
         <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">

@@ -57,6 +57,7 @@ const result = NextAuth({
                         return null;
                     }
                     return {
+                        ...response.data.data.user,
                         id: response.data.data.user.id.toString(),
                         name: response.data.data.user.name,
                         email: response.data.data.user.email,
@@ -64,10 +65,6 @@ const result = NextAuth({
                         status: response.data.data.user.status,
                         access_token: response.data.data.access_token,
                         emailVerified: response.data.data.user.emailVerified || null,
-                        address: "",
-                        created_at: "",
-                        roles: [],
-                        updated_at: "",
                     };
                 } catch (error) {
                     console.error("Auth error:", error);

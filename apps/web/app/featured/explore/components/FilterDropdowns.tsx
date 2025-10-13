@@ -2,13 +2,13 @@ import { useFilter } from "@/app/shared/hooks/useFilter";
 import { PetType } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Calendar } from "@furever/ui/components/calendar";
-import { Input } from "@furever/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@furever/ui/components/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 import { cn } from "@furever/ui/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, MapPin, PawPrint, Search } from "lucide-react";
+import { CalendarIcon, MapPin, PawPrint, RotateCcw } from "lucide-react";
 import { useExploreFilter } from "../hooks/use-filters-query";
+import { DebouncedSearchBox } from "./DebouncedSearchBox/DebouncedSearchBox";
 
 type ExploreFilter = ReturnType<typeof useExploreFilter>["filters"];
 
@@ -17,7 +17,7 @@ type ExploreFiltersProps = {
 };
 
 export function ExploreFilters({ filters }: ExploreFiltersProps) {
-    const { addFilter, getFilter, hasFilter } = useFilter();
+    const { addFilter, getFilter, hasFilter, clearFilters, hasActiveFilters } = useFilter();
 
     return (
         <div className="border border-gray-200/60 bg-gray-50/50 p-4 shadow-sm">
@@ -25,28 +25,26 @@ export function ExploreFilters({ filters }: ExploreFiltersProps) {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 {/* Search Box - Left Side */}
                 <div className="flex-1 lg:max-w-md">
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
-                        <Input
-                            placeholder="Search providers or services..."
-                            value={getFilter("q") || ""}
-                            onChange={(e) => addFilter("q", e.target.value)}
-                            className="h-10 border-gray-200 bg-white pl-10"
-                        />
-                    </div>
+                    <DebouncedSearchBox
+                        placeholder="Search providers or services..."
+                        value={getFilter("q") || ""}
+                        onSearch={(value) => addFilter("q", value)}
+                        debounceMs={300}
+                        className="w-full"
+                    />
                 </div>
 
-                {/* Filter Dropdowns - Right Side */}
-                <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+                {/* Filter Dropdowns and Reset Button - Right Side */}
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                     {/* Location Filter */}
                     <div className="space-y-2">
                         <div className="relative">
-                            <MapPin className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-                            <Input
-                                placeholder="Enter your location"
-                                className="pl-10"
+                            <DebouncedSearchBox
+                                placeholder="Enter your location..."
                                 value={getFilter("location") || ""}
-                                onChange={(e) => addFilter("location", e.target.value)}
+                                onSearch={(value) => addFilter("location", value)}
+                                debounceMs={300}
+                                icon={<MapPin className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />}
                             />
                         </div>
                     </div>
@@ -86,7 +84,7 @@ export function ExploreFilters({ filters }: ExploreFiltersProps) {
                                 <Calendar
                                     mode="single"
                                     selected={hasFilter("date") ? new Date(getFilter("date")) : undefined}
-                                    onSelect={(date) => {
+                                    onSelect={(date: Date | undefined) => {
                                         if (date) {
                                             addFilter("date", date.toISOString());
                                         }
@@ -96,6 +94,19 @@ export function ExploreFilters({ filters }: ExploreFiltersProps) {
                             </PopoverContent>
                         </Popover>
                     </div>
+
+                    {/* Reset Filters Button */}
+                    {hasActiveFilters() && (
+                        <Button
+                            variant="outline"
+                            onClick={clearFilters}
+                            className="h-10 border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-800"
+                            size="sm"
+                        >
+                            <RotateCcw className="mr-2 h-4 w-4" />
+                            Reset Filters
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>
