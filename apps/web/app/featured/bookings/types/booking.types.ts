@@ -6,7 +6,7 @@ export const bookingAddonSchema = z.object({
     quantity: z.number().int().positive("Quantity must be a positive integer").max(10, "Quantity cannot exceed 10"),
 });
 
-export const webBookingSchema = z.object({
+export const bookingSchema = z.object({
     provider_id: z.number().positive("Provider is required"),
     service_id: z.number().positive("Service is required"),
     booking_date: z
@@ -34,16 +34,13 @@ export const webBookingSchema = z.object({
     notes: z.string().max(1000, "Notes cannot exceed 1000 characters").optional().or(z.literal("")),
 
     // Add-ons selection with service_addon_id and quantity
-    addons: z
-        .array(bookingAddonSchema)
-        .default([])
-        .refine((addons) => {
-            if (!addons || addons.length === 0) return true;
-            // Check for duplicate addon IDs
-            const addonIds = addons.map((addon) => addon.service_addon_id);
-            return new Set(addonIds).size === addonIds.length;
-        }, "Duplicate addons are not allowed"),
+    addons: z.array(bookingAddonSchema).refine((addons) => {
+        if (!addons || addons.length === 0) return true;
+        // Check for duplicate addon IDs
+        const addonIds = addons.map((addon) => addon.service_addon_id);
+        return new Set(addonIds).size === addonIds.length;
+    }, "Duplicate addons are not allowed"),
 });
 
-export type WebBookingFormValues = z.infer<typeof webBookingSchema>;
+export type BookingFormValues = z.infer<typeof bookingSchema>;
 export type BookingAddon = z.infer<typeof bookingAddonSchema>;

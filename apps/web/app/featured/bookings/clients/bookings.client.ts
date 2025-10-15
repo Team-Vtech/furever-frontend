@@ -1,9 +1,9 @@
 import { client } from "@/app/shared/utils/http.client.utils";
 import { Booking, JsonResponse, PaginatedJsonResponse } from "@furever/types";
-import { WebBookingFormValues } from "../types/booking.types";
+import { BookingFormValues } from "../types/booking.types";
 
 export const BookingsClient = {
-    async createBooking(data: WebBookingFormValues) {
+    async createBooking(data: BookingFormValues) {
         const response = await client().post<JsonResponse<Booking>>("/api/bookings", data);
         return response.data;
     },

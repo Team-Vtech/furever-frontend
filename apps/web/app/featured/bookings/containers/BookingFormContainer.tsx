@@ -20,7 +20,7 @@ import { PetsClient } from "../../pets/clients/pets.client";
 import { ServicesClient } from "../../services/clients/services.client";
 import { WorkingHoursCalendar } from "../components/WorkingHoursCalendar";
 import { useCreateBookingMutation } from "../hooks/useBookings";
-import { WebBookingFormValues, webBookingSchema } from "../types/booking.types";
+import { BookingFormValues, bookingSchema } from "../types/booking.types";
 import { generateTimeSlots, isTimeSlotAvailable } from "../utils/time-slots.utils";
 
 interface BookingFormContainerProps {
@@ -38,8 +38,8 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
         setValue,
         watch,
         control,
-    } = useForm<WebBookingFormValues>({
-        resolver: zodResolver(webBookingSchema),
+    } = useForm<BookingFormValues>({
+        resolver: zodResolver(bookingSchema),
         defaultValues: {
             provider_id: provider?.id || 0,
             service_id: service?.id || 0,
@@ -164,7 +164,7 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
         return timeSlots.filter((slot) => isTimeSlotAvailable(slot.value, dateToUse));
     }, [selectedDate, watch("booking_date"), currentProvider?.working_hours, selectedService?.duration_minutes]);
 
-    const onSubmit = async (data: WebBookingFormValues) => {
+    const onSubmit = async (data: BookingFormValues) => {
         createBookingMutation.mutate(data, {
             onSuccess: () => {
                 router.push("/bookings/success");
