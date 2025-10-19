@@ -1,16 +1,14 @@
 "use client";
 
+import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { GeneralStatus, PetType } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
-import { Label } from "@furever/ui/components/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Save } from "lucide-react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { getPetTypeDefaults, PetTypeFormValues, petTypeSchema } from "../../../(routes)/api/pet-types/schema";
 import { PetBreedSection } from "../components/PetBreedSection/PetBreedSection";
-import { SelectInput } from "@/app/shared/components/SelectInput";
 
 type PetTypeFormProps = {
     onSubmit: (data: PetTypeFormValues) => void;
@@ -48,12 +46,10 @@ export function PetTypeForm({ onSubmit, isLoading = false, petType }: PetTypeFor
                         control={control}
                         name="status"
                         label="Status"
-                        options={
-                            Object.values(GeneralStatus).map((statusValue) => ({
-                                label: statusValue.charAt(0).toUpperCase() + statusValue.slice(1),
-                                value: statusValue,
-                            }))
-                        }
+                        options={Object.values(GeneralStatus).map((statusValue) => ({
+                            label: statusValue.charAt(0).toUpperCase() + statusValue.slice(1),
+                            value: statusValue,
+                        }))}
                     />
                 </div>
 

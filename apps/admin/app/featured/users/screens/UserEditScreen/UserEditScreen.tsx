@@ -1,5 +1,6 @@
 "use client";
 
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Provider, Role, User } from "@furever/types";
@@ -7,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
 import { CreateUserForm } from "../../containers/CreateUserForm";
 import { useEditUserScreenState } from "./hooks/useEditUserScreenState";
-import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 
 interface UserEditScreenProps {
     user: User;

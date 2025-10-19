@@ -8,7 +8,6 @@ import { Edit, Eye } from "lucide-react";
 import Link from "next/link";
 
 function BookingActionsCell({ booking }: { booking: Booking }) {
-
     return (
         <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>

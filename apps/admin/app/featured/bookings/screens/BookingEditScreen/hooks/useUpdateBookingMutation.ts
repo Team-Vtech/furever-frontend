@@ -1,7 +1,7 @@
 import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { BookingsClient } from "../../../clients/bookings.client";
 import { useRouter } from "next/navigation";
+import { BookingsClient } from "../../../clients/bookings.client";
 
 export function useUpdateBookingMutation() {
     const router = useRouter();
@@ -13,7 +13,6 @@ export function useUpdateBookingMutation() {
             toastUtils.success.update("Booking");
             queryClient.invalidateQueries({ queryKey: ["bookings"] });
             router.push("/bookings");
-
         },
         onError: () => {
             toastUtils.error.update("Booking");

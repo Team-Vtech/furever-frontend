@@ -3,8 +3,8 @@
 import { useFilters } from "../../hooks/useFilters";
 import DebouncedTextField from "../DebouncedTextField/DebouncedTextField";
 import DynamicFilterAutoCompleteInput from "../DynamicSelect";
-import { FilterSelect } from "../FilterSelect/FilterSelect";
 import { FilterDate } from "../FilterDate/FilterDate";
+import { FilterSelect } from "../FilterSelect/FilterSelect";
 
 type ComponentMap = {
     text: typeof DebouncedTextField;

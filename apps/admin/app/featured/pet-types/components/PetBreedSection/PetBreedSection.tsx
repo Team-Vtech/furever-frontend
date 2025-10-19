@@ -3,7 +3,6 @@
 import { PetBreedFormValues, PetTypeFormValues } from "@/app/(routes)/api/pet-types/schema";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
-import { Label } from "@furever/ui/components/label";
 import { Plus, Trash2 } from "lucide-react";
 import { Control, useFieldArray, useFormContext } from "react-hook-form";
 
@@ -40,11 +39,11 @@ export function PetBreedSection({ control }: PetBreedSectionProps) {
             </div>
 
             {/* Pet Breeds List */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {fields.map((field, index) => (
                     <div key={field.id} className="flex items-end gap-2 rounded-md border p-3">
                         {/* Pet Breed Name */}
-                        <div className="flex-1 min-w-0">
+                        <div className="min-w-0 flex-1">
                             <TextInput
                                 label="Name"
                                 required
@@ -61,7 +60,7 @@ export function PetBreedSection({ control }: PetBreedSectionProps) {
                             variant="destructive"
                             size="sm"
                             onClick={() => removePetBreed(index)}
-                            className="h-8 w-8 p-0 flex-shrink-0"
+                            className="h-8 w-8 flex-shrink-0 p-0"
                         >
                             <Trash2 className="h-4 w-4" />
                         </Button>

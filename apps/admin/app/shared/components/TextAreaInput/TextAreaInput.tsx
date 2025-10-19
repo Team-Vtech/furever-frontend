@@ -4,9 +4,10 @@ import { Label } from "@furever/ui/components/label";
 import { Textarea } from "@furever/ui/components/textarea";
 import { FieldValues, useController } from "react-hook-form";
 
-type TextAreaInputProps<T extends FieldValues> = React.ComponentProps<"textarea"> & ControlledInputProps<T> & {
-    label?: string;
-};
+type TextAreaInputProps<T extends FieldValues> = React.ComponentProps<"textarea"> &
+    ControlledInputProps<T> & {
+        label?: string;
+    };
 
 export function TextAreaInput<T extends FieldValues>(props: TextAreaInputProps<T>) {
     const { name, control, rules, ...inputProps } = props;

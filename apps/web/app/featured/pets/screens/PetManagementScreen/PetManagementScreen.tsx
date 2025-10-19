@@ -64,7 +64,6 @@ export default function PetManagementScreen() {
         setEditingPet(undefined);
     };
 
-
     // if the url has a #create-pet, open the form
     useEffect(() => {
         if (window.location.hash === "#create-pet") {

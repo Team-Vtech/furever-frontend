@@ -1,5 +1,6 @@
 "use client";
 
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Permission, Role } from "@furever/types";
@@ -8,7 +9,6 @@ import { RoleFormValues } from "../../../../(routes)/api/roles/roles.schema";
 import { RoleForm } from "../../containers/RoleForm";
 import { useDeleteRole } from "./hooks/useRoleDelete";
 import { useRoleUpdate } from "./hooks/useRoleUpdate";
-import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 
 type EditRoleScreenProps = {
     role: Role;

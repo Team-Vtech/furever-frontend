@@ -1,13 +1,13 @@
 "use client";
 
 import { ServiceFormValues } from "@/app/(routes)/api/services/services.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Addon, PetType, Provider, Service, ServiceType } from "@furever/types";
 import { ServiceForm } from "../../containers/ServiceForm";
 import { useDeleteServiceMutation } from "./hooks/useDeleteServiceMutation";
 import { useUpdateServiceMutation } from "./hooks/useUpdateServiceMutation";
-import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 
 type EditServiceScreenProps = {
     service: Service;

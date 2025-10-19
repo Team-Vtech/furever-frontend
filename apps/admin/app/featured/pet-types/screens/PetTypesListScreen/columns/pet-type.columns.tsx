@@ -5,7 +5,6 @@ import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 function PetActionsCell({ petType }: { petType: PetType }) {

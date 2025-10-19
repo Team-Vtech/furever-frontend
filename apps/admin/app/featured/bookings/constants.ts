@@ -15,7 +15,6 @@ export const ENDPOINTS = {
         url: (id: number) => `/api/bookings/${id}`,
         method: "delete",
     },
-
 } as const;
 
 export const BOOKING_STATUS_OPTIONS = [

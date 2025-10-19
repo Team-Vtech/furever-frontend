@@ -1,6 +1,7 @@
 "use client";
 
 import { PermissionFormValues } from "@/app/(routes)/api/permissions/permissions.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { toastUtils } from "@/app/shared/utils/toast.utils";
@@ -9,7 +10,6 @@ import { useRouter } from "next/navigation";
 import { PermissionForm } from "../../containers/PermissionForm";
 import { useDeletePermission } from "./hooks/usePermissionDelete";
 import { useUpdatePermission } from "./hooks/useUpdatePermission";
-import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 
 type EditPermissionScreenProps = {
     permission: Permission;

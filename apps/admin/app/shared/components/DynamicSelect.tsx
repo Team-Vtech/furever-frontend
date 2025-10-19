@@ -1,10 +1,10 @@
 import { QueryFunction, useQuery } from "@tanstack/react-query";
 
 import { PaginatedJsonResponse } from "@furever/types";
+import { Label } from "@furever/ui/components/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 import { Skeleton } from "@furever/ui/components/skeleton";
 import { map } from "lodash";
-import { Label } from "@furever/ui/components/label";
 
 export type DynamicFilterAutoCompleteInputProps = Omit<typeof Select, "value" | "onChange" | "options" | "renderInput"> & {
     setValue: (value: string) => void;

@@ -1,13 +1,12 @@
 "use client";
 
+import { ProvidersClient } from "@/app/featured/providers/clients/providers.client";
+import { ServicesClient } from "@/app/featured/services/clients/services.client";
+import { UsersClient } from "@/app/featured/users/clients/users.client";
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
 import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
 import { bookingsColumns } from "./columns/bookings.columns";
 import { useBookingsListScreenState } from "./hooks/useBookingsListScreenState";
-import { ProvidersClient } from "@/app/featured/providers/clients/providers.client";
-import { UsersClient } from "@/app/featured/users/clients/users.client";
-import { ServicesClient } from "@/app/featured/services/clients/services.client";
-import { BookingsClient } from "../../clients/bookings.client";
 
 export function BookingsListingScreen() {
     const { data, pagination, isLoading, isError, refetch } = useBookingsListScreenState();

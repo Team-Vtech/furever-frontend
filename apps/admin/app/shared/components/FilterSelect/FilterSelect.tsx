@@ -22,11 +22,7 @@ export function FilterSelect(props: SelectInputProps) {
 
     return (
         <div className="w-full">
-            {label && (
-                <Label className="text-sm font-medium text-gray-700">
-                    {label}
-                </Label>
-            )}
+            {label && <Label className="text-sm font-medium text-gray-700">{label}</Label>}
             <Select
                 value={value ? String(value) : ""}
                 onValueChange={(value) => {

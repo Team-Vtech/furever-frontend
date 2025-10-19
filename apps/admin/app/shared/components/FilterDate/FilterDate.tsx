@@ -24,13 +24,13 @@ export function FilterDate({
     placeholder = "Pick a date",
     className = "",
     disabled = false,
-    dateFormat = "yyyy-MM-dd"
+    dateFormat = "yyyy-MM-dd",
 }: FilterDateProps) {
     const [isOpen, setIsOpen] = useState(false);
-    
+
     // Convert string value to Date object for the calendar
     const selectedDate = value ? new Date(value) : undefined;
-    
+
     const handleDateSelect = (date: Date | undefined) => {
         if (date) {
             setValue(format(date, dateFormat));
@@ -42,11 +42,7 @@ export function FilterDate({
 
     return (
         <div className="w-full">
-            {label && (
-                <Label className="text-sm font-medium text-gray-700">
-                    {label}
-                </Label>
-            )}
+            {label && <Label className="text-sm font-medium text-gray-700">{label}</Label>}
             <Popover open={isOpen} onOpenChange={setIsOpen}>
                 <PopoverTrigger asChild>
                     <button
@@ -55,7 +51,7 @@ export function FilterDate({
                         className={cn(
                             "flex w-full items-center justify-between rounded-md border px-3 py-2 text-left shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500",
                             "border-gray-300",
-                            className
+                            className,
                         )}
                     >
                         <span className={cn("truncate", !value && "text-gray-500")}>
@@ -65,12 +61,7 @@ export function FilterDate({
                     </button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                        mode="single"
-                        selected={selectedDate}
-                        onSelect={handleDateSelect}
-                        initialFocus
-                    />
+                    <Calendar mode="single" selected={selectedDate} onSelect={handleDateSelect} initialFocus />
                 </PopoverContent>
             </Popover>
         </div>

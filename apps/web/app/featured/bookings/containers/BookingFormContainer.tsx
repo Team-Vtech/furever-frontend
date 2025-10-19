@@ -324,10 +324,11 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                             return (
                                                 <div
                                                     key={serviceAddon.id}
-                                                    className={`rounded-lg border p-4 transition-colors ${isSelected
-                                                        ? "border-purple-200 bg-purple-50"
-                                                        : "border-gray-200 bg-white hover:border-gray-300"
-                                                        }`}
+                                                    className={`rounded-lg border p-4 transition-colors ${
+                                                        isSelected
+                                                            ? "border-purple-200 bg-purple-50"
+                                                            : "border-gray-200 bg-white hover:border-gray-300"
+                                                    }`}
                                                 >
                                                     <div className="flex items-center justify-between">
                                                         <div className="flex items-center space-x-3">
@@ -423,8 +424,12 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                         />
                                     ) : (
                                         <p className="mt-2 text-sm text-gray-600">
-                                            You have no pets matching the selected service's pet  : {selectedService?.pet_types.map((pt) => pt.name).join(", ")}. Please add a compatible pet first. <Button asChild variant="link" size="sm">
-                                                <Link href="/pets#create-pet" className="text-purple-600 hover:text-purple-700">Add Pet</Link>
+                                            You have no pets matching the selected service's pet :{" "}
+                                            {selectedService?.pet_types.map((pt) => pt.name).join(", ")}. Please add a compatible pet first.{" "}
+                                            <Button asChild variant="link" size="sm">
+                                                <Link href="/pets#create-pet" className="text-purple-600 hover:text-purple-700">
+                                                    Add Pet
+                                                </Link>
                                             </Button>
                                         </p>
                                     )}
@@ -484,8 +489,8 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                                 !selectedDate && !watch("booking_date")
                                                     ? "Please select a date first"
                                                     : availableTimeSlots.length === 0
-                                                        ? "No available times for this date"
-                                                        : "Select time"
+                                                      ? "No available times for this date"
+                                                      : "Select time"
                                             }
                                             className="mt-1 w-full"
                                         />

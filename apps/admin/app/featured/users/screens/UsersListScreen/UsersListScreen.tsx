@@ -3,11 +3,11 @@
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
 import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
 
+import { ProvidersClient } from "@/app/featured/providers/clients/providers.client";
+import { RolesClient } from "@/app/featured/roles/clients/roles.client";
 import { FilterConfig } from "@/app/shared/components/FiltersFactory/FiltersFactory";
 import { usersColumns } from "./columns/users.columns";
 import { useUsersListScreenState } from "./hooks/useUsersListScreenState";
-import { RolesClient } from "@/app/featured/roles/clients/roles.client";
-import { ProvidersClient } from "@/app/featured/providers/clients/providers.client";
 
 const usersFilters: FilterConfig[] = [
     {

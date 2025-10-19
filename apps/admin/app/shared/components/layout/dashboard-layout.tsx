@@ -20,11 +20,11 @@ import {
 import { cn } from "@furever/ui/lib/utils";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AppLogo } from "../AppLogo/AppLogo";
-import { Breadcrumbs } from "./breadcrumbs";
-import Link from "next/link";
 import { Authorize } from "../Authorize/Authorize";
+import { Breadcrumbs } from "./breadcrumbs";
 
 export interface BreadcrumbItem {
     label: string;
@@ -100,19 +100,19 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
                                 <div className="space-y-1">
                                     {group.items.map((item) => (
                                         <Authorize permissions={item.permissions || []} condition={true} key={item.name}>
-                                        <Link
-                                            key={item.name}
-                                            href={item.href}
-                                            className={cn(
-                                                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                                                isCurrent(item.href)
-                                                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                                                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                                            )}
-                                        >
-                                            <item.icon className="h-4 w-4" />
-                                            {item.name}
-                                        </Link>
+                                            <Link
+                                                key={item.name}
+                                                href={item.href}
+                                                className={cn(
+                                                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                                                    isCurrent(item.href)
+                                                        ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                                                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                                                )}
+                                            >
+                                                <item.icon className="h-4 w-4" />
+                                                {item.name}
+                                            </Link>
                                         </Authorize>
                                     ))}
                                 </div>
