@@ -15,10 +15,7 @@ export const ENDPOINTS = {
         url: (id: number) => `/api/bookings/${id}`,
         method: "delete",
     },
-    updateBookingStatus: {
-        url: (id: number) => `/api/bookings/${id}/status`,
-        method: "patch",
-    },
+
 } as const;
 
 export const BOOKING_STATUS_OPTIONS = [

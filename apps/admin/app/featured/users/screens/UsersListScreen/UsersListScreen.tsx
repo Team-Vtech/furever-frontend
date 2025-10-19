@@ -6,6 +6,8 @@ import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
 import { FilterConfig } from "@/app/shared/components/FiltersFactory/FiltersFactory";
 import { usersColumns } from "./columns/users.columns";
 import { useUsersListScreenState } from "./hooks/useUsersListScreenState";
+import { RolesClient } from "@/app/featured/roles/clients/roles.client";
+import { ProvidersClient } from "@/app/featured/providers/clients/providers.client";
 
 const usersFilters: FilterConfig[] = [
     {
@@ -19,6 +21,29 @@ const usersFilters: FilterConfig[] = [
                 { label: "Active", value: "active" },
                 { label: "Inactive", value: "inactive" },
             ],
+        },
+    },
+    {
+        filterKey: "role_id",
+        type: "dynamicSelect",
+        props: {
+            label: "Role",
+            placeholder: "Filter by role...",
+            defaultValue: "all",
+            queryKey: "roles",
+            queryFn: RolesClient.getRoles,
+        },
+    },
+    {
+        filterKey: "provider_id",
+        type: "dynamicSelect",
+        props: {
+            label: "Provider",
+            placeholder: "Filter by provider...",
+            defaultValue: "all",
+            queryKey: "providers",
+            optionDisplayKey: "business_name",
+            queryFn: ProvidersClient.getProviders,
         },
     },
 ];

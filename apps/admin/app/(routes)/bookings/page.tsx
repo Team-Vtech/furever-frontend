@@ -3,7 +3,7 @@ import { Button } from "@furever/ui/components/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { BookingsListScreen } from "../../featured/bookings/screens/BookingsListScreen/BookingsListScreen";
+import { BookingsListingScreen } from "../../featured/bookings/screens/BookingsListingScreen/BookingsListingScreen";
 
 export default async function BookingsPage() {
     return (
@@ -21,7 +21,7 @@ export default async function BookingsPage() {
             }
         >
             <Suspense fallback={<div>Loading...</div>}>
-                <BookingsListScreen />
+                <BookingsListingScreen />
             </Suspense>
         </PageLayout>
     );

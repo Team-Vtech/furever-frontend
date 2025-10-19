@@ -19,9 +19,9 @@ export function TextInput<T extends FieldValues>(props: TextInputProps<T>) {
     return (
         <div className="flex w-full flex-col">
             <Label htmlFor={name} className="mb-2 text-sm font-medium text-gray-700">
-                {inputProps.label} {isRequired && "*"}
+                {inputProps.label} {isRequired && <span className="text-red-600">*</span>}
             </Label>
-            <Input autoCapitalize="none" defaultValue={(field.value as string) || ""} {...inputProps} {...field} />
+            <Input autoCapitalize="none"  {...inputProps} {...field} />
             {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
         </div>
     );

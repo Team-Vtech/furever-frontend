@@ -4,6 +4,7 @@ import { PaginatedJsonResponse } from "@furever/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 import { Skeleton } from "@furever/ui/components/skeleton";
 import { map } from "lodash";
+import { Label } from "@furever/ui/components/label";
 
 export type DynamicFilterAutoCompleteInputProps = Omit<typeof Select, "value" | "onChange" | "options" | "renderInput"> & {
     setValue: (value: string) => void;
@@ -41,6 +42,11 @@ function DynamicFilterAutoCompleteInput({
 
     return (
         <div className="w-full">
+            {label && (
+                <Label htmlFor={queryKey} className="text-sm font-medium text-gray-700">
+                    {label}
+                </Label>
+            )}
             <Select value={value} onValueChange={(value: string) => setValue(value)}>
                 <SelectTrigger className="w-full" value={value}>
                     <SelectValue placeholder={label} />

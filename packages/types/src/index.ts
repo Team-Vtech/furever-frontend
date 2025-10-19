@@ -285,11 +285,7 @@ export type ServiceType = {
 export type PetType = {
     id: number;
     name: string;
-    description: string;
-    is_active: boolean;
-    sort_order: number;
-    media_object: MediaObject;
-    media_object_id: number;
+    status: GeneralStatus;
     pet_breeds: PetBreed[];
 };
 
@@ -342,22 +338,14 @@ export type Booking = {
     updated_at: string;
 };
 
-export type BookingStatistics = {
-    total_bookings: number;
-    total_revenue: string;
-    bookings_by_status: Array<{
-        service_id: number;
-        service_name: string;
-        count: number;
-    }>;
-    bookings_per_provider: Array<{
-        provider_id: number;
-        provider_name: string;
-        count: number;
-    }>;
-    bookings_per_service: Record<string, number>;
-    up_coming_bookings: Array<Booking>;
-};
+export type DashboardStatistics = Record<
+    string,
+    {
+        total: number;
+        last_month: number;
+        title: string;
+    }
+>;
 
 export interface ReviewBooking {
     id: number;

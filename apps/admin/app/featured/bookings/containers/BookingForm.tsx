@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
+import { DateInput } from "@/app/shared/components/DateInput/DateInput";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
@@ -10,9 +11,9 @@ import { Label } from "@furever/ui/components/label";
 import { Skeleton } from "@furever/ui/components/skeleton";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { BookingFormValues, bookingSchema } from "../../../(routes)/api/bookings/bookings.schema";
+import { BookingFormValues, bookingSchema, getBookingDefaultValues } from "../../../(routes)/api/bookings/bookings.schema";
 import { PetTypesClient } from "../../pet-types/clients/pet-types.client";
 import { ServicesClient } from "../../services/clients/services.client";
 import { UsersClient } from "../../users/clients/users.client";
@@ -29,6 +30,7 @@ interface BookingFormProps {
 export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers }: BookingFormProps) {
     const [useExistingUser, setUseExistingUser] = useState(true);
     const [useExistingPet, setUseExistingPet] = useState(true);
+    const defaultValues = getBookingDefaultValues(booking);
     const {
         handleSubmit,
         formState: { errors },
@@ -37,17 +39,7 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
         control,
     } = useForm<BookingFormValues>({
         resolver: zodResolver(bookingSchema),
-        defaultValues: {
-            useExistingUser: true,
-            status: booking?.status || "pending",
-            booking_date: booking?.booking_date || "",
-            booking_time: booking?.booking_time ? booking.booking_time.slice(11, 16) : "",
-            notes: booking?.notes || "",
-            provider_id: booking?.provider_id || 0,
-            service_id: booking?.service_id || 0,
-            user_id: booking?.user_id || undefined,
-            pet_id: booking?.pet_id || undefined,
-        },
+        defaultValues,
     });
 
     const watchedUserId = watch("user_id");
@@ -61,21 +53,21 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
     });
 
     const { data: userPets, isLoading: isLoadingUserPets } = useQuery({
-        queryKey: ["users", "pets", watchedUserId],
+        queryKey: ["pets", "pets", watchedUserId],
         queryFn: () => UsersClient.getUserPets(watchedUserId!),
         enabled: !!watchedUserId,
         select: (data) => data.data.data,
     });
 
     const { data: services, isLoading: isLoadingServices } = useQuery({
-        queryKey: ["services", `provider_id=${watchedProviderId}`, "withAddons=true"],
+        queryKey: ["services", `provider_id=${watchedProviderId}&load=addons`],
         queryFn: ServicesClient.getServices,
         select: (data) => data.data.data,
         enabled: !!watchedProviderId,
     });
 
     const { data: petTypes, isLoading: isLoadingPetTypes } = useQuery({
-        queryKey: ["pet-types"],
+        queryKey: ["pet-types", "all=true&load=petBreeds"],
         queryFn: PetTypesClient.getPetTypes,
         enabled: !!watchedUserId,
         select: (data) => data.data.data,
@@ -86,36 +78,48 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
     const handleFormSubmit = (data: BookingFormValues) => {
         onSubmit(data);
     };
+
+    const selectedPetType = useMemo(() => {
+        if (!petTypes || !watch("pet.pet_type_id")) return null;
+        return petTypes.find((type) => type.id === watch("pet.pet_type_id")) || null;
+    }, [petTypes, watch("pet.pet_type_id")]);
+
+    const selectedService = useMemo(() => {
+        if (!services || !watchedServiceId) return null;
+        return services.find((svc) => svc.id === watchedServiceId) || null;
+    }, [services, watchedServiceId]);
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8">
-            <div className="rounded-lg border p-4">
+            <div className="space-y-4 rounded-lg border p-4">
                 <div className="space-y-4">
                     <div className="flex items-center space-x-4">
                         <h3 className="text-lg font-medium text-gray-900">Customer Information</h3>
-                        <div className="flex space-x-2">
-                            <Button
-                                type="button"
-                                variant={useExistingUser ? "default" : "outline"}
-                                size="sm"
-                                onClick={() => {
-                                    setUseExistingUser(true);
-                                    setValue("useExistingUser", true);
-                                }}
-                            >
-                                Select Existing
-                            </Button>
-                            <Button
-                                type="button"
-                                variant={!useExistingUser ? "default" : "outline"}
-                                size="sm"
-                                onClick={() => {
-                                    setUseExistingUser(false);
-                                    setValue("useExistingUser", false);
-                                }}
-                            >
-                                Create New
-                            </Button>
-                        </div>
+                        {!booking ? (
+                            <div className="flex space-x-2">
+                                <Button
+                                    type="button"
+                                    variant={useExistingUser ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={() => {
+                                        setUseExistingUser(true);
+                                        setValue("useExistingUser", true);
+                                    }}
+                                >
+                                    Select Existing
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant={!useExistingUser ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={() => {
+                                        setUseExistingUser(false);
+                                        setValue("useExistingUser", false);
+                                    }}
+                                >
+                                    Create New
+                                </Button>
+                            </div>
+                        ) : null}
                     </div>
 
                     {useExistingUser ? (
@@ -136,6 +140,7 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                                 label: `${user.name} - ${user.email}`,
                                             })) || []
                                         }
+                                        disabled={booking !== undefined}
                                         placeholder="Select customer"
                                         className="w-full"
                                     />
@@ -175,41 +180,37 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                 <TextInput id="user_phone" name="user.phone" control={control} placeholder="Enter phone number" className="mt-1" />
                                 {errors.user?.phone && <p className="mt-1 text-sm text-red-600">{errors.user?.phone.message}</p>}
                             </div>
-
-                            <div>
-                                <Label htmlFor="user_address" className="text-sm font-medium text-gray-700">
-                                    Address *
-                                </Label>
-                                <TextInput id="user_address" name="user.address" control={control} placeholder="Enter address" className="mt-1" />
-                                {errors.user?.address && <p className="mt-1 text-sm text-red-600">{errors.user?.address.message}</p>}
-                            </div>
                         </div>
                     )}
                 </div>
 
                 {watchedUserId ? (
                     <div className="space-y-4">
-                        <div className="flex items-center space-x-4">
-                            <h3 className="text-lg font-medium text-gray-900">Pet Information</h3>
-                            <div className="flex space-x-2">
-                                <Button
-                                    type="button"
-                                    variant={useExistingPet ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setUseExistingPet(true)}
-                                >
-                                    Select Existing
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant={!useExistingPet ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setUseExistingPet(false)}
-                                >
-                                    Create New
-                                </Button>
+                        {!booking ? (
+                            <div className="flex items-center space-x-4">
+                                <h3 className="text-lg font-medium text-gray-900">Pet Information</h3>
+                                <div className="flex space-x-2">
+                                    <Button
+                                        type="button"
+                                        variant={useExistingPet ? "default" : "outline"}
+                                        size="sm"
+                                        onClick={() => setUseExistingPet(true)}
+                                    >
+                                        Select Existing
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant={!useExistingPet ? "default" : "outline"}
+                                        size="sm"
+                                        onClick={() => setUseExistingPet(false)}
+                                    >
+                                        Create New
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
+                        ) : (
+                            <h3 className="text-lg font-medium text-gray-900">Pet Information</h3>
+                        )}
 
                         {useExistingPet ? (
                             <div>
@@ -226,7 +227,7 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                         })) || []
                                     }
                                     placeholder="Select pet"
-                                    disabled={(!watchedUserId && useExistingUser) || isLoadingUserPets}
+                                    disabled={(!watchedUserId && useExistingUser) || isLoadingUserPets || booking !== undefined}
                                     className="mt-1 w-full"
                                 />
                                 {useExistingUser && !watchedUserId && <p className="mt-1 text-sm text-gray-500">Please select a customer first</p>}
@@ -241,13 +242,43 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                     <TextInput id="pet_name" name="pet.name" control={control} placeholder="Enter pet name" className="mt-1" />
                                     {errors.pet?.name && <p className="mt-1 text-sm text-red-600">{errors.pet?.name.message}</p>}
                                 </div>
-
+                                {isLoadingPetTypes ? (
+                                    <Skeleton className="h-10 w-full rounded-md" />
+                                ) : (
+                                    <div>
+                                        <Label htmlFor="pet_type_id" className="text-sm font-medium text-gray-700">
+                                            Pet Type *
+                                        </Label>
+                                        <SelectInput
+                                            name="pet.pet_type_id"
+                                            control={control}
+                                            options={
+                                                petTypes?.map((petType) => ({
+                                                    value: petType.id,
+                                                    label: petType.name,
+                                                })) ?? []
+                                            }
+                                            placeholder="Select pet type"
+                                            className="mt-1 w-full"
+                                        />
+                                    </div>
+                                )}
                                 <div>
-                                    <Label htmlFor="pet_breed" className="text-sm font-medium text-gray-700">
-                                        Breed *
-                                    </Label>
-                                    <TextInput id="pet_breed" name="pet.breed" control={control} placeholder="Enter breed" className="mt-1" />
-                                    {errors.pet?.breed && <p className="mt-1 text-sm text-red-600">{errors.pet?.breed.message}</p>}
+                                    <SelectInput
+                                        label="Pet breed"
+                                        required
+                                        name="pet.pet_breed_id"
+                                        disabled={selectedPetType === null}
+                                        control={control}
+                                        options={
+                                            selectedPetType?.pet_breeds?.map((breed) => ({
+                                                value: breed.id,
+                                                label: breed.name,
+                                            })) ?? []
+                                        }
+                                        placeholder="Select pet type"
+                                        className="mt-1 w-full"
+                                    />
                                 </div>
 
                                 <div>
@@ -268,8 +299,13 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                     <Label htmlFor="pet_date_of_birth" className="text-sm font-medium text-gray-700">
                                         Date of Birth *
                                     </Label>
-                                    <TextInput id="pet_date_of_birth" name="pet.date_of_birth" control={control} type="date" className="mt-1" />
-                                    {errors.pet?.date_of_birth && <p className="mt-1 text-sm text-red-600">{errors.pet?.date_of_birth.message}</p>}
+                                    <DateInput
+                                        id="pet_date_of_birth"
+                                        name="pet.date_of_birth"
+                                        control={control}
+                                        placeholder="Select date of birth"
+                                        className="mt-1 w-full"
+                                    />
                                 </div>
 
                                 <div>
@@ -303,29 +339,6 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                     />
                                     {errors.pet?.weight && <p className="mt-1 text-sm text-red-600">{errors.pet?.weight.message}</p>}
                                 </div>
-
-                                {isLoadingPetTypes ? (
-                                    <Skeleton className="h-10 w-full rounded-md" />
-                                ) : (
-                                    <div>
-                                        <Label htmlFor="pet_type_id" className="text-sm font-medium text-gray-700">
-                                            Pet Type *
-                                        </Label>
-                                        <SelectInput
-                                            name="pet.pet_type_id"
-                                            control={control}
-                                            options={
-                                                petTypes?.map((petType) => ({
-                                                    value: petType.id,
-                                                    label: petType.name,
-                                                })) ?? []
-                                            }
-                                            placeholder="Select pet type"
-                                            className="mt-1 w-full"
-                                        />
-                                        {errors.pet?.pet_type_id && <p className="mt-1 text-sm text-red-600">{errors.pet?.pet_type_id.message}</p>}
-                                    </div>
-                                )}
 
                                 <div className="md:col-span-2">
                                     <Label htmlFor="pet_notes" className="text-sm font-medium text-gray-700">
@@ -371,36 +384,37 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                             {errors.provider_id && <p className="mt-1 text-sm text-red-600">{errors.provider_id.message}</p>}
                         </div>
 
-                        <div>
-                            <Label htmlFor="service_id" className="text-sm font-medium text-gray-700">
-                                Service *
-                            </Label>
-                            {isLoadingServices ? (
-                                <Skeleton className="h-10 w-full rounded-md" />
-                            ) : (
-                                <SelectInput
-                                    name="service_id"
-                                    control={control}
-                                    disabled={!watchedProviderId}
-                                    options={
-                                        services?.map((service) => ({
-                                            value: service.id,
-                                            label: `${service.name} - $${service.price}`,
-                                        })) ?? []
-                                    }
-                                    placeholder="Select service"
-                                    className="mt-1 w-full"
-                                />
-                            )}
-
-                            {errors.service_id && <p className="mt-1 text-sm text-red-600">{errors.service_id.message}</p>}
-                        </div>
+                        {isLoadingServices ? (
+                            <Skeleton className="h-10 w-full rounded-md" />
+                        ) : (
+                            <SelectInput
+                                name="service_id"
+                                label="Service"
+                                required
+                                control={control}
+                                disabled={!watchedProviderId}
+                                options={
+                                    services?.map((service) => ({
+                                        value: service.id,
+                                        label: `${service.name} - $${service.price}`,
+                                    })) ?? []
+                                }
+                                placeholder="Select service"
+                                className="mt-1 w-full"
+                            />
+                        )}
 
                         <div>
                             <Label htmlFor="booking_date" className="text-sm font-medium text-gray-700">
                                 Booking Date *
                             </Label>
-                            <TextInput id="booking_date" name="booking_date" control={control} type="date" className="mt-1" />
+                            <DateInput
+                                id="booking_date"
+                                name="booking_date"
+                                control={control}
+                                placeholder="Select booking date"
+                                className="mt-1 w-full"
+                            />
                             {errors.booking_date && <p className="mt-1 text-sm text-red-600">{errors.booking_date.message}</p>}
                         </div>
 
@@ -423,7 +437,7 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                 control={control}
                                 options={
                                     serviceById?.addons?.map((addon) => ({
-                                        value: addon.addon.id,
+                                        value: addon.id,
                                         label: `${addon.addon.name} - $${addon.price}`,
                                     })) ?? []
                                 }
@@ -432,27 +446,26 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                             {errors.addon_ids && <p className="mt-1 text-sm text-red-600">{errors.addon_ids.message}</p>}
                         </div>
 
-                        <div>
-                            <Label htmlFor="status" className="text-sm font-medium text-gray-700">
-                                Status *
-                            </Label>
-                            <SelectInput
-                                name="status"
-                                control={control}
-                                options={BOOKING_STATUS_OPTIONS}
-                                placeholder="Select status"
-                                className="mt-1 w-full"
-                            />
-                            {errors.status && <p className="mt-1 text-sm text-red-600">{errors.status.message}</p>}
-                        </div>
+                        <SelectInput
+                            name="status"
+                            label="Status"
+                            required
+                            control={control}
+                            options={BOOKING_STATUS_OPTIONS}
+                            placeholder="Select status"
+                            className="mt-1 w-full"
+                        />
                     </div>
 
-                    <div>
-                        <Label htmlFor="notes" className="text-sm font-medium text-gray-700">
-                            Notes
-                        </Label>
-                        <TextAreaInput id="notes" name="notes" control={control} placeholder="Enter any additional notes" className="mt-1" rows={3} />
-                    </div>
+                    <TextAreaInput
+                        label="Notes"
+                        id="notes"
+                        name="notes"
+                        control={control}
+                        placeholder="Enter any additional notes"
+                        className="mt-1"
+                        rows={3}
+                    />
                 </div>
             </div>
             {/* Booking Details */}
@@ -474,8 +487,12 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
 
 function renderBookingSummary(service: Service, selectedAddonIds: number[] | undefined) {
     const addons = service?.addons || [];
-    const selectedAddons = addons.filter((addon) => selectedAddonIds?.includes(addon.addon.id));
+    const selectedAddons = addons.filter((addon) => selectedAddonIds?.includes(addon.id));
     const totalPrice = (parseFloat(service?.price || "0") + selectedAddons.reduce((acc, addon) => acc + parseFloat(addon.price), 0)).toFixed(2);
+    console.log(
+        parseFloat(service?.price || "0"),
+        selectedAddons.reduce((acc, addon) => acc + parseFloat(addon.price), 0),
+    );
     return (
         <div className="rounded-lg border bg-gray-50 p-4">
             <h4 className="text-md mb-2 font-medium text-gray-900">Service Summary</h4>

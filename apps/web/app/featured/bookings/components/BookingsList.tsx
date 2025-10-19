@@ -1,6 +1,8 @@
 "use client";
 
+import { Button } from "@furever/ui/components/button";
 import { Skeleton } from "@furever/ui/components/skeleton";
+import Link from "next/link";
 import { useBookingsList, useBookingsTab } from "../hooks/useBookingsList";
 import { BookingCard } from "./BookingCard";
 
@@ -83,7 +85,9 @@ export function BookingsList() {
                     </div>
                     <h3 className="mb-2 text-lg font-medium text-gray-900">No bookings found</h3>
                     <p className="mb-4 text-gray-600">You don&apos;t have any bookings yet.</p>
-                    <button className="rounded-md bg-purple-600 px-6 py-2 text-white transition-colors hover:bg-purple-700">Book a Service</button>
+                    <Button asChild className="rounded-md bg-purple-600 px-6 py-2 text-white transition-colors hover:bg-purple-700">
+                        <Link href="/explore">Book a Service</Link>
+                    </Button>
                 </div>
             )}
         </div>

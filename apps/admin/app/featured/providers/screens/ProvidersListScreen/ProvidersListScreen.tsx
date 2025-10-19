@@ -6,6 +6,9 @@ import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
 import { providersColumns } from "./columns/providers.columns";
 import { useProvidersListScreenState } from "./hooks/useProvidersListScreenState";
 
+
+
+
 export function ProvidersListScreen() {
     const { data, pagination, isLoading, isError, refetch } = useProvidersListScreenState();
     if (isError) {
@@ -21,8 +24,23 @@ export function ProvidersListScreen() {
             searchPlaceholder="Search providers..."
             showToolbar={true}
             filters={{
-                config: [],
-                initialData: {},
+                config: [{
+                    filterKey: "status",
+                    type: "select",
+                    props: {
+                        label: "Status",
+                        placeholder: "Filter by status...",
+                        options: [
+                            { label: "All", value: "all" },
+                            { label: "Pending", value: "pending" },
+                            { label: "Approved", value: "approved" },
+                            { label: "Rejected", value: "rejected" },
+                        ],
+                    },
+                }],
+                initialData: {
+                    status: "all",
+                },
             }}
         />
     );

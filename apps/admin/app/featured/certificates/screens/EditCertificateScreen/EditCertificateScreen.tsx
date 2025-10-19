@@ -5,7 +5,7 @@ import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/D
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Certificate } from "@furever/types";
 import { useRouter } from "next/navigation";
-import { CertificateForm } from "../../containers/CertificateFormForm";
+import { CertificateForm } from "../../containers/CertificateForm";
 import { useDeleteCertificate } from "./hooks/useDeleteCertificate";
 import { useUpdateCertificate } from "./hooks/useUpdateCertificate";
 

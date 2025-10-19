@@ -1,8 +1,10 @@
+import { Booking } from "@furever/types/index";
+import { format } from "date-fns";
 import { z } from "zod";
 
 export const bookingSchema = z
     .object({
-        id: z.string().optional(),
+        id: z.number().optional(),
         // User selection
         useExistingUser: z.boolean(),
         user: z
@@ -10,7 +12,6 @@ export const bookingSchema = z
                 name: z.string(),
                 email: z.string(),
                 phone: z.string(),
-                address: z.string(),
             })
             .optional(),
         user_id: z.number().positive("User ID is required").optional(),
@@ -18,11 +19,11 @@ export const bookingSchema = z
         pet: z
             .object({
                 name: z.string(),
-                breed: z.string(),
+                pet_breed_id: z.number(),
                 gender: z.string(),
                 date_of_birth: z.string(),
                 vaccination_status: z.string(),
-                weight: z.number(),
+                weight: z.string(),
                 notes: z.string(),
                 pet_type_id: z.number(),
             })
@@ -42,23 +43,23 @@ export const bookingSchema = z
         (data) => {
             // If user.name is provided, the entire user object is required
             if (data.user?.name) {
-                return data.user.email && data.user.phone && data.user.address && data.user.name;
+                return data.user.email && data.user.phone && data.user.name;
             }
             // If user.name is not provided, user_id is required
             return data.user_id !== undefined;
         },
         {
-            message: "Either provide complete user information (name, email, phone, address) or a valid user_id",
+            message: "Either provide complete user information (name, email, phone) or a valid user_id",
             path: ["user"],
         },
     )
     .refine(
         (data) => {
             // If pet.name is provided, the entire pet object is required
-            if (data.pet?.name) {
+            if (data.pet_id === undefined && data.pet?.name) {
                 return (
                     data.pet.name &&
-                    data.pet.breed &&
+                    data.pet.pet_breed_id !== undefined &&
                     data.pet.gender &&
                     data.pet.date_of_birth &&
                     data.pet.vaccination_status &&
@@ -78,3 +79,22 @@ export const bookingSchema = z
     );
 
 export type BookingFormValues = z.infer<typeof bookingSchema>;
+
+export function getBookingDefaultValues(booking?: Booking): BookingFormValues {
+    return {
+        id: booking?.id || undefined,
+        useExistingUser: booking?.user_id ? true : false,
+        ...(booking && booking.user_id ? {} : { user: undefined }),
+        ...(booking && booking.user_id ? { user_id: booking.user_id } : { user_id: undefined }),
+        ...(booking && booking.pet_id ? {} : { pet: undefined }),
+        ...(booking && booking.pet_id ? { pet_id: booking.pet_id } : { pet_id: undefined }),
+        pet_id: booking?.pet_id || undefined,
+        provider_id: booking?.provider_id || 0,
+        service_id: booking?.service_id || 0,
+        booking_date: format(booking?.booking_date ?? new Date(), "yyyy-MM-dd") || "",
+        booking_time: format(booking?.booking_time ?? "", "HH:mm") || "",
+        status: booking?.status || "pending",
+        notes: booking?.notes || "",
+        addon_ids: booking?.booking_addons.map((addon) => addon.service_addon_id) || [],
+    };
+}

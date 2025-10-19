@@ -3,9 +3,13 @@ import { useSearchParams } from "next/navigation";
 import { ServicesClient } from "../../../clients/services.client";
 
 export function useServicesListScreenState() {
-    const queryString = useSearchParams().toString();
+    const searchParams = useSearchParams();
+    const queryString = searchParams.toString();
+    const override = new URLSearchParams(searchParams.toString());
+    override.set("load", "addons,provider");
+    const queryStringWithAddons = override.toString();
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["list-services", queryString],
+        queryKey: ["list-services", queryStringWithAddons],
         queryFn: ServicesClient.getServices,
     });
 

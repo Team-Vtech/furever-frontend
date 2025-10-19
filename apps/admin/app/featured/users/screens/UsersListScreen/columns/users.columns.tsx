@@ -91,6 +91,14 @@ export const usersColumns: ColumnDef<User>[] = [
         },
     },
     {
+        accessorKey: "updated_at",
+        header: "Last Updated",
+        cell: ({ row }: { row: Row<User> }) => {
+            const updatedAt = row.getValue("updated_at") as string;
+            return <div className="text-muted-foreground text-sm">{new Date(updatedAt).toLocaleDateString()}</div>;
+        },
+    },
+    {
         id: "actions",
         header: "Actions",
         cell: ({ row }: { row: Row<User> }) => {

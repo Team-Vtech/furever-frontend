@@ -40,7 +40,11 @@ export const UsersClient = {
             PaginatedJsonResponse<{
                 data: Pet[];
             }>
-        >(`${ENDPOINTS.getUsers.url}/${id}/pets`);
+        >(`${ENDPOINTS.getUsers.url}/${id}/pets`, {
+            params: {
+                load: ["petBreed", "petType"],
+            },
+        });
         return response.data;
     },
 };

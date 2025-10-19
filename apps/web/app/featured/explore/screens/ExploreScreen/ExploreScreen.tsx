@@ -7,7 +7,7 @@ import { useExploreFilter } from "../../hooks/use-filters-query";
 import { useProvidersQuery } from "../../hooks/useProviders";
 
 export function ExploreScreen() {
-    const { filters } = useExploreFilter();
+    const { filters, isLoading } = useExploreFilter();
 
     const { isLoading: providersLoading, data } = useProvidersQuery();
 
@@ -19,13 +19,13 @@ export function ExploreScreen() {
                     <div className="px-4 lg:px-6 xl:px-8">
                         {/* Explore Filters */}
                         <section id="filters-section" className="py-8">
-                            <ExploreFilters filters={filters} />
+                            <ExploreFilters filters={filters} isLoading={isLoading} />
                         </section>
 
                         {/* Browse by Category */}
                         <section id="categories-section" className="mt-8 lg:mt-12">
                             <h2 className="mb-6 text-xl font-bold text-gray-900 lg:text-2xl">Browse by Category</h2>
-                            <ServiceTypesGrid types={filters?.service_types ?? []} />
+                            <ServiceTypesGrid types={filters?.service_types ?? []} isLoading={isLoading} />
                         </section>
 
                         {/* Providers Section */}

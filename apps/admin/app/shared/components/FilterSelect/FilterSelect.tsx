@@ -1,4 +1,5 @@
 "use client";
+import { Label } from "@furever/ui/components/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
 
 export interface SelectOption {
@@ -17,28 +18,35 @@ type SelectInputProps = {
 };
 
 export function FilterSelect(props: SelectInputProps) {
-    const { options, placeholder, disabled, className, value, setValue } = props;
+    const { options, placeholder, disabled, className, value, setValue, label } = props;
 
     return (
-        <Select
-            value={value ? String(value) : ""}
-            onValueChange={(value) => {
-                // Convert back to number if the original option value was a number
-                const option = options.find((opt) => String(opt.value) === value);
-                setValue(option ? option.value : value);
-            }}
-            disabled={disabled}
-        >
-            <SelectTrigger className={`${className} w-full`}>
-                <SelectValue placeholder={placeholder} />
-            </SelectTrigger>
-            <SelectContent>
-                {options.map((option) => (
-                    <SelectItem key={String(option.value)} value={String(option.value)}>
-                        {option.label}
-                    </SelectItem>
-                ))}
-            </SelectContent>
-        </Select>
+        <div className="w-full">
+            {label && (
+                <Label className="text-sm font-medium text-gray-700">
+                    {label}
+                </Label>
+            )}
+            <Select
+                value={value ? String(value) : ""}
+                onValueChange={(value) => {
+                    // Convert back to number if the original option value was a number
+                    const option = options.find((opt) => String(opt.value) === value);
+                    setValue(option ? option.value : value);
+                }}
+                disabled={disabled}
+            >
+                <SelectTrigger className={`${className} w-full`}>
+                    <SelectValue placeholder={placeholder} />
+                </SelectTrigger>
+                <SelectContent>
+                    {options.map((option) => (
+                        <SelectItem key={String(option.value)} value={String(option.value)}>
+                            {option.label}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
     );
 }

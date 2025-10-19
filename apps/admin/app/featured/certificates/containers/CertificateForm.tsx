@@ -6,7 +6,6 @@ import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInp
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Certificate, CertificateCategory } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
-import { Label } from "@furever/ui/components/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -38,42 +37,20 @@ export function CertificateForm({ certificate, onSubmit, onCancel, isLoading }: 
         <FormProvider {...formMethods}>
             <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
                 <div className="space-y-4">
-                    <div>
-                        <Label htmlFor="name" className="text-sm font-medium text-gray-700">
-                            Name *
-                        </Label>
-                        <TextInput id="name" name="name" control={control} placeholder="Enter name" className="mt-1" />
-                        {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
-                    </div>
+                    <TextInput label="Name" required control={control} name="name" placeholder="Enter name" />
 
-                    <div>
-                        <Label htmlFor="description" className="text-sm font-medium text-gray-700">
-                            Description *
-                        </Label>
-                        <TextAreaInput
-                            id="description"
-                            name="description"
-                            control={control}
-                            placeholder="Enter addon description"
-                            rows={4}
-                            className="mt-1"
-                        />
-                        {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
-                    </div>
+                    <TextAreaInput label="Description" required control={control} name="description" placeholder="Enter description" rows={4} />
 
-                    <div className="space-y-2">
-                        <Label htmlFor="category">Category</Label>
-                        <SelectInput
-                            control={control}
-                            name="category"
-                            options={Object.values(CertificateCategory).map((certificate) => ({
-                                label: certificate.charAt(0).toUpperCase() + certificate.slice(1),
-                                value: certificate,
-                            }))}
-                        />
-
-                        {errors.category && <p className="text-sm text-red-600">{errors.category.message}</p>}
-                    </div>
+                    <SelectInput
+                        required
+                        control={control}
+                        name="category"
+                        options={Object.values(CertificateCategory).map((certificate) => ({
+                            label: certificate.charAt(0).toUpperCase() + certificate.slice(1),
+                            value: certificate,
+                        }))}
+                        label="Category"
+                    />
                 </div>
 
                 <div className="flex justify-end gap-3 border-t pt-6">

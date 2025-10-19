@@ -9,33 +9,39 @@ export const APP_NAVIGATION_LINKS: NavigationGroup[] = [
                 name: "Dashboard",
                 href: "/",
                 icon: LayoutDashboard,
+                permissions: ["view dashboard"],
             },
 
             {
                 name: "Providers",
                 href: "/providers",
                 icon: BookOpen,
+                permissions: ["view providers"],
             },
 
             {
                 name: "Services",
                 href: "/services",
                 icon: Settings,
+                permissions: ["view services"],
             },
             {
                 name: "Bookings",
                 href: "/bookings",
                 icon: Calendar,
+                permissions: ["view bookings"],
             },
             {
                 name: "Users",
                 href: "/users",
                 icon: Users,
+                permissions: ["view users"],
             },
             {
                 name: "Reviews",
                 href: "/reviews",
                 icon: Star,
+                permissions: ["view reviews"],
             },
         ],
     },

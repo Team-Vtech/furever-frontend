@@ -11,7 +11,7 @@ export const BookingsClient = {
     async getBookings({ queryKey }: { queryKey: string[] }) {
         const response = await client().get<
             PaginatedJsonResponse<{
-                bookings: Booking[];
+                data: Booking[];
             }>
         >("/api/bookings", {
             params: new URLSearchParams(queryKey[1]),

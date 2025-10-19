@@ -2,7 +2,7 @@
 
 import { CertificateFormValues } from "@/app/(routes)/api/certificates/certificates.schema";
 import { useRouter } from "next/navigation";
-import { CertificateForm } from "../../containers/CertificateFormForm";
+import { CertificateForm } from "../../containers/CertificateForm";
 import { useCreateCertificate } from "./hooks/useCreateCertificate";
 
 export function CreateCertificateScreen() {

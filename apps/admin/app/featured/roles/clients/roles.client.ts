@@ -5,7 +5,7 @@ import { RoleFormValues } from "../../../(routes)/api/roles/roles.schema";
 import { ENDPOINTS } from "../constants";
 
 export const RolesClient = {
-    async getRoles({ queryKey }: { queryKey: [string, string] }) {
+    async getRoles({ queryKey }: { queryKey: string[] }) {
         const response = await client().get<
             PaginatedJsonResponse<{
                 data: Role[];

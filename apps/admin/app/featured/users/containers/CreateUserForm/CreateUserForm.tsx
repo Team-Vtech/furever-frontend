@@ -47,7 +47,6 @@ export function CreateUserForm({ user, onSubmit, onCancel, isLoading, roles = []
         if (isError && error) {
             if (isAxiosError(error)) {
                 if (error.response?.data) {
-                    console.log(error.response.data, "error.response.data");
                     const errors: Record<keyof UserFormValues, string[]> = error.response.data.errors;
                     if (errors) {
                         Object.entries(errors).forEach(([key, messages]) => {
@@ -110,7 +109,7 @@ export function CreateUserForm({ user, onSubmit, onCancel, isLoading, roles = []
                     className="mt-1"
                     options={providers.map((provider) => ({
                         label: provider.business_name,
-                        value: String(provider.id),
+                        value: provider.id,
                     }))}
                     label="Provider"
                 />

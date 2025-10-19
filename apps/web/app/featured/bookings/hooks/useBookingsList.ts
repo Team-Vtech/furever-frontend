@@ -17,7 +17,7 @@ export function useBookingsList(options: UseBookingsListOptions = {}) {
         queryFn: BookingsClient.getBookings,
         select: (data) => {
             return {
-                bookings: data.data.bookings,
+                bookings: data.data.data,
                 pagination: data.data.pagination,
             };
         },

@@ -4,6 +4,7 @@ import { Button } from "@furever/ui/components/button";
 import { Calendar } from "@furever/ui/components/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@furever/ui/components/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@furever/ui/components/select";
+import { Skeleton } from "@furever/ui/components/skeleton";
 import { cn } from "@furever/ui/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon, MapPin, PawPrint, RotateCcw } from "lucide-react";
@@ -14,16 +15,38 @@ type ExploreFilter = ReturnType<typeof useExploreFilter>["filters"];
 
 type ExploreFiltersProps = {
     filters: ExploreFilter;
+    isLoading: boolean;
 };
 
-export function ExploreFilters({ filters }: ExploreFiltersProps) {
+export function ExploreFilters({ filters, isLoading }: ExploreFiltersProps) {
     const { addFilter, getFilter, hasFilter, clearFilters, hasActiveFilters } = useFilter();
 
+    if (isLoading) {
+        return (
+            <div className="border border-gray-200/60 bg-gray-50/50 p-4 shadow-sm">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div className="flex-1">
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                    <div className="flex flex-1 flex-row gap-4">
+                        <div className="flex-1">
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                        <div className="flex-1">
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                        <div className="flex-1">
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="border border-gray-200/60 bg-gray-50/50 p-4 shadow-sm">
             {/* Search and Filters Layout */}
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                {/* Search Box - Left Side */}
                 <div className="flex-1 lg:max-w-md">
                     <DebouncedSearchBox
                         placeholder="Search providers or services..."
@@ -33,7 +56,6 @@ export function ExploreFilters({ filters }: ExploreFiltersProps) {
                         className="w-full"
                     />
                 </div>
-
                 {/* Filter Dropdowns and Reset Button - Right Side */}
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                     {/* Location Filter */}

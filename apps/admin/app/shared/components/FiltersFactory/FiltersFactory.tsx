@@ -4,11 +4,13 @@ import { useFilters } from "../../hooks/useFilters";
 import DebouncedTextField from "../DebouncedTextField/DebouncedTextField";
 import DynamicFilterAutoCompleteInput from "../DynamicSelect";
 import { FilterSelect } from "../FilterSelect/FilterSelect";
+import { FilterDate } from "../FilterDate/FilterDate";
 
 type ComponentMap = {
     text: typeof DebouncedTextField;
     dynamicSelect: typeof DynamicFilterAutoCompleteInput;
     select: typeof FilterSelect;
+    date: typeof FilterDate;
 };
 
 export type FilterProps<T extends keyof ComponentMap> = React.ComponentProps<ComponentMap[T]>;
@@ -71,6 +73,19 @@ export function FiltersFactory({ config, initialData }: FiltersFactoryProps) {
                                     value={value}
                                     onChange={(e) => {
                                         filtersState?.addFilter(filterKey, e.target.value);
+                                    }}
+                                />
+                            );
+                        }
+                        case "date": {
+                            const componentProps = props as FilterProps<typeof type>;
+                            return (
+                                <FilterDate
+                                    key={index}
+                                    {...componentProps}
+                                    value={value}
+                                    setValue={(value) => {
+                                        filtersState?.addFilter(filterKey, value);
                                     }}
                                 />
                             );

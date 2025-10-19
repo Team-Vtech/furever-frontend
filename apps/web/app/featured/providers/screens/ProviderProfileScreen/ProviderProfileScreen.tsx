@@ -251,13 +251,17 @@ export function ProviderProfileScreen({ provider }: ProviderProfileScreenProps) 
                                 <h4 className="font-semibold text-gray-900">Contact Information</h4>
                             </div>
                             <div className="space-y-3">
-                                <Button variant="outline" className="w-full justify-start">
-                                    <Phone className="mr-2 h-4 w-4" />
-                                    {provider.phone_number}
+                                <Button asChild variant="outline" className="w-full justify-start">
+                                    <Link href={`tel:${provider.phone_number}`}>
+                                        <Phone className="mr-2 h-4 w-4" />
+                                        {provider.phone_number}
+                                    </Link>
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start">
-                                    <MessageCircle className="mr-2 h-4 w-4" />
-                                    Send a Message
+                                <Button asChild variant="outline" className="w-full justify-start">
+                                    <Link href={`https://wa.me/${provider.phone_number}`}>
+                                        <MessageCircle className="mr-2 h-4 w-4" />
+                                        Send a Message
+                                    </Link>
                                 </Button>
                             </div>
                         </div>

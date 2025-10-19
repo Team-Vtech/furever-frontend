@@ -1,7 +1,7 @@
 "use client";
 import { Pet } from "@furever/types";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@furever/ui/components/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { PetForm } from "../../components/PetForm";
 import { PetsList } from "../../components/PetsList";
@@ -63,6 +63,14 @@ export default function PetManagementScreen() {
         setIsFormOpen(false);
         setEditingPet(undefined);
     };
+
+
+    // if the url has a #create-pet, open the form
+    useEffect(() => {
+        if (window.location.hash === "#create-pet") {
+            setIsFormOpen(true);
+        }
+    }, [window.location.hash]);
 
     return (
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

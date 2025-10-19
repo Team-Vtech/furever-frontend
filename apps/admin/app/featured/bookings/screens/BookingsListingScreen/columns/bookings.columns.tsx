@@ -5,28 +5,23 @@ import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Edit, Eye } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function BookingActionsCell({ booking }: { booking: Booking }) {
-    const router = useRouter();
-
-    const handleView = () => {
-        router.push(`/bookings/${booking.id}`);
-    };
-
-    const handleEdit = () => {
-        router.push(`/bookings/${booking.id}/edit`);
-    };
 
     return (
         <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleView}>
-                <Eye className="mr-2 h-4 w-4" />
-                View
+            <Button variant="outline" size="sm" asChild>
+                <Link href={`/bookings/${booking.id}`}>
+                    <Eye className="mr-2 h-4 w-4" />
+                    View
+                </Link>
             </Button>
-            <Button variant="outline" size="sm" onClick={handleEdit}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
+            <Button variant="outline" size="sm" asChild>
+                <Link href={`/bookings/${booking.id}/edit`}>
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit
+                </Link>
             </Button>
         </div>
     );

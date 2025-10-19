@@ -6,20 +6,16 @@ import { Button } from "@furever/ui/components/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-function ServiceTypeActionsCell({ service }: { service: ServiceType }) {
-    const router = useRouter();
-
-    const handleEdit = () => {
-        router.push(`/service-types/${service.id}/edit`);
-    };
-
+function ServiceTypeActionsCell({ serviceType }: { serviceType: ServiceType }) {
     return (
         <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleEdit}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
+            <Button variant="outline" size="sm" asChild>
+                <Link href={`/service-types/${serviceType.id}/edit`}>
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit
+                </Link>
             </Button>
         </div>
     );
@@ -46,7 +42,7 @@ export const serviceTypeColumns: ColumnDef<ServiceType>[] = [
     },
     {
         accessorKey: "name",
-        header: "Service Name",
+        header: "Name",
     },
     {
         accessorKey: "description",
@@ -61,7 +57,7 @@ export const serviceTypeColumns: ColumnDef<ServiceType>[] = [
         },
     },
     {
-        accessorKey: "is_active",
+        accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {
             return (
@@ -72,11 +68,25 @@ export const serviceTypeColumns: ColumnDef<ServiceType>[] = [
         },
     },
     {
+        accessorKey: "created_at",
+        header: "Created At",
+        cell: ({ row }) => {
+            return <div className="text-muted-foreground text-sm">{new Date(row.original.created_at).toLocaleDateString()}</div>;
+        },
+    },
+    {
+        accessorKey: "updated_at",
+        header: "Updated At",
+        cell: ({ row }) => {
+            return <div className="text-muted-foreground text-sm">{new Date(row.original.updated_at).toLocaleDateString()}</div>;
+        },
+    },
+    {
         id: "actions",
         header: "Actions",
         cell: ({ row }) => {
-            const service = row.original;
-            return <ServiceTypeActionsCell service={service} />;
+            const serviceType = row.original;
+            return <ServiceTypeActionsCell serviceType={serviceType} />;
         },
     },
 ];
