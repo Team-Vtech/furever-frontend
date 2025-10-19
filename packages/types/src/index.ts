@@ -374,3 +374,8 @@ export interface State {
     state: string;
     country: string;
 }
+
+
+export interface BookingStatistics {
+    
+}

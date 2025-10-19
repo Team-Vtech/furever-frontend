@@ -27,24 +27,6 @@ function PetActionsCell({ petType }: { petType: PetType }) {
 
 export const petTypeColumns: ColumnDef<PetType>[] = [
     {
-        accessorKey: "media_object",
-        header: "Image",
-        cell: ({ row }) => {
-            return row.original.media_object ? (
-                <div className="relative h-10 w-10">
-                    <Image
-                        src={process.env.NEXT_PUBLIC_IMAGE_URL + row.original.media_object.file_path}
-                        fill
-                        className="h-10 w-10 rounded object-cover"
-                        alt="Pet Type"
-                    />
-                </div>
-            ) : (
-                <div className="bg-muted text-muted-foreground flex h-10 w-10 items-center justify-center rounded text-sm">N/A</div>
-            );
-        },
-    },
-    {
         accessorKey: "name",
         header: "Pet Type Name",
     },
