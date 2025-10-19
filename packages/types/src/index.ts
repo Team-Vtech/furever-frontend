@@ -245,10 +245,19 @@ export type Provider = {
     services?: Array<Service>;
     users?: Array<User>;
     start_from: string;
-    rating: {
-        average: number;
-        total: number;
-    };
+    reviews_average: number;
+    reviews_count: number;
+    reviews: Array<{
+        id: number;
+        booking_id: number;
+        user_id: number;
+        rating: number;
+        comment: string;
+        reviewed_at: string;
+        user: User;
+        created_at: string;
+        updated_at: string;
+    }>;
 };
 
 export type Role = {
@@ -376,3 +385,89 @@ export interface State {
 }
 
 export interface BookingStatistics {}
+
+// Notification types
+export type NotificationType =
+    | "App\\Notifications\\BookingCreatedNotification"
+    | "App\\Notifications\\BookingConfirmedNotification"
+    | "App\\Notifications\\BookingCancelledNotification"
+    | "App\\Notifications\\BookingCompletedNotification"
+    | "App\\Notifications\\PaymentReceivedNotification"
+    | "App\\Notifications\\ReminderNotification";
+
+export interface NotificationData {
+    booking_id?: number;
+    status?: string;
+    service_name?: string;
+    provider_name?: string;
+    booking_date?: string;
+    booking_time?: string;
+    pet_name?: string;
+    total_price?: number;
+    message?: string;
+    [key: string]: any;
+}
+
+export interface Notification {
+    id: string;
+    type: NotificationType;
+    data: NotificationData;
+    read_at: string | null;
+    created_at: string;
+    updated_at: string;
+    is_read: boolean;
+}
+
+export interface NotificationStats {
+    total: number;
+    unread: number;
+    read: number;
+}
+
+export interface NotificationResponse {
+    data: Notification[];
+    meta: {
+        current_page: number;
+        per_page: number;
+        total: number;
+        last_page: number;
+    };
+}
+
+export interface JsonResponse<T> {
+    success: boolean;
+    message: string;
+    data: T;
+}
+
+// Review types
+export interface Review {
+    id: number;
+    booking_id: number;
+    user_id: number;
+    rating: number;
+    comment: string;
+    reviewed_at: string;
+    user: {
+        id: number;
+        name: string;
+        email: string;
+    };
+    booking: {
+        id: number;
+        booking_date: string;
+        status: BookingStatus;
+    };
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CreateReviewRequest {
+    rating: number;
+    comment: string;
+}
+
+export interface UpdateReviewRequest {
+    rating: number;
+    comment: string;
+}

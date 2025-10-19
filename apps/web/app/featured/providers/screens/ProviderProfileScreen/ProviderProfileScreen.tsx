@@ -109,12 +109,12 @@ export function ProviderProfileScreen({ provider }: ProviderProfileScreenProps) 
                                 <h1 className="mb-2 text-4xl font-bold text-white">{provider.business_name}</h1>
                                 <div className="mb-4 flex items-center gap-2">
                                     <div className="flex items-center">
-                                        {[...Array(5)].map((_, i) => (
+                                        {[...Array(Math.floor(provider.reviews_average))].map((_, i) => (
                                             <Star key={i} className="h-5 w-5 fill-white text-white" />
                                         ))}
                                     </div>
-                                    <span className="text-lg font-medium text-white">4.9</span>
-                                    <span className="text-white/80">(158 reviews)</span>
+                                    <span className="text-lg font-medium text-white">{provider.reviews_average}</span>
+                                    <span className="text-white/80">({provider.reviews_count} reviews)</span>
                                 </div>
                                 <p className="max-w-3xl text-lg text-white/90">
                                     {provider.business_name} offers premium grooming services for all breeds in a safe, stress-free environment. Our
@@ -270,7 +270,7 @@ export function ProviderProfileScreen({ provider }: ProviderProfileScreenProps) 
 
                 {/* Reviews Section - At the end of the page */}
                 <div className="mt-12">
-                    <ProviderReviews />
+                    <ProviderReviews reviews={provider.reviews || []} />
                 </div>
             </div>
         </div>

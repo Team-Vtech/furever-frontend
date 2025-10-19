@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@furever/ui/components/avatar";
-import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import {
     DropdownMenu,
@@ -17,6 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { NotificationDropdown } from "../NotificationDropdown/NotificationDropdown";
 
 const navigationItems = [
     {
@@ -36,6 +36,12 @@ const navigationItems = [
         label: "Bookings",
         href: "/bookings",
         icon: CalendarIcon,
+    },
+    {
+        id: "notifications",
+        label: "Notifications",
+        href: "/notifications",
+        icon: BellIcon,
     },
     {
         id: "pets",
@@ -60,7 +66,6 @@ export function Header() {
     const handleSignOut = async () => {
         await signOut({ callbackUrl: "/" });
     };
-    console.log(session, "session");
 
     return (
         <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
@@ -95,12 +100,7 @@ export function Header() {
                     {/* Right side actions */}
                     <div className="flex items-center gap-4">
                         {/* Notifications */}
-                        <Button variant="ghost" size="sm" className="relative">
-                            <BellIcon className="h-5 w-5" />
-                            <Badge variant="destructive" className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center p-0 text-xs">
-                                3
-                            </Badge>
-                        </Button>
+                        <NotificationDropdown />
 
                         {/* User Authentication */}
                         {status === "loading" ? (

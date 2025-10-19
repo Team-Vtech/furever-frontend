@@ -3,8 +3,9 @@ import axios from "axios";
 
 export async function server() {
     const session = await auth();
+    const baseURL = process.env.API_BASE_URL || "http://localhost:8000";
     return axios.create({
-        baseURL: process.env.API_BASE_URL + "/api" || "http://localhost:8000/api",
+        baseURL: `${baseURL}/api`,
         headers: {
             "Content-Type": "application/json",
             Accept: "application/json",

@@ -51,7 +51,7 @@ export function ProviderServicesSection({ services }: ProviderServicesSectionPro
                             {services.map((service) => (
                                 <TableRow key={service.id}>
                                     <TableCell>
-                                        <Link href={`/services/${service.id}`} className="font-medium hover:underline">
+                                        <Link href={`/services/${service.id}/edit   `} className="font-medium hover:underline">
                                             {service.name}
                                         </Link>
                                     </TableCell>
