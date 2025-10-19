@@ -1,5 +1,5 @@
 import { client } from "@/app/shared/utils/http.client.utils";
-import { Booking,  BookingStatus, JsonResponse, PaginatedJsonResponse } from "@furever/types";
+import { Booking, BookingStatus, JsonResponse, PaginatedJsonResponse } from "@furever/types";
 import { BookingFormValues } from "../../../(routes)/api/bookings/bookings.schema";
 import { ENDPOINTS } from "../constants";
 
@@ -37,5 +37,4 @@ export const BookingsClient = {
         const response = await client().delete<JsonResponse<void>>(`${ENDPOINTS.getBookings.url}/${id}`);
         return response.data;
     },
-
 };

@@ -23,6 +23,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AppLogo } from "../AppLogo/AppLogo";
 import { Breadcrumbs } from "./breadcrumbs";
+import Link from "next/link";
+import { Authorize } from "../Authorize/Authorize";
 
 export interface BreadcrumbItem {
     label: string;
@@ -97,7 +99,8 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
                                 <h3 className="text-sidebar-foreground/60 mb-2 px-3 text-xs font-semibold uppercase tracking-wider">{group.name}</h3>
                                 <div className="space-y-1">
                                     {group.items.map((item) => (
-                                        <a
+                                        <Authorize permissions={item.permissions || []} condition={true} key={item.name}>
+                                        <Link
                                             key={item.name}
                                             href={item.href}
                                             className={cn(
@@ -109,7 +112,8 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
                                         >
                                             <item.icon className="h-4 w-4" />
                                             {item.name}
-                                        </a>
+                                        </Link>
+                                        </Authorize>
                                     ))}
                                 </div>
                             </div>

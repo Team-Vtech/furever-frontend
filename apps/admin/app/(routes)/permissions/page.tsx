@@ -1,3 +1,4 @@
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Button } from "@furever/ui/components/button";
 import { Plus } from "lucide-react";
@@ -16,12 +17,14 @@ export default function PermissionsPage() {
                 },
             ]}
             actions={
-                <Link href="/permissions/create">
-                    <Button>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add Permission
-                    </Button>
-                </Link>
+                <Authorize permissions={["create any permissions"]}>
+                    <Link href="/permissions/create">
+                        <Button>
+                            <Plus className="mr-2 h-4 w-4" />
+                            Add Permission
+                        </Button>
+                    </Link>
+                </Authorize>
             }
         >
             <PermissionsListScreen />

@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { getUserDefaultValues, UserFormValues, userSchema } from "@/app/(routes)/api/users/users.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { Provider, Role, User } from "@furever/types";
@@ -132,9 +133,11 @@ export function CreateUserForm({ user, onSubmit, onCancel, isLoading, roles = []
                         Cancel
                     </Button>
                 )}
-                <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Saving..." : user ? "Update User" : "Create User"}
-                </Button>
+                <Authorize permissions={user ? ["edit any users", "edit own users"] : ["create any users"]}>
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading ? "Saving..." : user ? "Update User" : "Create User"}
+                    </Button>
+                </Authorize>
             </div>
         </form>
     );

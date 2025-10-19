@@ -1,3 +1,4 @@
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Button } from "@furever/ui/components/button";
 import { Plus } from "lucide-react";
@@ -12,12 +13,14 @@ export default async function BookingsPage() {
             description="Manage customer bookings and appointments"
             breadcrumbs={[{ label: "Bookings", href: "/bookings" }, { label: "List" }]}
             actions={
-                <Button asChild>
-                    <Link href="/bookings/create">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Create Booking
-                    </Link>
-                </Button>
+                <Authorize permissions={["create any bookings", "create own bookings"]}>
+                    <Button asChild>
+                        <Link href="/bookings/create">
+                            <Plus className="mr-2 h-4 w-4" />
+                            Create Booking
+                        </Link>
+                    </Button>
+                </Authorize>
             }
         >
             <Suspense fallback={<div>Loading...</div>}>

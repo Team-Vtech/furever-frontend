@@ -1,6 +1,7 @@
 "use client";
 
 import { BookingFormValues } from "@/app/(routes)/api/bookings/bookings.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Booking, Provider } from "@furever/types";
@@ -29,7 +30,9 @@ export function BookingEditScreen({ booking, providers }: BookingEditScreenProps
         <PageLayout
             title={`Update booking for ${booking.user.name}`}
             actions={
-                <DeleteRecordDialog recordId={booking.id} recordName={`Booking ${booking.id}`} onDelete={handleDelete} isDeleting={isDeleting} />
+                <Authorize permissions={["delete any bookings", "delete own bookings"]}>
+                    <DeleteRecordDialog recordId={booking.id} recordName={`Booking ${booking.id}`} onDelete={handleDelete} isDeleting={isDeleting} />
+                </Authorize>
             }
             breadcrumbs={[
                 { label: "Bookings", href: "/bookings" },

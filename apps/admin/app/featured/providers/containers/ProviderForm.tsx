@@ -1,4 +1,5 @@
 "use client";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DateInput } from "@/app/shared/components/DateInput/DateInput";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
@@ -549,9 +550,11 @@ export function ProviderForm({ provider, onSubmit, onCancel, isLoading, certific
                             Cancel
                         </Button>
                     )}
-                    <Button type="submit" disabled={isLoading}>
-                        {isLoading ? "Saving..." : provider ? "Update Provider" : "Create Provider"}
-                    </Button>
+                    <Authorize permissions={provider?.id ? ["edit any providers", "edit own providers"] : ["create any providers"]} condition={false}>
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading ? "Saving..." : provider ? "Update Provider" : "Create Provider"}
+                        </Button>
+                    </Authorize>
                 </div>
             </form>
         </FormProvider>

@@ -1,6 +1,7 @@
 "use client";
 
 import { AddonFormValues } from "@/app/(routes)/api/addons/addons.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Addon } from "@furever/types";
@@ -34,7 +35,11 @@ export function EditAddonScreen({ addon }: EditAddonScreenProps) {
     return (
         <PageLayout
             title={`Update the details for "${addon.name}"`}
-            actions={<DeleteRecordDialog recordId={addon.id} recordName={addon.name} onDelete={handleDelete} isDeleting={isDeleting} />}
+            actions={
+                <Authorize permissions={["delete any addons"]} condition={false}>
+                    <DeleteRecordDialog recordId={addon.id} recordName={addon.name} onDelete={handleDelete} isDeleting={isDeleting} />
+                </Authorize>
+            }
             breadcrumbs={[
                 { label: addon.name, href: `/addons/${addon.id}` },
                 { label: "Edit", href: "#" },

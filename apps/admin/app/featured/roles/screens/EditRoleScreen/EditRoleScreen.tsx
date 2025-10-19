@@ -8,6 +8,7 @@ import { RoleFormValues } from "../../../../(routes)/api/roles/roles.schema";
 import { RoleForm } from "../../containers/RoleForm";
 import { useDeleteRole } from "./hooks/useRoleDelete";
 import { useRoleUpdate } from "./hooks/useRoleUpdate";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 
 type EditRoleScreenProps = {
     role: Role;
@@ -34,7 +35,11 @@ export function EditRoleScreen({ role, permissions }: EditRoleScreenProps) {
             title={`Edit Role: ${role.name}`}
             description="Modify the details of the role."
             breadcrumbs={[{ label: "Roles", href: "/roles" }, { label: "Edit" }]}
-            actions={<DeleteRecordDialog recordName={role.name} recordId={role.id} onDelete={deleteRole} isDeleting={isDeleting} />}
+            actions={
+                <Authorize permissions={["delete any roles"]}>
+                    <DeleteRecordDialog recordName={role.name} recordId={role.id} onDelete={deleteRole} isDeleting={isDeleting} />
+                </Authorize>
+            }
         >
             <RoleForm role={role} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={isUpdating} permissions={permissions} />
         </PageLayout>

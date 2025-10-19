@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
 import { CreateUserForm } from "../../containers/CreateUserForm";
 import { useEditUserScreenState } from "./hooks/useEditUserScreenState";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 
 interface UserEditScreenProps {
     user: User;
@@ -39,13 +40,15 @@ export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) 
             description="Update user information and settings"
             breadcrumbs={[{ label: "Users", href: "/users" }, { label: "Edit User" }]}
             actions={
-                <DeleteRecordDialog
-                    recordId={user?.id}
-                    recordName={user?.name}
-                    onDelete={handleDelete}
-                    isDeleting={isDeletingUser}
-                    triggerText="Delete User"
-                />
+                <Authorize permissions={["delete any users", "delete own users"]}>
+                    <DeleteRecordDialog
+                        recordId={user?.id}
+                        recordName={user?.name}
+                        onDelete={handleDelete}
+                        isDeleting={isDeletingUser}
+                        triggerText="Delete User"
+                    />
+                </Authorize>
             }
         >
             <div className="rounded-lg border bg-white p-6">

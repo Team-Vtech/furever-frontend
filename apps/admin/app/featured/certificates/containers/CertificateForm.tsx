@@ -1,6 +1,7 @@
 "use client";
 
 import { CertificateFormValues, certificateSchema, getCertificateDefaultValues } from "@/app/(routes)/api/certificates/certificates.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
@@ -59,9 +60,11 @@ export function CertificateForm({ certificate, onSubmit, onCancel, isLoading }: 
                             Cancel
                         </Button>
                     )}
-                    <Button type="submit" disabled={isLoading}>
-                        {isLoading ? "Saving..." : certificate ? "Update Certificate" : "Create Certificate"}
-                    </Button>
+                    <Authorize permissions={certificate ? ["edit certificates"] : ["create certificates"]}>
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading ? "Saving..." : certificate ? "Update Certificate" : "Create Certificate"}
+                        </Button>
+                    </Authorize>
                 </div>
             </form>
         </FormProvider>

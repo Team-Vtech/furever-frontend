@@ -5,16 +5,15 @@ import { createContext, useContext } from "react";
 
 type PermissionsContextType = {
     permissions: string[] | null;
-    hasPermission: (permissionName: string) => boolean;
+    hasPermission: (permissionNames: string[]) => boolean;
 };
 
 const PermissionsContext = createContext<PermissionsContextType | undefined>(undefined);
 
 export const PermissionsProvider = ({ permissions, children }: { children: React.ReactNode; permissions: string[] }) => {
-    const hasPermission = (permissionName: string) => {
-        console.log(permissionName);
+    const hasPermission = (permissionNames: string[]) => {
         if (!permissions) return false;
-        return permissions.some((perm) => perm === permissionName);
+        return permissionNames.some((perm) => permissions.includes(perm));
     };
 
     return <PermissionsContext.Provider value={{ permissions, hasPermission }}>{children}</PermissionsContext.Provider>;

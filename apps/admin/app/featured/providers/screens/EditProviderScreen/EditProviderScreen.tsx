@@ -1,5 +1,6 @@
 "use client";
 
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Certificate, Provider } from "@furever/types";
@@ -45,7 +46,14 @@ export function EditProviderScreen({ provider, certificates }: EditProviderScree
                             View Details
                         </Button>
                     </Link>
-                    <DeleteRecordDialog recordId={provider.id} recordName={provider.business_name} onDelete={handleDelete} isDeleting={isDeleting} />
+                    <Authorize permissions={["delete any providers"]}>
+                        <DeleteRecordDialog
+                            recordId={provider.id}
+                            recordName={provider.business_name}
+                            onDelete={handleDelete}
+                            isDeleting={isDeleting}
+                        />
+                    </Authorize>
                 </div>
             }
             breadcrumbs={[

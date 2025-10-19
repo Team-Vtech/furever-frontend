@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { getServiceDefaultValues, ServiceFormValues, serviceSchema } from "../../../(routes)/api/services/services.schema";
 
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
@@ -184,10 +185,11 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
 
                 {/* Add-ons Section */}
                 <AddonsSection control={control} isLoading={isLoading} addons={addons} />
-
-                <Button type="submit" disabled={isLoading} className="bg-purple-400 hover:bg-purple-500">
-                    {isLoading ? "Saving..." : service ? "Update Service" : "Create Service"}
-                </Button>
+                <Authorize permissions={service ? ["edit any services", "edit own services"] : ["create any services", "create own services"]}>
+                    <Button type="submit" disabled={isLoading} className="bg-purple-400 hover:bg-purple-500">
+                        {isLoading ? "Saving..." : service ? "Update Service" : "Create Service"}
+                    </Button>
+                </Authorize>
             </form>
         </FormProvider>
     );

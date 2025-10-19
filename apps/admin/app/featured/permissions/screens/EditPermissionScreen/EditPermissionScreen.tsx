@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { PermissionForm } from "../../containers/PermissionForm";
 import { useDeletePermission } from "./hooks/usePermissionDelete";
 import { useUpdatePermission } from "./hooks/useUpdatePermission";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 
 type EditPermissionScreenProps = {
     permission: Permission;
@@ -41,7 +42,11 @@ export function EditPermissionScreen({ permission }: EditPermissionScreenProps) 
             title={`Edit Permission: ${permission.name}`}
             description="Modify the details of the permission."
             breadcrumbs={[{ label: "Permissions", href: "/permissions" }, { label: "Edit" }]}
-            actions={<DeleteRecordDialog recordName={permission.name} recordId={permission.id} onDelete={deletePermission} isDeleting={isDeleting} />}
+            actions={
+                <Authorize permissions={["delete any permissions"]}>
+                    <DeleteRecordDialog recordName={permission.name} recordId={permission.id} onDelete={deletePermission} isDeleting={isDeleting} />
+                </Authorize>
+            }
         >
             <PermissionForm permission={permission} onSubmit={handleSubmit} onCancel={handleCancel} isLoading={isPending} />
         </PageLayout>

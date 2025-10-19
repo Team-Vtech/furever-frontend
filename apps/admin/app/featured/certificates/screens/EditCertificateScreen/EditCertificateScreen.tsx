@@ -1,6 +1,7 @@
 "use client";
 
 import { CertificateFormValues } from "@/app/(routes)/api/certificates/certificates.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Certificate } from "@furever/types";
@@ -34,7 +35,11 @@ export function EditCertificateScreen({ certificate }: EditCertificateScreenProp
     return (
         <PageLayout
             title={`Update the details for "${certificate.name}"`}
-            actions={<DeleteRecordDialog recordId={certificate.id} recordName={certificate.name} onDelete={handleDelete} isDeleting={isDeleting} />}
+            actions={
+                <Authorize permissions={["delete any certificate"]}>
+                    <DeleteRecordDialog recordId={certificate.id} recordName={certificate.name} onDelete={handleDelete} isDeleting={isDeleting} />
+                </Authorize>
+            }
             breadcrumbs={[
                 { label: certificate.name, href: `/certificates/${certificate.id}` },
                 { label: "Edit", href: "#" },

@@ -1,5 +1,6 @@
 "use client";
 
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
 import { DateInput } from "@/app/shared/components/DateInput/DateInput";
 import { SelectInput } from "@/app/shared/components/SelectInput";
@@ -477,9 +478,11 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                         Cancel
                     </Button>
                 )}
-                <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Saving..." : booking ? "Update Booking" : "Create Booking"}
-                </Button>
+                <Authorize permissions={booking ? ["edit any bookings"] : ["create any bookings"]}>
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading ? "Saving..." : booking ? "Update Booking" : "Create Booking"}
+                    </Button>
+                </Authorize>
             </div>
         </form>
     );

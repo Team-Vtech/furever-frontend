@@ -1,5 +1,6 @@
 "use client";
 
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Permission, Role } from "@furever/types";
@@ -72,9 +73,11 @@ export function RoleForm({ role, onSubmit, onCancel, isLoading, permissions }: R
                         Cancel
                     </Button>
                 )}
-                <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Saving..." : role ? "Update Role" : "Create Role"}
-                </Button>
+                <Authorize permissions={role ? ["edit any roles"] : ["create any roles"]}>
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading ? "Saving..." : role ? "Update Role" : "Create Role"}
+                    </Button>
+                </Authorize>
             </div>
         </form>
     );

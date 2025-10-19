@@ -1,5 +1,6 @@
 "use client";
 
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@furever/ui/components/card";
@@ -8,6 +9,7 @@ import { Input } from "@furever/ui/components/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@furever/ui/components/table";
 import { cn } from "@furever/ui/lib/utils";
 import { Edit2, Filter, MoreHorizontal, Pause, Play, Plus, Search, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 interface Service {
@@ -132,10 +134,14 @@ export function ServicesTable({ className }: ServicesTableProps) {
             <CardHeader>
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-2xl font-bold">Services Management</CardTitle>
-                    <Button>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add New Service
-                    </Button>
+                    <Authorize permissions={["create any services", "create own services"]}>
+                        <Button asChild>
+                            <Link href="/services/create">
+                                <Plus className="mr-2 h-4 w-4" />
+                                Add New Service
+                            </Link>
+                        </Button>
+                    </Authorize>
                 </div>
 
                 {/* Filters */}

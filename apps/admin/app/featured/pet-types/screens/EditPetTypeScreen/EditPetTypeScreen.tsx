@@ -1,6 +1,7 @@
 "use client";
 
 import { PetTypeFormValues } from "@/app/(routes)/api/pet-types/schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { toastUtils } from "@/app/shared/utils/toast.utils";
@@ -42,20 +43,22 @@ export default function EditPetTypeScreen({ petType }: EditPetTypeScreenProps) {
                 },
             ]}
             actions={
-                <DeleteRecordDialog
-                    isDeleting={deletePetType.isPending}
-                    onDelete={async () => {
-                        try {
-                            await deletePetType.mutateAsync(petType.id);
-                            toastUtils.success.create("Pet type deleted successfully");
-                            router.push("/pet-types");
-                        } catch {
-                            toastUtils.error.create("Failed to delete pet type");
-                        }
-                    }}
-                    recordId={petType.id}
-                    recordName={petType.name}
-                />
+                <Authorize permissions={["delete any pet types"]}>
+                    <DeleteRecordDialog
+                        isDeleting={deletePetType.isPending}
+                        onDelete={async () => {
+                            try {
+                                await deletePetType.mutateAsync(petType.id);
+                                toastUtils.success.create("Pet type deleted successfully");
+                                router.push("/pet-types");
+                            } catch {
+                                toastUtils.error.create("Failed to delete pet type");
+                            }
+                        }}
+                        recordId={petType.id}
+                        recordName={petType.name}
+                    />
+                </Authorize>
             }
         >
             <div className="container mx-auto px-4 py-8">

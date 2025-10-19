@@ -7,6 +7,7 @@ import { Addon, PetType, Provider, Service, ServiceType } from "@furever/types";
 import { ServiceForm } from "../../containers/ServiceForm";
 import { useDeleteServiceMutation } from "./hooks/useDeleteServiceMutation";
 import { useUpdateServiceMutation } from "./hooks/useUpdateServiceMutation";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 
 type EditServiceScreenProps = {
     service: Service;
@@ -34,7 +35,11 @@ export function EditServiceScreen({ service, serviceTypes, petTypes, providers, 
                     href: `/services/${service?.id}/edit`,
                 },
             ]}
-            actions={<DeleteRecordDialog isDeleting={isDeleting} onDelete={deleteService} recordId={service.id} recordName={service.name} />}
+            actions={
+                <Authorize permissions={["delete any services", "delete own services"]}>
+                    <DeleteRecordDialog isDeleting={isDeleting} onDelete={deleteService} recordId={service.id} recordName={service.name} />
+                </Authorize>
+            }
         >
             <div className="container mx-auto px-4 py-8">
                 <ServiceForm

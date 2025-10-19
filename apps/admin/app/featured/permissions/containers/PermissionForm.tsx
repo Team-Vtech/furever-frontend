@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { getPermissionDefaultValues, PermissionFormValues, permissionSchema } from "@/app/(routes)/api/permissions/permissions.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
 import { Permission } from "@furever/types";
 import { useEffect } from "react";
@@ -78,9 +79,11 @@ export function PermissionForm({ permission, onSubmit, onCancel, isLoading }: Pe
                         Cancel
                     </Button>
                 )}
-                <Button type="submit" disabled={isLoading || rolesLoading}>
-                    {isLoading ? "Saving..." : permission ? "Update Permission" : "Create Permission"}
-                </Button>
+                <Authorize permissions={permission ? ["edit any permissions"] : ["create any permissions"]}>
+                    <Button type="submit" disabled={isLoading || rolesLoading}>
+                        {isLoading ? "Saving..." : permission ? "Update Permission" : "Create Permission"}
+                    </Button>
+                </Authorize>
             </div>
         </form>
     );

@@ -1,6 +1,7 @@
 "use client";
 
 import { AddonFormValues, addonSchema } from "@/app/(routes)/api/addons/addons.schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
@@ -75,9 +76,11 @@ export function AddonForm({ addon, onSubmit, onCancel, isLoading }: AddonFormPro
                             Cancel
                         </Button>
                     )}
-                    <Button type="submit" disabled={isLoading}>
-                        {isLoading ? "Saving..." : addon ? "Update Addon" : "Create Addon"}
-                    </Button>
+                    <Authorize permissions={addon ? ["edit any addons"] : ["create any addons"]}>
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading ? "Saving..." : addon ? "Update Addon" : "Create Addon"}
+                        </Button>
+                    </Authorize>
                 </div>
             </form>
         </FormProvider>
