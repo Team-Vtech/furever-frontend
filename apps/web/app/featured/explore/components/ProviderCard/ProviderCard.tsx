@@ -64,8 +64,8 @@ export function ProviderCard({ provider }: ProviderCardProps) {
                 {/* Rating */}
                 <div className="flex items-center gap-2 text-sm">
                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-medium text-gray-900">{provider.rating.average}</span>
-                    <span className="text-gray-600">({provider.rating.total} reviews)</span>
+                    <span className="font-medium text-gray-900">{provider.reviews_average}</span>
+                    <span className="text-gray-600">({provider.reviews_count} reviews)</span>
                 </div>
 
                 {/* Starting Price */}

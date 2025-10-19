@@ -1,19 +1,17 @@
 import { ReviewBookingScreen } from "@/app/featured/reviews/screens/ReviewBookingScreen";
 import { MainLayout } from "@/app/shared/components/MainLayout";
-import { Suspense } from "react";
 
 interface ReviewBookingPageProps {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
-export default function ReviewBookingPage({ params }: ReviewBookingPageProps) {
+export default async function ReviewBookingPage({ params }: ReviewBookingPageProps) {
+    const { id } = await params;
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <MainLayout>
-                <ReviewBookingScreen bookingId={params.id} />
-            </MainLayout>
-        </Suspense>
+        <MainLayout>
+            <ReviewBookingScreen bookingId={id} />
+        </MainLayout>
     );
 }

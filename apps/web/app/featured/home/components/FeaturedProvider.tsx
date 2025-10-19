@@ -111,9 +111,9 @@ export function FeaturedProviders() {
                                         <div className="text-right">
                                             <div className="flex items-center gap-1 text-sm font-medium">
                                                 <Star className="fill-primary text-primary h-4 w-4" />
-                                                {provider.rating?.average?.toFixed(1) || "N/A"}
+                                                {provider.reviews_average?.toFixed(1) || "N/A"}
                                             </div>
-                                            <div className="text-muted-foreground text-xs">{provider.rating?.total || 0} reviews</div>
+                                            <div className="text-muted-foreground text-xs">{provider.reviews_count || 0} reviews</div>
                                         </div>
                                     </div>
 

@@ -232,15 +232,18 @@ export function BookingDetailsScreen({ booking }: BookingDetailsScreenProps) {
                                         <label className="text-sm font-medium text-gray-600">Contact Phone</label>
                                         <p className="flex items-center text-sm text-gray-900">
                                             <Phone className="mr-1 h-3 w-3" />
-                                            {booking.provider.phone}
+                                            {booking.provider.phone_number}
                                         </p>
                                     </div>
-                                    {booking.provider.address && (
+                                    {booking.provider.location && (
                                         <div>
                                             <label className="text-sm font-medium text-gray-600">Address</label>
                                             <p className="flex items-center text-sm text-gray-900">
                                                 <MapPin className="mr-1 h-3 w-3" />
-                                                {booking.provider.address}
+                                                {booking.provider.location.address}
+                                                {booking.provider.location.city}, {booking.provider.location.state},{" "}
+                                                {booking.provider.location.country}
+                                                {booking.provider.location.postal_code && ` ${booking.provider.location.postal_code}`}
                                             </p>
                                         </div>
                                     )}

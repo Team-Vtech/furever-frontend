@@ -292,7 +292,7 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
                 {/* Featured Review Section */}
                 {reviews.length > 0 && (
                     <div className="mb-8">
-                        <FeaturedReview review={reviews[0]} />
+                        <FeaturedReview review={reviews[0]!} />
                     </div>
                 )}
 
