@@ -10,7 +10,7 @@ interface FooterProps {
 
 const navigationLinks = [
     { label: "Home", href: "/" },
-    { label: "Services", href: "/services" },
+    { label: "Services", href: "/explore" },
     { label: "About Us", href: "/about" },
     { label: "FAQs", href: "/faqs" },
     { label: "Contact", href: "/contact" },
