@@ -3,12 +3,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { useSearchParams } from "next/navigation";
 
-/**
- * Custom hook for handling paginated requests with infinite scrolling
- * @param queryKey - Unique query key for React Query caching
- * @param queryFn - Function that fetches data for a specific page
- * @returns useInfiniteQuery result with proper pagination handling
- */
 export function usePaginatedRequest<TData = Record<string, unknown>>(
     queryKey: string[],
     queryFn: (pageParam?: number, queryString?: string) => Promise<AxiosResponse<PaginatedJsonResponse<TData>>>,
@@ -22,11 +16,11 @@ export function usePaginatedRequest<TData = Record<string, unknown>>(
         initialPageParam: 1,
         getNextPageParam: (lastPage) => {
             const pagination = lastPage.data.data.pagination;
-            return pagination.has_more ? pagination.next_page : undefined;
+            return pagination.current_page < pagination.last_page ? pagination.current_page + 1 : undefined;
         },
         getPreviousPageParam: (firstPage) => {
             const pagination = firstPage.data.data.pagination;
-            return pagination.prev_page > 0 ? pagination.prev_page : undefined;
+            return pagination.current_page > 1 ? pagination.current_page - 1 : undefined;
         },
     });
 }

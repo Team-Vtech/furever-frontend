@@ -91,7 +91,7 @@ export function ProviderServices({ services, providerId }: ProviderServicesProps
                                                     type="checkbox"
                                                     className="mr-3 h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                                 />
-                                                {addon.addon.name} (+${parseFloat(addon.price).toFixed(2)} / {addon.unit})
+                                                {addon.addon.name} (+${parseFloat(addon.price).toFixed(2)})
                                             </label>
                                         ))}
                                     </div>

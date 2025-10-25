@@ -4,7 +4,6 @@ import { Badge, badgeVariants, VariantProps } from "@furever/ui/components/badge
 const statusStyles: Record<GeneralStatus, VariantProps<typeof badgeVariants>["variant"]> = {
     [GeneralStatus.ACTIVE]: "success",
     [GeneralStatus.DISABLED]: "warning",
-    [GeneralStatus.DELETED]: "danger",
 };
 
 interface StatusBadgeProps {

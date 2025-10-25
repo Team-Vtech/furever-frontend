@@ -1,24 +1,11 @@
 "use client";
 
+import { Transaction } from "@furever/types/index";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Download, Eye } from "lucide-react";
 import Link from "next/link";
-
-// Transaction type based on the provided data structure
-interface Transaction {
-    id: number;
-    paddle_id: string;
-    invoice_number: string;
-    status: string;
-    total: number;
-    tax: number;
-    invoicePdf: string;
-    currency: string;
-    billed_at: string;
-    created_at: string;
-}
 
 export const transactionsColumns: ColumnDef<Transaction>[] = [
     {

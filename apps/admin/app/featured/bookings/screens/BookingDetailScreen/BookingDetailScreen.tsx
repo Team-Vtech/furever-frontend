@@ -131,7 +131,7 @@ export function BookingDetailScreen({ booking }: BookingDetailScreenProps) {
                                 <Button
                                     variant="outline"
                                     onClick={() => {
-                                        updateBookingStatus("cancelled");
+                                        updateBookingStatus(BookingStatus.CANCELLED);
                                     }}
                                     className="flex-1"
                                 >
@@ -142,7 +142,7 @@ export function BookingDetailScreen({ booking }: BookingDetailScreenProps) {
                                 <Button
                                     className="flex-1 bg-purple-500 hover:bg-purple-600"
                                     onClick={() => {
-                                        updateBookingStatus("confirmed");
+                                        updateBookingStatus(BookingStatus.CONFIRMED);
                                     }}
                                 >
                                     Confirm Booking
