@@ -1,10 +1,14 @@
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { CreateButton } from "@/app/shared/components/CreateButton";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Button } from "@furever/ui/components/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { ServicesListScreen } from "../../featured/services/screens/ServicesListScreen/ServicesListScreen";
+
+export const metadata: Metadata = {
+    title: "Services Management",
+    description: "Manage your services, pricing, and availability",
+};
 
 export default function ServicesPage() {
     return (
@@ -14,12 +18,7 @@ export default function ServicesPage() {
             breadcrumbs={[{ label: "Services", href: "/services" }, { label: "List" }]}
             actions={
                 <Authorize permissions={["create any services", "create own services"]}>
-                    <Button asChild>
-                        <Link href="/services/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Create Service
-                        </Link>
-                    </Button>
+                    <CreateButton label="Create Service" href="/services/create" />
                 </Authorize>
             }
         >

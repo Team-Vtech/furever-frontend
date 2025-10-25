@@ -11,6 +11,10 @@ export const ENDPOINTS = {
         url: (id: number) => `/api/bookings/${id}`,
         method: "put",
     },
+    updateBookingStatus: {
+        url: (id: number) => `/api/bookings/${id}/status`,
+        method: "patch",
+    },
     deleteBooking: {
         url: (id: number) => `/api/bookings/${id}`,
         method: "delete",

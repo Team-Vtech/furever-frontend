@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
-export const sharedMetadata: Metadata = {
-    metadataBase: new URL("http://localhost:3000"),
+export const adminMetadata: Metadata = {
+    metadataBase: new URL("http://localhost:3002"),
     alternates: {
         canonical: "/",
         languages: {
@@ -10,38 +10,34 @@ export const sharedMetadata: Metadata = {
     },
 
     title: {
-        default: "Welcome to  Loqui",
-        template: "%s | Loqui",
+        default: "Furever Admin Dashboard",
+        template: "%s | Furever Admin",
     },
-    description:
-        "Connect with friends in a more meaningful way. Share moments, exchange messages, and build relationships on a platform designed for genuine connections.",
+    description: "Furever Admin Dashboard - Manage your pet care services, bookings, providers, and more.",
     openGraph: {
         title: {
-            default: "Welcome to  Loqui",
-            template: "%s | Loqui",
+            default: "Furever Admin Dashboard",
+            template: "%s | Furever Admin",
         },
-        description:
-            "Connect with friends in a more meaningful way. Share moments, exchange messages, and build relationships on a platform designed for genuine connections.",
+        description: "Furever Admin Dashboard - Manage your pet care services, bookings, providers, and more.",
         images: [
             {
-                url: "/images/web-images/loqui-banner.png",
+                url: "/images/admin-banner.png",
                 width: 1200,
                 height: 630,
-                alt: "Loqui Banner",
+                alt: "Furever Admin Dashboard",
             },
         ],
-        siteName: "Loqui",
+        siteName: "Furever Admin",
     },
     twitter: {
         title: {
-            default: "Welcome to  Loqui",
-            template: "%s | Loqui",
+            default: "Furever Admin Dashboard",
+            template: "%s | Furever Admin",
         },
-        description:
-            "Connect with friends in a more meaningful way. Share moments, exchange messages, and build relationships on a platform designed for genuine connections.",
+        description: "Furever Admin Dashboard - Manage your pet care services, bookings, providers, and more.",
         card: "summary_large_image",
-        images: ["/images/web-images/loqui-banner.png"],
-        creator: "@itsyanal", // Replace with your Twitter handle
+        images: ["/images/admin-banner.png"],
     },
     icons: [
         {
@@ -91,17 +87,17 @@ export const sharedMetadata: Metadata = {
         },
     ],
     manifest: "/manifest.json",
-    keywords: ["social media", "connect with friends", "messaging app", "share moments", "build relationships", "genuine connections"],
-    creator: "Loqui Team",
+    keywords: ["pet care", "admin dashboard", "booking management", "service providers", "pet services", "admin panel"],
+    creator: "Furever Team",
     authors: [
         {
-            name: "Loqui Team",
-            url: "https://loqui.app",
+            name: "Furever Team",
+            url: "https://furever.app",
         },
     ],
     appleWebApp: {
         capable: true,
-        title: "Loqui",
+        title: "Furever Admin",
         statusBarStyle: "black-translucent",
         startupImage: [
             {

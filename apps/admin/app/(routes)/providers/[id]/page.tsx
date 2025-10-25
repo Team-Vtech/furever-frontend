@@ -1,6 +1,5 @@
 import { server } from "@/app/shared/utils/http.server.utils";
 import { Certificate, JsonResponse, Provider } from "@furever/types";
-import { isAxiosError } from "axios";
 import { notFound } from "next/navigation";
 import { EditProviderScreen } from "../../../featured/providers/screens/EditProviderScreen/EditProviderScreen";
 
@@ -12,6 +11,7 @@ export default async function EditProviderPage({ params }: { params: Promise<{ i
     }
 
     const certificates = await getCertificates();
+
     return <EditProviderScreen provider={provider.data.data} certificates={certificates} />;
 }
 
@@ -19,10 +19,6 @@ async function getProviderById(id: string) {
     try {
         return await (await server()).get<JsonResponse<Provider>>(`/admin/providers/${id}`);
     } catch (error) {
-        console.log(error, "error");
-        if (isAxiosError(error)) {
-            console.log(error.response?.data, "error response");
-        }
         return null;
     }
 }

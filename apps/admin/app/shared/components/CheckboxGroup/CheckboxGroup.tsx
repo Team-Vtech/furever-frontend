@@ -14,12 +14,17 @@ type CheckboxGroupProps<T extends FieldValues> = ControlledInputProps<T> & {
     disabled?: boolean;
     className?: string;
     orientation?: "vertical" | "horizontal";
+    label?: string;
+    required?: boolean;
 };
 
 export function CheckboxGroup<T extends FieldValues>(props: CheckboxGroupProps<T>) {
-    const { name, control, rules, options, disabled, className, orientation = "vertical" } = props;
+    const { name, control, rules, options, disabled, className, orientation = "vertical", label, required } = props;
 
-    const { field } = useController({ control, name, rules });
+    const {
+        field,
+        fieldState: { error },
+    } = useController({ control, name, rules });
     const currentValues: (string | number)[] = Array.isArray(field.value) ? field.value : [];
 
     const handleCheckboxChange = (optionValue: string | number, checked: boolean) => {
@@ -43,7 +48,13 @@ export function CheckboxGroup<T extends FieldValues>(props: CheckboxGroupProps<T
     const containerClass = orientation === "horizontal" ? "flex flex-wrap gap-4" : "space-y-2";
 
     return (
-        <div className={`${containerClass} ${className || ""}`}>
+        <div className={`${containerClass} ${className || ""} flex flex-col justify-between`}>
+            {label && (
+                <Label htmlFor={name} className="mb-1 flex gap-2 text-sm font-medium text-gray-700">
+                    {label}
+                    {required && <span className="text-red-600">*</span>}
+                </Label>
+            )}
             {options.map((option) => {
                 const isChecked = currentValues.includes(option.value);
                 const checkboxId = `${String(name)}_${String(option.value)}`;
@@ -64,6 +75,7 @@ export function CheckboxGroup<T extends FieldValues>(props: CheckboxGroupProps<T
                     </div>
                 );
             })}
+            {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
         </div>
     );
 }

@@ -1,8 +1,9 @@
 "use client";
 
+import { GeneralStatusBadge } from "@/app/shared/components/StatusBadge/GeneralStatusBadge";
 import { ServiceType } from "@furever/types";
-import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@furever/ui/components/tooltip";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
 import Image from "next/image";
@@ -11,12 +12,16 @@ import Link from "next/link";
 function ServiceTypeActionsCell({ serviceType }: { serviceType: ServiceType }) {
     return (
         <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" asChild>
-                <Link href={`/service-types/${serviceType.id}/edit`}>
-                    <Edit className="mr-2 h-4 w-4" />
-                    Edit
-                </Link>
-            </Button>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={`/service-types/${serviceType.id}/edit`}>
+                            <Edit className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit Service Type</TooltipContent>
+            </Tooltip>
         </div>
     );
 }
@@ -60,11 +65,7 @@ export const serviceTypeColumns: ColumnDef<ServiceType>[] = [
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {
-            return (
-                <Badge variant={row.original.status === "active" ? "default" : "secondary"}>
-                    {row.original.status === "active" ? "Active" : "Inactive"}
-                </Badge>
-            );
+            return <GeneralStatusBadge status={row.original.status} />;
         },
     },
     {

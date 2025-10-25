@@ -53,12 +53,12 @@ export function ProviderBookingsSection({ bookings }: ProviderBookingsSectionPro
                             {bookings.map((booking) => (
                                 <TableRow key={booking.id}>
                                     <TableCell>
-                                        <Link href={`/users/${booking.user.id}`} className="font-medium hover:underline">
+                                        <Link href={`/users/${booking.user.id}/edit`} className="font-medium hover:underline">
                                             {booking.user.name}
                                         </Link>
                                     </TableCell>
                                     <TableCell>
-                                        <Link href={`/services/${booking.service.id}`} className="hover:underline">
+                                        <Link href={`/services/${booking.service.id}/edit`} className="hover:underline">
                                             {booking.service.name}
                                         </Link>
                                     </TableCell>

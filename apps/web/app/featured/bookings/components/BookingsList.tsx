@@ -50,8 +50,6 @@ export function BookingsList() {
             </div>
         );
     }
-    console.log(data);
-
     return (
         <div className="space-y-6">
             {/* Bookings Count */}

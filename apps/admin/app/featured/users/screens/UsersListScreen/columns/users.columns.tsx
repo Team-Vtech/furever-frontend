@@ -79,7 +79,7 @@ export const usersColumns: ColumnDef<User>[] = [
         header: "Status",
         cell: ({ row }: { row: Row<User> }) => {
             const status = row.getValue("status") as string;
-            return <Badge variant={status === "active" ? "default" : "secondary"}>{status === "active" ? "Active" : "Inactive"}</Badge>;
+            return <Badge variant={status === "active" ? "success" : "danger"}>{status === "active" ? "Active" : "Inactive"}</Badge>;
         },
     },
     {

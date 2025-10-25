@@ -1,10 +1,14 @@
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { CreateButton } from "@/app/shared/components/CreateButton";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Button } from "@furever/ui/components/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { UsersListScreen } from "../../featured/users/screens/UsersListScreen/UsersListScreen";
+
+export const metadata: Metadata = {
+    title: "Users Management",
+    description: "Manage system users, roles, and permissions",
+};
 
 export default function UsersPage() {
     return (
@@ -13,12 +17,7 @@ export default function UsersPage() {
             breadcrumbs={[{ label: "Users", href: "/users" }, { label: "List" }]}
             actions={
                 <Authorize permissions={["create any users"]}>
-                    <Button asChild>
-                        <Link href="/users/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Create User
-                        </Link>
-                    </Button>
+                    <CreateButton label="Create User" href="/users/create" />
                 </Authorize>
             }
         >

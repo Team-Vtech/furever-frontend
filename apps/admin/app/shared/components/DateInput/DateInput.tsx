@@ -1,3 +1,4 @@
+import { Button } from "@furever/ui/components/button";
 import { Calendar } from "@furever/ui/components/calendar";
 import { Label } from "@furever/ui/components/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@furever/ui/components/popover";
@@ -48,7 +49,7 @@ function DateInputComponent<TFieldValues extends FieldValues = FieldValues>({
             name={name}
             rules={rules}
             render={({ field, fieldState: { error } }) => (
-                <div className="w-full">
+                <div className="flex w-full flex-col justify-between">
                     {label && (
                         <Label htmlFor={name} className="mb-1 block text-sm font-medium text-gray-700">
                             {label}
@@ -62,9 +63,9 @@ function DateInputComponent<TFieldValues extends FieldValues = FieldValues>({
                         {iconProps ? iconProps.position == "left" ? <DynamicIcon {...iconProps} /> : null : null}
                         <Popover>
                             <PopoverTrigger asChild>
-                                <button
+                                <Button
+                                    variant="outline"
                                     id={id || name}
-                                    type="button"
                                     disabled={disabled}
                                     className={cn(
                                         "flex w-full items-center justify-between rounded-md border px-3 py-2 text-left shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500",
@@ -77,7 +78,7 @@ function DateInputComponent<TFieldValues extends FieldValues = FieldValues>({
                                         {field.value ? format(field.value, "PPP") : <span className="text-gray-500">{placeholder}</span>}
                                     </span>
                                     <CalendarIcon className="h-4 w-4 opacity-50" />
-                                </button>
+                                </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
                                 <Calendar

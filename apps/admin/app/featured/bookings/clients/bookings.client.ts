@@ -30,7 +30,7 @@ export const BookingsClient = {
         return response.data;
     },
     async updateBookingStatus(id: number, status: BookingStatus) {
-        const response = await client().patch<JsonResponse<Booking>>(`${ENDPOINTS.updateBooking.url(id)}`, { status });
+        const response = await client().patch<JsonResponse<Booking>>(`${ENDPOINTS.updateBookingStatus.url(id)}`, { status });
         return response.data;
     },
     async deleteBooking(id: number) {

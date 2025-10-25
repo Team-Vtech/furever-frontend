@@ -24,11 +24,7 @@ export function CertificateForm({ certificate, onSubmit, onCancel, isLoading }: 
         defaultValues,
     });
 
-    const {
-        handleSubmit,
-        formState: { errors },
-        control,
-    } = formMethods;
+    const { handleSubmit, control } = formMethods;
 
     const handleFormSubmit = (data: CertificateFormValues) => {
         onSubmit(data);

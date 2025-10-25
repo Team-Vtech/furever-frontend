@@ -18,6 +18,7 @@ export default async function EditBookingPage({ params }: EditBookingPageProps) 
     }
     const booking = (await getBookingById(id)).data.data;
     const providers = (await getProviders()).data.data.data;
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <BookingEditScreen booking={booking} providers={providers} />

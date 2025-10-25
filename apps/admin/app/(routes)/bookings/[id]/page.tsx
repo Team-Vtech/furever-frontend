@@ -3,10 +3,20 @@ import { server } from "@/app/shared/utils/http.server.utils";
 import { Booking, JsonResponse } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Edit } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { BookingDetailScreen } from "../../../featured/bookings/screens/BookingDetailScreen/BookingDetailScreen";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+
+    return {
+        title: `Booking Details - ${id}`,
+        description: "View detailed information about a booking",
+    };
+}
 
 interface BookingDetailPageProps {
     params: Promise<{

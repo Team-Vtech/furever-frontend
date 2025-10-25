@@ -1,3 +1,5 @@
+import { CheckoutSuccessRequest } from "@/app/(routes)/api/bookings/checkout-success.schema";
+import { RescheduleBookingRequest } from "@/app/(routes)/api/bookings/reschedule.schema";
 import { client } from "@/app/shared/utils/http.client.utils";
 import { Booking, JsonResponse, PaginatedJsonResponse } from "@furever/types";
 import { BookingFormValues } from "../types/booking.types";
@@ -26,6 +28,21 @@ export const BookingsClient = {
 
     async cancelBooking(id: string | number) {
         const response = await client().patch<JsonResponse<Booking>>(`/api/bookings/${id}/cancel`);
+        return response.data;
+    },
+
+    async createCheckoutSession(data: { booking_data: any; service_id: number; provider_id: number }) {
+        const response = await client().post<{ checkout_url: string; transaction_id?: string }>("/api/paddle/checkout", data);
+        return response.data;
+    },
+
+    async processCheckoutSuccess(data: CheckoutSuccessRequest) {
+        const response = await client().post<JsonResponse<Booking>>(`/api/bookings/${data.bookingId}/checkout-success`, data);
+        return response.data;
+    },
+
+    async rescheduleBooking(id: string | number, data: RescheduleBookingRequest) {
+        const response = await client().put<JsonResponse<Booking>>(`/api/bookings/${id}/reschedule`, data);
         return response.data;
     },
 };

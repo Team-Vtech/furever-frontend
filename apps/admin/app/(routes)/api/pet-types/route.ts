@@ -1,15 +1,12 @@
 import { FiveHundredError, ValidationError } from "@/app/shared/utils/error.utils";
 import { server } from "@/app/shared/utils/http.server.utils";
-import { isAxiosError } from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import { PetTypeFormValues, petTypeSchema } from "./schema";
 
 export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
 
     try {
-        // Proxy request to backend API
         const response = await (
             await server()
         ).get("/admin/pet-types", {
@@ -31,17 +28,9 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        // Proxy request to backend API
         const response = await (await server()).post("/admin/pet-types", body);
         return NextResponse.json(response.data, { status: 201 });
     } catch (error) {
-        if (isAxiosError(error)) {
-            console.log(error.response?.data);
-        }
-        if (error instanceof z.ZodError) {
-            return ValidationError(error);
-        }
-        console.error("Pet Types POST API Error:", error);
-        return NextResponse.json({ error: "Failed to create pet type" }, { status: 500 });
+        return FiveHundredError(error);
     }
 }

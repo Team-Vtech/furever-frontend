@@ -3,7 +3,25 @@ import { EditServiceScreen } from "../../../../featured/services/screens/EditSer
 
 import { server } from "@/app/shared/utils/http.server.utils";
 import { Addon, JsonResponse, PaginatedJsonResponse, PetType, Provider, Service, ServiceType } from "@furever/types";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: number }> }): Promise<Metadata> {
+    const { id } = await params;
+    const service = await getServiceById(id);
+
+    if (!service?.data?.data) {
+        return {
+            title: "Service Not Found",
+            description: "The requested service could not be found",
+        };
+    }
+
+    return {
+        title: `Edit Service - ${service.data.data.name}`,
+        description: "Update service information and settings",
+    };
+}
 
 export default async function EditServicePage({ params }: { params: Promise<{ id: number }> }) {
     const { id } = await params;
@@ -17,6 +35,7 @@ export default async function EditServicePage({ params }: { params: Promise<{ id
     if (!serviceTypesRes || !petTypesRes || !providersRes || !addonsRes) {
         return notFound();
     }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <EditServiceScreen

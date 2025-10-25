@@ -25,7 +25,6 @@ interface ReviewBookingScreenProps {
 export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
     const router = useRouter();
     const queryClient = useQueryClient();
-    const [showCreateForm, setShowCreateForm] = useState(false);
     const [editingReview, setEditingReview] = useState<Review | null>(null);
 
     // Fetch booking details
@@ -39,11 +38,7 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
     });
 
     // Fetch reviews for the booking
-    const {
-        data: reviewsData,
-        isLoading: reviewsLoading,
-        error: reviewsError,
-    } = useQuery({
+    const { data: reviewsData, isLoading: reviewsLoading } = useQuery({
         queryKey: ["reviews", bookingId],
         queryFn: () => ReviewsClient.getBookingReviews(bookingId),
     });
@@ -54,11 +49,9 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
         onSuccess: () => {
             toast.success("Review submitted successfully!");
             queryClient.invalidateQueries({ queryKey: ["reviews", bookingId] });
-            setShowCreateForm(false);
         },
         onError: (error) => {
             toast.error("Failed to submit review");
-            console.error("Error creating review:", error);
         },
     });
 
@@ -72,7 +65,6 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
         },
         onError: (error) => {
             toast.error("Failed to update review");
-            console.error("Error updating review:", error);
         },
     });
 
@@ -85,7 +77,6 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
         },
         onError: (error) => {
             toast.error("Failed to delete review");
-            console.error("Error deleting review:", error);
         },
     });
 
@@ -120,7 +111,6 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
 
     const handleEditReview = (review: Review) => {
         setEditingReview(review);
-        setShowCreateForm(false);
     };
 
     const canEditReview = (review: Review) => {
@@ -306,10 +296,10 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
                         canDeleteReview={canDeleteReview}
                         onEdit={handleEditReview}
                         onDelete={handleDeleteReview}
-                        onCreateReview={() => setShowCreateForm(true)}
+                        onCreateReview={handleCreateReview}
                         bookingId={bookingId}
                         onSubmitReview={handleCreateReview}
-                        onCancelReview={() => setShowCreateForm(false)}
+                        onCancelReview={() => setEditingReview(null)}
                         isSubmittingReview={createReviewMutation.isPending}
                     />
 

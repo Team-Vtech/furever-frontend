@@ -1,10 +1,14 @@
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { CreateButton } from "@/app/shared/components/CreateButton";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Button } from "@furever/ui/components/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { CertificatesListScreen } from "../../featured/certificates/screens/CertificatesListScreen/CertificatesListScreen";
+
+export const metadata: Metadata = {
+    title: "Certificates Management",
+    description: "Manage provider certificates and qualifications",
+};
 
 export default function CertificatesPage() {
     return (
@@ -13,12 +17,7 @@ export default function CertificatesPage() {
             breadcrumbs={[{ label: "Certificates", href: "/certificates" }, { label: "List" }]}
             actions={
                 <Authorize permissions={["create any certificates"]}>
-                    <Button asChild>
-                        <Link href="/certificates/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Create Certificate
-                        </Link>
-                    </Button>
+                    <CreateButton label="Create Certificate" href="/certificates/create" />
                 </Authorize>
             }
         >

@@ -1,10 +1,14 @@
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { CreateButton } from "@/app/shared/components/CreateButton";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Button } from "@furever/ui/components/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { ProvidersListScreen } from "../../featured/providers/screens/ProvidersListScreen/ProvidersListScreen";
+
+export const metadata: Metadata = {
+    title: "Providers Management",
+    description: "Manage service providers and their information",
+};
 
 export default function ProvidersPage() {
     return (
@@ -13,12 +17,7 @@ export default function ProvidersPage() {
             breadcrumbs={[{ label: "Providers", href: "/providers" }, { label: "List" }]}
             actions={
                 <Authorize permissions={["create any providers"]}>
-                    <Button asChild>
-                        <Link href="/providers/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Create Provider
-                        </Link>
-                    </Button>
+                    <CreateButton label="Create Provider" href="/providers/create" />
                 </Authorize>
             }
         >

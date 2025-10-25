@@ -1,9 +1,15 @@
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { Addon, PaginatedJsonResponse, PetType, Provider, ServiceType } from "@furever/types";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CreateServiceScreen } from "../../../featured/services/screens/CreateServiceScreen/CreateServiceScreen";
+
+export const metadata: Metadata = {
+    title: "Create Service",
+    description: "Add a new service to the system",
+};
 
 export default async function CreateServicePage() {
     const [serviceTypesRes, petTypesRes, providersRes, addonsRes] = await Promise.all([getServiceType(), getPetTypes(), getProviders(), getAddons()]);
@@ -36,7 +42,6 @@ async function getServiceType() {
             }>
         >("/admin/service-types");
     } catch {
-        console.log("error fetching service types");
         return null;
     }
 }
@@ -51,7 +56,6 @@ async function getPetTypes() {
             }>
         >("/admin/pet-types");
     } catch {
-        console.log("error fetching pet types");
         return null;
     }
 }
@@ -66,7 +70,6 @@ async function getProviders() {
             }>
         >("/admin/providers");
     } catch {
-        console.log("error fetching providers");
         return null;
     }
 }
@@ -81,7 +84,6 @@ async function getAddons() {
             }>
         >("/admin/addons");
     } catch {
-        console.log("error fetching addons");
         return null;
     }
 }

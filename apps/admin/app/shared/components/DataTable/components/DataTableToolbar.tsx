@@ -19,9 +19,7 @@ export function DataTableToolbar({ initialData, config }: FilterProps) {
                 </Button>
             </PopoverTrigger>
             <PopoverContent>
-                <div>
-                    <FiltersFactory initialData={initialData} config={config} />
-                </div>
+                <FiltersFactory initialData={initialData} config={config} />
             </PopoverContent>
         </Popover>
     );

@@ -26,7 +26,7 @@ export function SelectInput<T extends FieldValues>(props: SelectInputProps<T>) {
     } = useController({ control, name, rules });
 
     return (
-        <div>
+        <div className="flex w-full flex-col justify-between">
             {props.label && (
                 <Label htmlFor={name} className="text-sm font-medium text-gray-700">
                     {props.label}

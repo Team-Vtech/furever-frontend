@@ -1,6 +1,5 @@
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, User } from "@furever/types";
-import { isAxiosError } from "axios";
 import NextAuth, { type NextAuthResult } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -38,7 +37,6 @@ const result = NextAuth({
             },
             // @ts-expect-error -next-auth types are wrong
             async authorize(credentials) {
-                console.log("object");
                 if (!credentials?.email || !credentials?.password) {
                     return null;
                 }
@@ -71,13 +69,7 @@ const result = NextAuth({
                         roles: [],
                         updated_at: "",
                     };
-                } catch (error) {
-                    if (isAxiosError(error) && error.response) {
-                        console.error("Auth error response:", error.response.data);
-                        console.log(error.request);
-                    } else if (error instanceof Error) {
-                        console.error("Auth error:", error);
-                    }
+                } catch {
                     return null;
                 }
             },

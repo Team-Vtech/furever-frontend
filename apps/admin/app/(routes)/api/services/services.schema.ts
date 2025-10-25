@@ -4,13 +4,6 @@ import { z } from "zod";
 export const serviceAddonSchema = z.object({
     addon_id: z.number().min(1, "Add-on selection is required"),
     price: z.string().min(1, "Price must be a valid non-negative number"),
-    restrictions: z.array(
-        z.object({
-            value: z.string(),
-            label: z.string(),
-        }),
-    ),
-    status: z.nativeEnum(GeneralStatus),
 });
 
 // Unified schema for services (supports both create and update operations)
@@ -53,11 +46,6 @@ export const getServiceDefaultValues = (service?: Service): ServiceFormValues =>
             ? service.addons.map((addon) => ({
                   addon_id: addon.addon_id,
                   price: addon.price ? String(addon.price) : "0",
-                  restrictions: addon.restrictions.map((restriction) => ({
-                      value: restriction,
-                      label: restriction,
-                  })),
-                  status: addon.status ?? GeneralStatus.ACTIVE,
               }))
             : [],
         cancellation_policy: service?.cancellation_policy || undefined,

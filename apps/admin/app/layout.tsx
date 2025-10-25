@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { HttpProvider } from "./shared/providers/HttpProvider";
 import { NextAuthProvider } from "./shared/providers/NextAuthProvider";
 import { ThemeProvider } from "./shared/providers/ThemeProvider";
+import { adminMetadata } from "./shared/utils/metadata.utils";
 
 const fontSans = Geist({
     subsets: ["latin"],
@@ -13,6 +14,8 @@ const fontMono = Geist_Mono({
     subsets: ["latin"],
     variable: "--font-mono",
 });
+
+export const metadata = adminMetadata;
 
 export default async function RootLayout({
     children,

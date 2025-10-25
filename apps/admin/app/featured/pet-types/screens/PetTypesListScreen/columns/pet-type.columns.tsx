@@ -1,25 +1,26 @@
 "use client";
 
+import { GeneralStatusBadge } from "@/app/shared/components/StatusBadge/GeneralStatusBadge";
 import { PetType } from "@furever/types";
-import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@furever/ui/components/tooltip";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function PetActionsCell({ petType }: { petType: PetType }) {
-    const router = useRouter();
-
-    const handleEdit = () => {
-        router.push(`/pet-types/${petType.id}/edit`);
-    };
-
     return (
         <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleEdit}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-            </Button>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={`/pet-types/${petType.id}/edit`}>
+                            <Edit className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit Pet Type</TooltipContent>
+            </Tooltip>
         </div>
     );
 }
@@ -42,11 +43,10 @@ export const petTypeColumns: ColumnDef<PetType>[] = [
         },
     },
     {
-        accessorKey: "is_active",
+        accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {
-            const isActive = row.getValue("is_active") as boolean;
-            return <Badge variant={isActive ? "default" : "secondary"}>{isActive ? "Active" : "Inactive"}</Badge>;
+            return <GeneralStatusBadge status={row.original.status} />;
         },
     },
     {

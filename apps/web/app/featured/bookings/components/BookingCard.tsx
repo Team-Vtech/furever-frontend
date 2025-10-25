@@ -3,6 +3,7 @@ import { Button } from "@furever/ui/components/button";
 import { format } from "date-fns";
 import { Eye } from "lucide-react";
 import Link from "next/link";
+import { RescheduleBookingModal } from "../screens/BookingDetailsScreen/components/RescheduleBookingModal";
 
 interface BookingCardProps {
     booking: Booking;
@@ -130,12 +131,24 @@ export function BookingCard({ booking }: BookingCardProps) {
                     </Button>
 
                     {(isConfirmed || isPending) && (
-                        <button className="flex flex-1 items-center justify-center rounded-md border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 transition-colors hover:bg-purple-100">
-                            <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            Reschedule
-                        </button>
+                        <RescheduleBookingModal
+                            booking={booking}
+                            currentDate={booking.booking_date}
+                            currentTime={booking.booking_time}
+                            serviceDuration={booking.service.duration_minutes}
+                        >
+                            <button className="flex flex-1 items-center justify-center rounded-md border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 transition-colors hover:bg-purple-100">
+                                <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                </svg>
+                                Reschedule
+                            </button>
+                        </RescheduleBookingModal>
                     )}
                 </div>
             )}

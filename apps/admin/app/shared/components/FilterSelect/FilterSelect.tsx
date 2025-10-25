@@ -21,7 +21,7 @@ export function FilterSelect(props: SelectInputProps) {
     const { options, placeholder, disabled, className, value, setValue, label } = props;
 
     return (
-        <div className="w-full">
+        <div className="flex w-full flex-col justify-between gap-y-2">
             {label && <Label className="text-sm font-medium text-gray-700">{label}</Label>}
             <Select
                 value={value ? String(value) : ""}

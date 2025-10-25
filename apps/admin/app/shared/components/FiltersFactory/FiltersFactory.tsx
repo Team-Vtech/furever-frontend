@@ -1,5 +1,8 @@
 "use client";
 
+import { Button } from "@furever/ui/components/button";
+import { X } from "lucide-react";
+import { Fragment } from "react";
 import { useFilters } from "../../hooks/useFilters";
 import DebouncedTextField from "../DebouncedTextField/DebouncedTextField";
 import DynamicFilterAutoCompleteInput from "../DynamicSelect";
@@ -28,74 +31,84 @@ export type FiltersFactoryProps = {
 
 export function FiltersFactory({ config, initialData }: FiltersFactoryProps) {
     const filtersState = useFilters<Record<string, unknown>>(initialData);
+    return (
+        <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">Active Filters: {filtersState.activeFiltersCount}</span>
+                {filtersState.activeFiltersCount > 0 && (
+                    <Button variant="outline" onClick={filtersState.resetFilters} className="flex items-center gap-2">
+                        <X className="h-4 w-4" />
+                        <span className="text-sm">Reset Filters</span>
+                    </Button>
+                )}
+            </div>
+            {config.map((filter, index) => {
+                const { type, filterKey, props } = filter;
+                const value = filtersState.getFilterValue(filterKey) || "";
 
-    return config.map((filter, index) => {
-        const { type, filterKey, props } = filter;
-
-        const value = filtersState.getFilterValue(filterKey) || "";
-
-        return (
-            <>
-                {(() => {
-                    switch (type) {
-                        case "dynamicSelect": {
-                            const componentProps = props as FilterProps<typeof type>;
-                            return (
-                                <DynamicFilterAutoCompleteInput
-                                    key={index}
-                                    {...componentProps}
-                                    value={value}
-                                    setValue={(value) => {
-                                        filtersState?.addFilter(filterKey, value);
-                                    }}
-                                />
-                            );
-                        }
-                        case "select": {
-                            const componentProps = props as FilterProps<typeof type>;
-                            return (
-                                <FilterSelect
-                                    key={index}
-                                    {...componentProps}
-                                    value={value}
-                                    setValue={(value) => {
-                                        filtersState?.addFilter(filterKey, value);
-                                    }}
-                                />
-                            );
-                        }
-                        case "text": {
-                            const componentProps = props as FilterProps<typeof type>;
-                            return (
-                                <DebouncedTextField
-                                    key={index}
-                                    {...componentProps}
-                                    value={value}
-                                    onChange={(e) => {
-                                        filtersState?.addFilter(filterKey, e.target.value);
-                                    }}
-                                />
-                            );
-                        }
-                        case "date": {
-                            const componentProps = props as FilterProps<typeof type>;
-                            return (
-                                <FilterDate
-                                    key={index}
-                                    {...componentProps}
-                                    value={value}
-                                    setValue={(value) => {
-                                        filtersState?.addFilter(filterKey, value);
-                                    }}
-                                />
-                            );
-                        }
-
-                        default:
-                            return null;
-                    }
-                })()}
-            </>
-        );
-    });
+                return (
+                    <Fragment key={filterKey}>
+                        {(() => {
+                            switch (type) {
+                                case "select": {
+                                    const componentProps = props as FilterProps<typeof type>;
+                                    return (
+                                        <FilterSelect
+                                            key={index}
+                                            {...componentProps}
+                                            value={value}
+                                            setValue={(value) => {
+                                                filtersState?.addFilter(filterKey, value);
+                                            }}
+                                        />
+                                    );
+                                }
+                                case "text": {
+                                    const componentProps = props as FilterProps<typeof type>;
+                                    return (
+                                        <DebouncedTextField
+                                            key={index}
+                                            {...componentProps}
+                                            value={value}
+                                            onChange={(e) => {
+                                                filtersState?.addFilter(filterKey, e.target.value);
+                                            }}
+                                        />
+                                    );
+                                }
+                                case "date": {
+                                    const componentProps = props as FilterProps<typeof type>;
+                                    return (
+                                        <FilterDate
+                                            key={index}
+                                            {...componentProps}
+                                            value={value}
+                                            setValue={(value) => {
+                                                filtersState?.addFilter(filterKey, value);
+                                            }}
+                                        />
+                                    );
+                                }
+                                case "dynamicSelect": {
+                                    const componentProps = props as FilterProps<typeof type>;
+                                    return (
+                                        <DynamicFilterAutoCompleteInput
+                                            key={index}
+                                            {...componentProps}
+                                            value={value}
+                                            setValue={(value) => {
+                                                filtersState?.addFilter(filterKey, value);
+                                            }}
+                                        />
+                                    );
+                                }
+                                default:
+                                    return null;
+                            }
+                        })()}
+                    </Fragment>
+                );
+            })}
+        </div>
+    );
 }

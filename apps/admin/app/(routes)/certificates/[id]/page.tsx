@@ -21,6 +21,7 @@ export default async function EditCertificatePage({ params }: EditCertificatePag
     if (!certificate?.data) {
         return notFound();
     }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <EditCertificateScreen certificate={certificate.data.data} />

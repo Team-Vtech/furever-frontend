@@ -37,6 +37,9 @@
         },
         "format": {
             "outputs": []
+        },
+        "lint:fix": {
+            "dependsOn": ["^lint:fix"]
         }
     }
 }

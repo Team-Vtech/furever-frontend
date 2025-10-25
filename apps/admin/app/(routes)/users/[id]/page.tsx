@@ -2,7 +2,25 @@ import { server } from "@/app/shared/utils/http.server.utils";
 import { UserEditScreen } from "../../../featured/users/screens/UserEditScreen/UserEditScreen";
 
 import { JsonResponse, PaginatedJsonResponse, Provider, Role, User } from "@furever/types";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+    const user = await getUser(id);
+
+    if (!user?.data?.data) {
+        return {
+            title: "User Not Found",
+            description: "The requested user could not be found",
+        };
+    }
+
+    return {
+        title: `Edit User - ${user.data.data.name || user.data.data.email}`,
+        description: "Update user information and settings",
+    };
+}
 
 interface EditUserPageProps {
     params: Promise<{
@@ -22,6 +40,7 @@ export default async function EditUserPage({ params }: EditUserPageProps) {
 
     const providers = await getProviders();
     const roles = await getRoles();
+
     return <UserEditScreen user={user.data.data} roles={roles} providers={providers} />;
 }
 

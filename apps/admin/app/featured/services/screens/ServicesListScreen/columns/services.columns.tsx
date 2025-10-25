@@ -1,25 +1,26 @@
 "use client";
 
+import { GeneralStatusBadge } from "@/app/shared/components/StatusBadge/GeneralStatusBadge";
 import { Service } from "@furever/types";
-import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
-import { ColumnDef, Row } from "@tanstack/react-table";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@furever/ui/components/tooltip";
+import { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function ServiceActionsCell({ service }: { service: Service }) {
-    const router = useRouter();
-
-    const handleEdit = () => {
-        router.push(`/services/${service.id}/edit`);
-    };
-
     return (
         <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleEdit}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-            </Button>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={`/services/${service.id}/edit`}>
+                            <Edit className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit Service</TooltipContent>
+            </Tooltip>
         </div>
     );
 }
@@ -28,7 +29,7 @@ export const servicesColumns: ColumnDef<Service>[] = [
     {
         accessorKey: "name",
         header: "Service Name",
-        cell: ({ row }: { row: Row<Service> }) => {
+        cell: ({ row }) => {
             const service = row.original;
             return <div className="font-medium">{service.name}</div>;
         },
@@ -36,7 +37,7 @@ export const servicesColumns: ColumnDef<Service>[] = [
     {
         accessorKey: "provider",
         header: "Provider",
-        cell: ({ row }: { row: Row<Service> }) => {
+        cell: ({ row }) => {
             const service = row.original;
             return <div className="text-sm">{service.provider?.business_name || "No Provider"}</div>;
         },
@@ -44,7 +45,7 @@ export const servicesColumns: ColumnDef<Service>[] = [
     {
         accessorKey: "description",
         header: "Description",
-        cell: ({ row }: { row: Row<Service> }) => {
+        cell: ({ row }) => {
             const description = row.getValue("description") as string;
             return (
                 <div className="max-w-[300px] truncate" title={description}>
@@ -56,7 +57,7 @@ export const servicesColumns: ColumnDef<Service>[] = [
     {
         accessorKey: "price",
         header: "Price",
-        cell: ({ row }: { row: Row<Service> }) => {
+        cell: ({ row }) => {
             const price = row.getValue("price");
             return <div className="font-medium">${Number(price).toFixed(2)}</div>;
         },
@@ -64,7 +65,7 @@ export const servicesColumns: ColumnDef<Service>[] = [
     {
         accessorKey: "duration_minutes",
         header: "Duration",
-        cell: ({ row }: { row: Row<Service> }) => {
+        cell: ({ row }) => {
             const duration = row.getValue("duration_minutes") as number;
             return <div>{duration} minutes</div>;
         },
@@ -72,15 +73,14 @@ export const servicesColumns: ColumnDef<Service>[] = [
     {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }: { row: Row<Service> }) => {
-            const status = row.getValue("status") as string;
-            return <Badge variant={status === "active" ? "default" : "destructive"}>{status === "active" ? "Active" : "Disabled"}</Badge>;
+        cell: ({ row }) => {
+            return <GeneralStatusBadge status={row.original.status} />;
         },
     },
     {
         id: "actions",
         header: "Actions",
-        cell: ({ row }: { row: Row<Service> }) => {
+        cell: ({ row }) => {
             const service = row.original;
             return <ServiceActionsCell service={service} />;
         },

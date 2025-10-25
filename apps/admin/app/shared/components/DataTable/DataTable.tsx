@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({ data, columns, pagination, filters }:
     const onPageSizeChange = (pageSize: number) => {
         const searchParams = new URLSearchParams();
         searchParams.set("per_page", pageSize.toString());
-        searchParams.set("page", "1"); // Reset to first page when page size changes
+        searchParams.set("page", "1");
         router.push(`?${searchParams.toString()}`);
     };
 
@@ -161,8 +161,8 @@ export function DataTable<TData, TValue>({ data, columns, pagination, filters }:
                                     variant="outline"
                                     className="size-8"
                                     size="icon"
-                                    onClick={() => onPageChange(pagination.prev_page)}
-                                    disabled={pagination.current_page <= 1 || pagination.prev_page === 1}
+                                    onClick={() => onPageChange(pagination.current_page - 1)}
+                                    disabled={pagination.current_page <= 1}
                                 >
                                     <span className="sr-only">Go to previous page</span>
                                     <ChevronLeft />
@@ -171,7 +171,7 @@ export function DataTable<TData, TValue>({ data, columns, pagination, filters }:
                                     variant="outline"
                                     className="size-8"
                                     size="icon"
-                                    onClick={() => onPageChange(pagination.next_page)}
+                                    onClick={() => onPageChange(pagination.current_page + 1)}
                                     disabled={pagination.current_page === pagination.last_page}
                                 >
                                     <span className="sr-only">Go to next page</span>

@@ -27,15 +27,7 @@ export function AddonForm({ addon, onSubmit, onCancel, isLoading }: AddonFormPro
         },
     });
 
-    const {
-        handleSubmit,
-        formState: { errors },
-        setValue,
-        watch,
-        control,
-    } = formMethods;
-
-    const watchedStatus = watch("status");
+    const { handleSubmit, control } = formMethods;
 
     const handleFormSubmit = (data: AddonFormValues) => {
         onSubmit(data);

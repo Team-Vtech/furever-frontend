@@ -1,6 +1,6 @@
 "use client";
 
-import { Review } from "@furever/types";
+import { CreateReviewRequest, Review } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent } from "@furever/ui/components/card";
 import { Skeleton } from "@furever/ui/components/skeleton";
@@ -17,7 +17,7 @@ interface ReviewListProps {
     canDeleteReview?: (review: Review) => boolean;
     onEdit?: (review: Review) => void;
     onDelete?: (reviewId: number) => void;
-    onCreateReview?: () => void;
+    onCreateReview?: (data: CreateReviewRequest) => Promise<void>;
     bookingId?: string | number;
     onSubmitReview?: (data: any) => Promise<void>;
     onCancelReview?: () => void;

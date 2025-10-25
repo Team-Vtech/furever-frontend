@@ -6,7 +6,6 @@ import { usePermissionsListScreenState } from "./hooks/usePermissionsListScreenS
 
 export function PermissionsListScreen() {
     const { data, isLoading, isError } = usePermissionsListScreenState();
-    console.log(data, "data");
     if (isError) {
         return (
             <div className="flex h-64 items-center justify-center">

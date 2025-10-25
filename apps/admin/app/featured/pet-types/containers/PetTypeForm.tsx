@@ -23,11 +23,7 @@ export function PetTypeForm({ onSubmit, isLoading = false, petType }: PetTypeFor
         defaultValues,
     });
 
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = methods;
+    const { control, handleSubmit } = methods;
 
     const onFormSubmit = (data: PetTypeFormValues) => {
         onSubmit(data);

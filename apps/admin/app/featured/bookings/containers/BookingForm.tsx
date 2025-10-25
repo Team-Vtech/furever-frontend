@@ -85,10 +85,6 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
         return petTypes.find((type) => type.id === watch("pet.pet_type_id")) || null;
     }, [petTypes, watch("pet.pet_type_id")]);
 
-    const selectedService = useMemo(() => {
-        if (!services || !watchedServiceId) return null;
-        return services.find((svc) => svc.id === watchedServiceId) || null;
-    }, [services, watchedServiceId]);
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8">
             <div className="space-y-4 rounded-lg border p-4">
@@ -478,7 +474,7 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                         Cancel
                     </Button>
                 )}
-                <Authorize permissions={booking ? ["edit any bookings"] : ["create any bookings"]}>
+                <Authorize permissions={booking ? ["edit any bookings", "edit own bookings"] : ["create any bookings", "create own bookings"]}>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? "Saving..." : booking ? "Update Booking" : "Create Booking"}
                     </Button>
@@ -492,10 +488,6 @@ function renderBookingSummary(service: Service, selectedAddonIds: number[] | und
     const addons = service?.addons || [];
     const selectedAddons = addons.filter((addon) => selectedAddonIds?.includes(addon.id));
     const totalPrice = (parseFloat(service?.price || "0") + selectedAddons.reduce((acc, addon) => acc + parseFloat(addon.price), 0)).toFixed(2);
-    console.log(
-        parseFloat(service?.price || "0"),
-        selectedAddons.reduce((acc, addon) => acc + parseFloat(addon.price), 0),
-    );
     return (
         <div className="rounded-lg border bg-gray-50 p-4">
             <h4 className="text-md mb-2 font-medium text-gray-900">Service Summary</h4>

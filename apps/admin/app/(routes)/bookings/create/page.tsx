@@ -1,8 +1,14 @@
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { PaginatedJsonResponse, Provider } from "@furever/types";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { BookingCreateScreen } from "../../../featured/bookings/screens/BookingCreateScreen/BookingCreateScreen";
+
+export const metadata: Metadata = {
+    title: "Create New Booking",
+    description: "Create a new booking for a customer",
+};
 
 export default async function CreateBookingPage() {
     const providers = await getProviders();

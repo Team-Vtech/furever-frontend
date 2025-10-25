@@ -1,9 +1,15 @@
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { DashboardStatistics, JsonResponse } from "@furever/types";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { DashboardScreen } from "../featured/dashboard/screens/DashboardScreen";
 import { server } from "../shared/utils/http.server.utils";
+
+export const metadata: Metadata = {
+    title: "Dashboard",
+    description: "Admin dashboard overview with statistics and key metrics",
+};
 
 export default async function ProviderDashboardPage() {
     const statistics = await getDashboardStatistics();

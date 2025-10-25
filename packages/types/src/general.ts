@@ -18,10 +18,8 @@ export interface PaginatedJsonResponse<T = Record<string, string>> {
 export interface Pagination {
     current_page: number;
     last_page: number;
-    next_page: number;
-    prev_page: number;
-    has_more: boolean;
     per_page: number;
+    total: number;
 }
 type TRule<T extends FieldValues> = Omit<RegisterOptions<T>, "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"> | undefined;
 

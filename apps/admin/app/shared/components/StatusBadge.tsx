@@ -1,10 +1,10 @@
 import { GeneralStatus } from "@furever/types";
-import { Badge } from "@furever/ui/components/badge";
+import { Badge, badgeVariants, VariantProps } from "@furever/ui/components/badge";
 
-const statusStyles: Record<GeneralStatus, string> = {
-    [GeneralStatus.ACTIVE]: "bg-green-100 text-green-800 border-green-300",
-    [GeneralStatus.DISABLED]: "bg-yellow-100 text-yellow-800 border-yellow-300",
-    [GeneralStatus.DELETED]: "bg-red-100 text-red-800 border-red-300",
+const statusStyles: Record<GeneralStatus, VariantProps<typeof badgeVariants>["variant"]> = {
+    [GeneralStatus.ACTIVE]: "success",
+    [GeneralStatus.DISABLED]: "warning",
+    [GeneralStatus.DELETED]: "danger",
 };
 
 interface StatusBadgeProps {

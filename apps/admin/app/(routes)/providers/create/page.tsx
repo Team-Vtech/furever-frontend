@@ -2,8 +2,14 @@ import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse } from "@furever/types/general";
 import { Certificate } from "@furever/types/index";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { CreateProviderScreen } from "../../../featured/providers/screens/CreateProviderScreen/CreateProviderScreen";
+
+export const metadata: Metadata = {
+    title: "Create New Provider",
+    description: "Add a new service provider to the system",
+};
 
 export default async function CreateProviderPage() {
     const certificates = await getCertificates();

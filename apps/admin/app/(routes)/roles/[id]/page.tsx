@@ -21,6 +21,7 @@ export default async function EditRolePage({ params }: EditRolePageProps) {
     if (!role) {
         return <div>Role not found</div>;
     }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <EditRoleScreen role={role.data.data} permissions={permissions?.data.data.data ?? []} />

@@ -9,6 +9,7 @@ export default async function EditPetTypePage({ params }: { params: Promise<{ id
     if (!petType) {
         return <div>Pet type not found</div>;
     }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <EditPetTypeScreen petType={petType.data.data} />

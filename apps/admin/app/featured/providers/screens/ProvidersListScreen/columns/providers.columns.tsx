@@ -1,48 +1,38 @@
 "use client";
 
+import { ProviderStatusBadge } from "@/app/shared/components/StatusBadge/ProviderStatusBadge";
 import { Provider } from "@furever/types";
-import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@furever/ui/components/tooltip";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Edit, Eye } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function ProviderActionsCell({ provider }: { provider: Provider }) {
-    const router = useRouter();
-
-    const handleView = () => {
-        router.push(`/providers/${provider.id}/view`);
-    };
-
-    const handleEdit = () => {
-        router.push(`/providers/${provider.id}`);
-    };
-
     return (
         <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleView}>
-                <Eye className="mr-2 h-4 w-4" />
-                View
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleEdit}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-            </Button>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" asChild>
+                        <Link href={`/providers/${provider.id}`}>
+                            <Eye className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>View Provider</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" asChild>
+                        <Link href={`/providers/${provider.id}/edit`}>
+                            <Edit className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit Provider</TooltipContent>
+            </Tooltip>
         </div>
     );
-}
-
-function StatusBadge({ status }: { status: string }) {
-    const statusConfig = {
-        pending: { variant: "secondary", label: "Pending" },
-        approved: { variant: "default", label: "Approved" },
-        rejected: { variant: "destructive", label: "Rejected" },
-        inactive: { variant: "outline", label: "Inactive" },
-    } as const;
-
-    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
-
-    return <Badge variant={config.variant as "default" | "secondary" | "destructive" | "outline"}>{config.label}</Badge>;
 }
 
 export const providersColumns: ColumnDef<Provider>[] = [
@@ -96,9 +86,8 @@ export const providersColumns: ColumnDef<Provider>[] = [
     {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }: { row: Row<Provider> }) => {
-            const status = row.getValue("status") as string;
-            return <StatusBadge status={status} />;
+        cell: ({ row }) => {
+            return <ProviderStatusBadge status={row.original.status} />;
         },
     },
     {

@@ -30,7 +30,6 @@ export function ProviderViewScreen({ provider }: ProviderViewScreenProps) {
                 return "outline";
         }
     };
-    console.log(provider, "provider");
     return (
         <PageLayout
             title={provider.business_name}

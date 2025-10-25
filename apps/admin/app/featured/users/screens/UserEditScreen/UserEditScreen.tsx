@@ -36,7 +36,7 @@ export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) 
 
     return (
         <PageLayout
-            title="Edit User"
+            title={`Edit User - ${user.name || user.email}`}
             description="Update user information and settings"
             breadcrumbs={[{ label: "Users", href: "/users" }, { label: "Edit User" }]}
             actions={

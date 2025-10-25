@@ -68,7 +68,6 @@ export function WorkingHoursCalendar({ workingHours, selectedDate, onDateSelect,
         selected: "bg-purple-600 text-white hover:bg-purple-700 border-purple-600",
     };
 
-    console.log(workingHours);
     return (
         <div className={cn("rounded-lg border bg-white p-6 shadow-sm", className)}>
             <div className="flex flex-col">

@@ -1,10 +1,14 @@
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { CreateButton } from "@/app/shared/components/CreateButton";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Button } from "@furever/ui/components/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { BookingsListingScreen } from "../../featured/bookings/screens/BookingsListingScreen/BookingsListingScreen";
+
+export const metadata: Metadata = {
+    title: "Bookings Management",
+    description: "Manage customer bookings and appointments",
+};
 
 export default async function BookingsPage() {
     return (
@@ -14,12 +18,7 @@ export default async function BookingsPage() {
             breadcrumbs={[{ label: "Bookings", href: "/bookings" }, { label: "List" }]}
             actions={
                 <Authorize permissions={["create any bookings", "create own bookings"]}>
-                    <Button asChild>
-                        <Link href="/bookings/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Create Booking
-                        </Link>
-                    </Button>
+                    <CreateButton label="Create Booking" href="/bookings/create" />
                 </Authorize>
             }
         >

@@ -101,8 +101,6 @@ export function generateTimeSlots(
         const startTime24 = parseTimeToHour24Format(workingHour.start_time);
         const endTime24 = parseTimeToHour24Format(workingHour.end_time);
 
-        console.log(`Parsed times: ${workingHour.start_time} -> ${startTime24}, ${workingHour.end_time} -> ${endTime24}`);
-
         // Convert to minutes since midnight
         const startMinutes = timeToMinutes(startTime24);
         const endMinutes = timeToMinutes(endTime24);

@@ -1,7 +1,13 @@
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { CreateButton } from "@/app/shared/components/CreateButton";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Button } from "@furever/ui/components/button";
-import Link from "next/link";
+import { Metadata } from "next";
 import { PetTypesListScreen } from "../../featured/pet-types/screens/PetTypesListScreen/PetTypesListScreen";
+
+export const metadata: Metadata = {
+    title: "Pet Types",
+    description: "Manage pet types and categories",
+};
 
 export default function PetTypesPage() {
     return (
@@ -9,9 +15,9 @@ export default function PetTypesPage() {
             title="Pet Types"
             breadcrumbs={[{ label: "Pet Types", href: "/pet-types" }, { label: "List" }]}
             actions={
-                <Button asChild>
-                    <Link href="/pet-types/create">Create Pet Type</Link>
-                </Button>
+                <Authorize permissions={["create any pet types"]}>
+                    <CreateButton label="Create Pet Type" href="/pet-types/create" />
+                </Authorize>
             }
         >
             <PetTypesListScreen />

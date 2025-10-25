@@ -31,7 +31,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
             ? addons.map((addon) => ({
                   ...addon,
                   price: parseFloat(addon.price as unknown as string),
-                  restrictions: addon.restrictions.map((r) => r.value),
               }))
             : [];
         const response = await (
@@ -42,7 +41,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         });
         return NextResponse.json(response.data);
     } catch (error) {
-        console.log(error);
         return FiveHundredError(error);
     }
 }

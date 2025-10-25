@@ -2,7 +2,7 @@ import { server } from "@/app/shared/utils/http.server.utils";
 import { Addon, JsonResponse } from "@furever/types";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { EditAddonScreen } from "../../../featured/addons/screens/EditAddonScreen/EditAddonScreen";
+import { EditAddonScreen } from "../../../../featured/addons/screens/EditAddonScreen/EditAddonScreen";
 
 interface EditAddonPageProps {
     params: Promise<{
@@ -21,6 +21,7 @@ export default async function EditAddonPage({ params }: EditAddonPageProps) {
     if (!addon?.data) {
         return notFound();
     }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <EditAddonScreen addon={addon.data.data} />

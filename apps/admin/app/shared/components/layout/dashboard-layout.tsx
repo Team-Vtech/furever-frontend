@@ -100,19 +100,12 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
                                 <div className="space-y-1">
                                     {group.items.map((item) => (
                                         <Authorize permissions={item.permissions || []} condition={true} key={item.name}>
-                                            <Link
-                                                key={item.name}
-                                                href={item.href}
-                                                className={cn(
-                                                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                                                    isCurrent(item.href)
-                                                        ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                                                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                                                )}
-                                            >
-                                                <item.icon className="h-4 w-4" />
-                                                {item.name}
-                                            </Link>
+                                            <Button asChild variant={isCurrent(item.href) ? "default" : "ghost"} className="w-full justify-start">
+                                                <Link href={item.href}>
+                                                    <item.icon className="h-4 w-4" />
+                                                    {item.name}
+                                                </Link>
+                                            </Button>
                                         </Authorize>
                                     ))}
                                 </div>

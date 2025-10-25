@@ -3,6 +3,7 @@
 import { Booking } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@furever/ui/components/tooltip";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Edit, Eye } from "lucide-react";
 import Link from "next/link";
@@ -10,18 +11,26 @@ import Link from "next/link";
 function BookingActionsCell({ booking }: { booking: Booking }) {
     return (
         <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" asChild>
-                <Link href={`/bookings/${booking.id}`}>
-                    <Eye className="mr-2 h-4 w-4" />
-                    View
-                </Link>
-            </Button>
-            <Button variant="outline" size="sm" asChild>
-                <Link href={`/bookings/${booking.id}/edit`}>
-                    <Edit className="mr-2 h-4 w-4" />
-                    Edit
-                </Link>
-            </Button>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={`/bookings/${booking.id}`}>
+                            <Eye className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>View Booking</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={`/bookings/${booking.id}/edit`}>
+                            <Edit className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit Booking</TooltipContent>
+            </Tooltip>
         </div>
     );
 }

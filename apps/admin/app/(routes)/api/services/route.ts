@@ -35,10 +35,8 @@ export async function POST(request: NextRequest) {
             ? addons.map((addon) => ({
                   ...addon,
                   price: parseFloat(addon.price as unknown as string),
-                  restrictions: addon.restrictions.map((r) => r.value),
               }))
             : [];
-        console.log(transformedAddons);
 
         // Transform data for backend API (frontend uses service_type_ids array, backend expects service_type_ids array for creation)
         const response = await (

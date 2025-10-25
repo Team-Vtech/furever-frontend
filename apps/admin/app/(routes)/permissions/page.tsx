@@ -1,9 +1,13 @@
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { CreateButton } from "@/app/shared/components/CreateButton";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
-import { Button } from "@furever/ui/components/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { Metadata } from "next";
 import { PermissionsListScreen } from "../../featured/permissions/screens/PermissionsListScreen/PermissionsListScreen";
+
+export const metadata: Metadata = {
+    title: "Permissions",
+    description: "Manage system permissions",
+};
 
 export default function PermissionsPage() {
     return (
@@ -18,12 +22,7 @@ export default function PermissionsPage() {
             ]}
             actions={
                 <Authorize permissions={["create any permissions"]}>
-                    <Link href="/permissions/create">
-                        <Button>
-                            <Plus className="mr-2 h-4 w-4" />
-                            Add Permission
-                        </Button>
-                    </Link>
+                    <CreateButton label="Add Permission" href="/permissions/create" />
                 </Authorize>
             }
         >

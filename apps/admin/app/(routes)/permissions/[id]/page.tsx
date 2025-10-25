@@ -19,6 +19,7 @@ export default async function EditPermissionPage({ params }: EditPermissionPageP
     if (!permission) {
         return <div>Permission not found</div>;
     }
+
     return <EditPermissionScreen permission={permission.data.data} />;
 }
 

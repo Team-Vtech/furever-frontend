@@ -66,7 +66,6 @@ export function useFilters<Filters extends Record<string, unknown>>(queryObj?: F
     }
 
     function getFilterValue(field: string): string | undefined {
-        console.log(field, filters);
         const filter = filters.find((filter) => filter.field === field);
         return filter?.value;
     }

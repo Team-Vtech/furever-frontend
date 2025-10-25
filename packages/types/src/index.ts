@@ -1,5 +1,11 @@
 // Base types from Postman collection analysis
-export type BookingStatus = "pending" | "confirmed" | "in_progress" | "completed" | "cancelled";
+export enum BookingStatus {
+    PENDING = "pending",
+    CONFIRMED = "confirmed",
+    IN_PROGRESS = "in_progress",
+    COMPLETED = "completed",
+    CANCELLED = "cancelled",
+}
 
 export type PetBreed = {
     id: number;
@@ -85,7 +91,6 @@ export enum Status {
 export enum GeneralStatus {
     ACTIVE = "active",
     DISABLED = "disabled",
-    DELETED = "deleted",
 }
 
 export enum AddonUnit {
@@ -123,8 +128,6 @@ export type ServiceAddon = {
     id: number;
     addon_id: number;
     price: string;
-    unit: AddonUnit;
-    restrictions: Array<string>;
     status: GeneralStatus;
     service_id: number;
     addon: Addon;
@@ -470,4 +473,18 @@ export interface CreateReviewRequest {
 export interface UpdateReviewRequest {
     rating: number;
     comment: string;
+}
+
+export interface Transaction {
+    id: number;
+    paddle_id: string;
+    invoice_number: string;
+    status: string;
+    total: string;
+    tax: string;
+    invoicePdf: string;
+    currency: string;
+    billed_at: string;
+    created_at: string;
+    booking: Booking;
 }

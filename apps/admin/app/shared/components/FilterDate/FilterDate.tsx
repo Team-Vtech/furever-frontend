@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@furever/ui/components/button";
 import { Calendar } from "@furever/ui/components/calendar";
 import { Label } from "@furever/ui/components/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@furever/ui/components/popover";
@@ -41,13 +42,13 @@ export function FilterDate({
     };
 
     return (
-        <div className="w-full">
+        <div className="flex w-full flex-col justify-between gap-y-2">
             {label && <Label className="text-sm font-medium text-gray-700">{label}</Label>}
             <Popover open={isOpen} onOpenChange={setIsOpen}>
                 <PopoverTrigger asChild>
-                    <button
-                        type="button"
+                    <Button
                         disabled={disabled}
+                        variant="outline"
                         className={cn(
                             "flex w-full items-center justify-between rounded-md border px-3 py-2 text-left shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500",
                             "border-gray-300",
@@ -58,7 +59,7 @@ export function FilterDate({
                             {value ? format(selectedDate!, "PPP") : <span className="text-gray-500">{placeholder}</span>}
                         </span>
                         <CalendarIcon className="h-4 w-4 opacity-50" />
-                    </button>
+                    </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                     <Calendar mode="single" selected={selectedDate} onSelect={handleDateSelect} initialFocus />

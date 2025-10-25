@@ -3,7 +3,13 @@ import { server } from "@/app/shared/utils/http.server.utils";
 import { UserCreateScreen } from "../../../featured/users/screens/UserCreateScreen/UserCreateScreen";
 
 import { PaginatedJsonResponse, Provider, Role } from "@furever/types";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+    title: "Create User",
+    description: "Add a new user to the system",
+};
 
 export default async function CreateUserPage() {
     const roles = await getRoles();

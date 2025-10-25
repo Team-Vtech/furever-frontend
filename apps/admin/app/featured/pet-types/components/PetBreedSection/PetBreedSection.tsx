@@ -12,7 +12,6 @@ interface PetBreedSectionProps {
 
 export function PetBreedSection({ control }: PetBreedSectionProps) {
     const { formState } = useFormContext<PetTypeFormValues>();
-    const { errors } = formState;
 
     const { fields, append, remove } = useFieldArray({
         control,

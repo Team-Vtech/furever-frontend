@@ -11,9 +11,10 @@ import { getMediaId, useMediaUpload } from "../../hooks/use-media-upload";
 type UploadMediaProps<T extends FieldValues> = ControlledInputProps<T> & {
     mediaObject?: MediaObject;
     accept?: string;
+    label?: string;
 };
 
-export function UploadMedia<T extends FieldValues>({ control, name, rules, mediaObject, accept = "image/*" }: UploadMediaProps<T>) {
+export function UploadMedia<T extends FieldValues>({ control, name, rules, mediaObject, accept = "image/*", label }: UploadMediaProps<T>) {
     const { field, fieldState } = useController({
         name,
         control,
@@ -69,9 +70,8 @@ export function UploadMedia<T extends FieldValues>({ control, name, rules, media
 
     return (
         <div className="space-y-2">
-            <Label>Image</Label>
+            {label && <Label>{label}</Label>}
             <div className="flex flex-col gap-4">
-                {/* File Input */}
                 <div className="flex items-center gap-4">
                     <Button
                         type="button"

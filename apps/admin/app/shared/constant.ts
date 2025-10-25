@@ -1,4 +1,4 @@
-import { Award, BookOpen, Calendar, LayoutDashboard, Lock, PawPrint, Plus, Settings, Shield, Star, Users, Wrench } from "lucide-react";
+import { Award, BookOpen, Calendar, CreditCard, LayoutDashboard, Lock, PawPrint, Plus, Settings, Shield, Star, Users, Wrench } from "lucide-react";
 import { NavigationGroup } from "./components/layout/dashboard-layout";
 
 export const APP_NAVIGATION_LINKS: NavigationGroup[] = [
@@ -42,6 +42,12 @@ export const APP_NAVIGATION_LINKS: NavigationGroup[] = [
                 href: "/reviews",
                 icon: Star,
                 permissions: ["view reviews page"],
+            },
+            {
+                name: "Transactions",
+                href: "/transactions",
+                icon: CreditCard,
+                permissions: ["view transactions page"],
             },
         ],
     },
