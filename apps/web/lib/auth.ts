@@ -67,7 +67,6 @@ const result = NextAuth({
                     };
                 } catch (error) {
                     console.error("Auth error:", error);
-                    console.log(error.response?.data);
                     return null;
                 }
             },

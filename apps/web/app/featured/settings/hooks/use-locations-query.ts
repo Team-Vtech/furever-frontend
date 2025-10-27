@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { LocationFormValues } from "../../../(routes)/api/locations/locations.schema";
-import { LocationsClient } from "../../locations/clients/locations.client";
+import { LocationsClient } from "../clients/locations.client";
 
 export function useCreateLocationMutation() {
     const router = useRouter();
