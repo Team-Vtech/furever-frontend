@@ -2,22 +2,22 @@
 import { Pet } from "@furever/types";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@furever/ui/components/dialog";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { PetForm } from "../../components/PetForm";
 import { PetsList } from "../../components/PetsList";
-import { useCreatePetMutation, useDeletePetMutation, usePetsQuery, useUpdatePetMutation } from "../../hooks/usePets";
+import { useCreatePetMutation, useDeletePetMutation, useUpdatePetMutation } from "../../hooks/usePets";
 import { PetFormValues } from "../../schemas/pet.schema";
 
-export default function PetManagementScreen() {
+interface PetManagementScreenProps {
+    pets: Pet[];
+}
+
+export default function PetManagementScreen({ pets }: PetManagementScreenProps) {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingPet, setEditingPet] = useState<Pet | undefined>();
 
-    const { data: pets, isLoading: petsLoading } = usePetsQuery();
-
-    // Mutations
-    const createPetMutation = useCreatePetMutation();
-    const updatePetMutation = useUpdatePetMutation();
-    const deletePetMutation = useDeletePetMutation();
+    const { createPet, isCreating } = useCreatePetMutation();
+    const { updatePet, isUpdating } = useUpdatePetMutation();
+    const { deletePet, isDeleting } = useDeletePetMutation();
 
     const handleAdd = () => {
         setEditingPet(undefined);
@@ -30,33 +30,17 @@ export default function PetManagementScreen() {
     };
 
     const handleDelete = (petId: number) => {
-        deletePetMutation.mutate(petId);
+        deletePet(petId);
     };
 
     const handleFormSubmit = (data: PetFormValues) => {
         if (editingPet) {
-            updatePetMutation.mutate(
-                { id: editingPet.id, data },
-                {
-                    onSuccess: () => {
-                        setIsFormOpen(false);
-                        setEditingPet(undefined);
-                    },
-                    onError: (error: any) => {
-                        toast.error(error.response?.data?.message || "Failed to update pet");
-                    },
-                },
-            );
+            updatePet({ id: editingPet.id, data });
         } else {
-            createPetMutation.mutate(data, {
-                onSuccess: () => {
-                    setIsFormOpen(false);
-                },
-                onError: (error: any) => {
-                    toast.error(error.response?.data?.message || "Failed to create pet");
-                },
-            });
+            createPet(data);
         }
+        setIsFormOpen(false);
+        setEditingPet(undefined);
     };
 
     const handleFormCancel = () => {
@@ -78,26 +62,14 @@ export default function PetManagementScreen() {
                 <p className="mt-2 text-gray-600">Manage your pets to book services and track their care.</p>
             </div>
 
-            <PetsList
-                pets={pets ?? []}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onAdd={handleAdd}
-                isLoading={petsLoading}
-                isDeleting={deletePetMutation.isPending}
-            />
+            <PetsList pets={pets ?? []} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd} isLoading={false} isDeleting={isDeleting} />
 
             <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
                 <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>{editingPet ? "Edit Pet" : "Add New Pet"}</DialogTitle>
                     </DialogHeader>
-                    <PetForm
-                        pet={editingPet}
-                        onSubmit={handleFormSubmit}
-                        onCancel={handleFormCancel}
-                        isLoading={createPetMutation.isPending || updatePetMutation.isPending}
-                    />
+                    <PetForm pet={editingPet} onSubmit={handleFormSubmit} onCancel={handleFormCancel} isLoading={isCreating || isUpdating} />
                 </DialogContent>
             </Dialog>
         </div>

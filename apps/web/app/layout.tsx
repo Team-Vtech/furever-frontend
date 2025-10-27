@@ -2,6 +2,7 @@ import "@furever/ui/globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import { HttpProvider } from "./shared/providers/HttpProvider";
 import { NextAuthProvider } from "./shared/providers/NextAuthProvider";
+import { NextProgressBar } from "./shared/providers/NextProgressBar";
 import { ThemeProvider } from "./shared/providers/ThemeProvider";
 
 const fontSans = Geist({
@@ -24,7 +25,9 @@ export default function RootLayout({
             <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}>
                 <ThemeProvider>
                     <HttpProvider>
-                        <NextAuthProvider>{children}</NextAuthProvider>
+                        <NextAuthProvider>
+                            <NextProgressBar>{children}</NextProgressBar>
+                        </NextAuthProvider>
                     </HttpProvider>
                 </ThemeProvider>
             </body>

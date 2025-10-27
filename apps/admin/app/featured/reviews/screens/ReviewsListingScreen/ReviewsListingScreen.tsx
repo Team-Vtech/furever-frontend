@@ -1,9 +1,10 @@
 "use client";
 
 import { BookingsClient } from "@/app/featured/bookings/clients/bookings.client";
+import { ServicesClient } from "@/app/featured/services/clients/services.client";
+import { UsersClient } from "@/app/featured/users/clients/users.client";
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { Booking } from "@furever/types";
-import { Button } from "@furever/ui/components/button";
+import { Booking, Service, User } from "@furever/types";
 import Link from "next/link";
 import { InsightsCard } from "../../components/InsightsCard";
 import { OverallRatingCard } from "../../components/OverallRatingCard";
@@ -37,10 +38,23 @@ export function ReviewsListingScreen() {
                 data={data?.reviews || []}
                 columns={[
                     {
+                        accessorKey: "booking",
+                        header: "Booking",
+                        cell: ({ row }) => (
+                            <div className="flex items-center gap-2">
+                                <Link href={`/bookings/${row.original.booking.id}/view`}>
+                                    <span>{row.original.booking.id}</span>
+                                </Link>
+                            </div>
+                        ),
+                    },
+                    {
                         header: "Customer",
                         cell: ({ row }) => (
                             <div className="flex items-center gap-2">
-                                <span>{row.original.user.name}</span>
+                                <Link href={`/users/${row.original.user.id}/view`}>
+                                    <span>{row.original.user.name}</span>
+                                </Link>
                             </div>
                         ),
                     },
@@ -49,7 +63,9 @@ export function ReviewsListingScreen() {
                         header: "Service",
                         cell: ({ row }) => (
                             <div className="flex items-center gap-2">
-                                <span>{row.original.booking.service.name}</span>
+                                <Link href={`/services/${row.original.booking.service.id}/edit`}>
+                                    <span>{row.original.booking.service.name}</span>
+                                </Link>
                             </div>
                         ),
                     },
@@ -59,15 +75,6 @@ export function ReviewsListingScreen() {
                         cell: ({ row }) => {
                             return <StarRating rating={row.original.rating} />;
                         },
-                    },
-                    {
-                        id: "actions",
-                        header: "Actions",
-                        cell: ({ row }) => (
-                            <Button size="sm" variant="outline" asChild>
-                                <Link href={`/reviews/${row.original.id}`}>View</Link>
-                            </Button>
-                        ),
                     },
                 ]}
                 pagination={data?.pagination || undefined}
@@ -85,6 +92,32 @@ export function ReviewsListingScreen() {
                                     return booking.provider.business_name + " | " + booking.service.name;
                                 },
                                 queryKey: "listBookings",
+                            },
+                        },
+                        {
+                            type: "dynamicSelect",
+                            filterKey: "user_id",
+                            props: {
+                                label: "User",
+                                queryFn: UsersClient.getUsers,
+                                optionDisplayKey: (record) => {
+                                    const user = record as User;
+                                    return user.name;
+                                },
+                                queryKey: "listUsers",
+                            },
+                        },
+                        {
+                            type: "dynamicSelect",
+                            filterKey: "service_id",
+                            props: {
+                                label: "Service",
+                                queryFn: ServicesClient.getServices,
+                                optionDisplayKey: (record) => {
+                                    const service = record as Service;
+                                    return service.name;
+                                },
+                                queryKey: "listServices",
                             },
                         },
                     ],

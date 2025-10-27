@@ -11,7 +11,7 @@ function PermissionActionsCell({ permission }: { permission: Permission }) {
     const router = useRouter();
 
     const handleEdit = () => {
-        router.push(`/permissions/${permission.id}`);
+        router.push(`/permissions/${permission.id}/edit`);
     };
 
     return (

@@ -1,7 +1,13 @@
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, Service } from "@furever/types";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { ServiceDetailsScreen } from "../../../featured/services/screens/ServiceDetailsScreen";
+
+export const metadata: Metadata = {
+    title: "Service Details | Furever",
+    description: "View detailed information about pet care services, pricing, and book appointments with service providers.",
+};
 
 interface ServiceDetailsPageProps {
     params: Promise<{

@@ -11,7 +11,7 @@ export function useDeleteBookingMutation() {
         mutationFn: BookingsClient.deleteBooking,
         onSuccess: () => {
             toastUtils.success.delete("Booking");
-            queryClient.invalidateQueries({ queryKey: ["bookings"] });
+            queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] === "list-bookings" });
             router.push("/bookings");
         },
         onError: () => {

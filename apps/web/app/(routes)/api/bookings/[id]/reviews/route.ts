@@ -1,3 +1,4 @@
+import { FiveHundredError } from "@/app/shared/utils/error.utils";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -9,8 +10,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
         return NextResponse.json(response.data);
     } catch (error) {
-        console.error("Error fetching booking reviews:", error);
-        return NextResponse.json({ error: "Failed to fetch reviews" }, { status: 500 });
+        return FiveHundredError(error);
     }
 }
 
@@ -23,7 +23,6 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
         return NextResponse.json(response.data);
     } catch (error) {
-        console.error("Error creating review:", error);
-        return NextResponse.json({ error: "Failed to create review" }, { status: 500 });
+        return FiveHundredError(error);
     }
 }

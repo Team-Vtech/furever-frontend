@@ -37,6 +37,13 @@ export const transactionsColumns: ColumnDef<Transaction>[] = [
         },
     },
     {
+        accessorKey: "payment_method",
+        header: "Payment Method",
+        cell: ({ row }) => {
+            return <div className="font-medium">{row.getValue("payment_method")}</div>;
+        },
+    },
+    {
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {

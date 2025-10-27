@@ -1,7 +1,13 @@
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { BookingsList } from "../../featured/bookings/components/BookingsList";
 import { BookingsTabs } from "../../featured/bookings/components/BookingsTabs";
 import { MainLayout } from "../../shared/components/MainLayout";
+
+export const metadata: Metadata = {
+    title: "My Bookings | Furever",
+    description: "View and manage your pet care service bookings. Track upcoming appointments and review past services.",
+};
 
 export default function BookingsPage() {
     return (

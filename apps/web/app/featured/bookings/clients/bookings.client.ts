@@ -26,8 +26,10 @@ export const BookingsClient = {
         return response.data;
     },
 
-    async cancelBooking(id: string | number) {
-        const response = await client().patch<JsonResponse<Booking>>(`/api/bookings/${id}/cancel`);
+    async cancelBooking(id: string | number, reason?: string) {
+        const response = await client().put<JsonResponse<Booking>>(`/api/bookings/${id}/cancel`, {
+            reason,
+        });
         return response.data;
     },
 

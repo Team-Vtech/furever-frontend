@@ -4,18 +4,21 @@ import { RescheduleBookingRequest, rescheduleBookingRequestSchema } from "@/app/
 import { SelectInput } from "@/app/shared/components/SelectInput/SelectInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
+import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { Booking } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@furever/ui/components/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@furever/ui/components/dialog";
 import { Label } from "@furever/ui/components/label";
+import { Skeleton } from "@furever/ui/components/skeleton";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Calendar, Clock } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Calendar, Clock, Loader2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { TimeSlotsClient } from "../../../clients/time-slots.client";
 import { WorkingHoursCalendar } from "../../../components/WorkingHoursCalendar";
 import { useRescheduleBookingMutation } from "../../../hooks/useBookings";
-import { generateTimeSlots, isTimeSlotAvailable } from "../../../utils/time-slots.utils";
 
 interface RescheduleBookingModalProps {
     booking: Booking;
@@ -57,25 +60,45 @@ export function RescheduleBookingModal({ booking, currentDate, currentTime, serv
         }
     };
 
-    // Generate available time slots based on selected date, working hours, and service duration
-    const availableTimeSlots = useMemo(() => {
-        const dateToUse = selectedDate || (watch("booking_date") ? new Date(watch("booking_date")) : null);
+    // Fetch available time slots from API
+    const dateToUse = selectedDate || (watch("booking_date") ? new Date(watch("booking_date")) : null);
+    const formattedDate = dateToUse ? format(dateToUse, "yyyy-MM-dd") : null;
 
-        if (!dateToUse || !provider?.working_hours || !serviceDuration) {
-            return [];
-        }
-
-        const timeSlots = generateTimeSlots(dateToUse, provider.working_hours, serviceDuration);
-
-        // Filter out past time slots for today
-        return timeSlots.filter((slot) => isTimeSlotAvailable(slot.value, dateToUse));
-    }, [selectedDate, watch("booking_date"), provider?.working_hours, serviceDuration]);
+    const {
+        data: availableTimeSlots = { available_slots: [], all_slots: [], date: "", day_of_week: "" },
+        isLoading: isLoadingTimeSlots,
+        error: timeSlotsError,
+    } = useQuery({
+        queryKey: ["time-slots", booking.provider_id, booking.service_id, formattedDate],
+        queryFn: () =>
+            TimeSlotsClient.getAvailableTimeSlots({
+                provider_id: booking.provider_id,
+                service_id: booking.service_id,
+                date: formattedDate!,
+            }),
+        select: (data) => data.data,
+        enabled: !!formattedDate,
+        retry: 2,
+        retryDelay: 1000,
+    });
 
     // Get minimum date (today)
     const getMinDate = () => {
         const today = new Date();
         return today.toISOString().split("T")[0];
     };
+
+    // Reset booking time when date changes (since we fetch new time slots from API)
+    useEffect(() => {
+        setValue("booking_time", "");
+    }, [formattedDate, setValue]);
+
+    // Show error toast when time slots fail to load
+    useEffect(() => {
+        if (timeSlotsError) {
+            toastUtils.error.generic("Failed to load available time slots. Please try again.");
+        }
+    }, [timeSlotsError]);
 
     const onSubmit = async (data: RescheduleBookingRequest) => {
         try {
@@ -84,6 +107,10 @@ export function RescheduleBookingModal({ booking, currentDate, currentTime, serv
                 data,
             });
 
+            // Show success message
+            toastUtils.success.update("Booking", "Booking rescheduled successfully!");
+
+            // Close modal and reset form
             setOpen(false);
             reset({
                 booking_date: currentDate,
@@ -92,12 +119,29 @@ export function RescheduleBookingModal({ booking, currentDate, currentTime, serv
             });
             setSelectedDate(new Date(currentDate));
         } catch (error) {
-            // Error handling is done in the mutation
+            // Show error message
+            toastUtils.error.update("Booking", error);
+            console.error("Reschedule booking error:", error);
         }
     };
 
     return (
-        <Dialog open={open} onOpenChange={setOpen} modal={true}>
+        <Dialog
+            open={open}
+            onOpenChange={(newOpen) => {
+                setOpen(newOpen);
+                if (!newOpen) {
+                    // Reset form when modal is closed
+                    reset({
+                        booking_date: currentDate,
+                        booking_time: currentTime,
+                        reason: "",
+                    });
+                    setSelectedDate(new Date(currentDate));
+                }
+            }}
+            modal={true}
+        >
             <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent className="max-h-[90vh] w-full !max-w-[80%] overflow-y-auto">
                 <DialogHeader>
@@ -105,6 +149,7 @@ export function RescheduleBookingModal({ booking, currentDate, currentTime, serv
                         <Calendar className="mr-2 h-5 w-5" />
                         Reschedule Booking
                     </DialogTitle>
+                    <DialogDescription>Select a new date and time for your booking. Please provide a reason for rescheduling.</DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     {/* Date Selection */}
@@ -143,25 +188,33 @@ export function RescheduleBookingModal({ booking, currentDate, currentTime, serv
                             <Label htmlFor="booking_time" className="text-sm font-medium text-gray-700">
                                 Available Times *
                             </Label>
-                            <SelectInput
-                                name="booking_time"
-                                control={control}
-                                disabled={(!selectedDate && !watch("booking_date")) || availableTimeSlots.length === 0}
-                                options={availableTimeSlots.map((slot) => ({
-                                    value: slot.value,
-                                    label: slot.label,
-                                }))}
-                                placeholder={
-                                    !selectedDate && !watch("booking_date")
-                                        ? "Please select a date first"
-                                        : availableTimeSlots.length === 0
-                                          ? "No available times for this date"
-                                          : "Select time"
-                                }
-                                className="w-full"
-                            />
+                            {isLoadingTimeSlots ? (
+                                <Skeleton className="h-10 w-full rounded-md" />
+                            ) : timeSlotsError ? (
+                                <div className="flex h-10 w-full items-center justify-center rounded-md border border-red-200 bg-red-50 text-sm text-red-600">
+                                    Failed to load time slots. Please try again.
+                                </div>
+                            ) : (
+                                <SelectInput
+                                    name="booking_time"
+                                    control={control}
+                                    disabled={(!selectedDate && !watch("booking_date")) || availableTimeSlots.available_slots.length === 0}
+                                    options={availableTimeSlots.available_slots.map((slot) => ({
+                                        value: slot.start_time,
+                                        label: `${slot.start_time} - ${slot.end_time}`,
+                                    }))}
+                                    placeholder={
+                                        !selectedDate && !watch("booking_date")
+                                            ? "Please select a date first"
+                                            : availableTimeSlots.available_slots.length === 0
+                                              ? "No available times for this date"
+                                              : "Select time"
+                                    }
+                                    className="w-full"
+                                />
+                            )}
                             {errors.booking_time && <p className="text-sm text-red-600">{errors.booking_time.message}</p>}
-                            {serviceDuration && availableTimeSlots.length > 0 && (
+                            {serviceDuration && availableTimeSlots.available_slots.length > 0 && (
                                 <p className="text-xs text-gray-500">
                                     Times shown are start times. Your {serviceDuration}-minute service will end at the displayed end time.
                                 </p>
@@ -189,6 +242,7 @@ export function RescheduleBookingModal({ booking, currentDate, currentTime, serv
                             Cancel
                         </Button>
                         <Button type="submit" disabled={isSubmitting || rescheduleMutation.isPending}>
+                            {(isSubmitting || rescheduleMutation.isPending) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {isSubmitting || rescheduleMutation.isPending ? "Rescheduling..." : "Reschedule"}
                         </Button>
                     </div>

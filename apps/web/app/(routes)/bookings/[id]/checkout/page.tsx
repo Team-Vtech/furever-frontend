@@ -2,8 +2,14 @@ import { BookingCheckoutScreen } from "@/app/featured/bookings/screens/BookingCh
 import { MainLayout } from "@/app/shared/components/MainLayout";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { Booking, JsonResponse } from "@furever/types";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+    title: "Checkout | Furever",
+    description: "Complete your pet care service booking payment. Secure checkout for your furry friend's care.",
+};
 
 interface BookingCheckoutPageProps {
     params: Promise<{ id: string }>;

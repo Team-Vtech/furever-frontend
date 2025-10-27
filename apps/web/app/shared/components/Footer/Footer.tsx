@@ -17,8 +17,8 @@ const navigationLinks = [
 ];
 
 const providerLinks = [
-    { label: "Join as a Provider", href: "/providers/register" },
-    { label: "Provider Login", href: "/providers/login" },
+    { label: "Join as a Provider", href: "/provider-register" },
+    { label: "Provider Login", href: "/login" },
 ];
 
 const legalLinks = [

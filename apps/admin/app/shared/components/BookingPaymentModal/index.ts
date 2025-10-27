@@ -1,0 +1,1 @@
+export { BookingPaymentModal } from "./BookingPaymentModal";

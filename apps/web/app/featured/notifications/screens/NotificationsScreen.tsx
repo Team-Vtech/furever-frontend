@@ -3,13 +3,11 @@
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@furever/ui/components/card";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Bell, RefreshCw } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { NotificationsClient } from "../clients/notifications.client";
 import { NotificationList } from "../components/NotificationList";
-import { NotificationStats as StatsComponent } from "../components/NotificationStats";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@furever/ui/components/tabs";
-import { Bell, RefreshCw } from "lucide-react";
-import { toast } from "sonner";
 
 export function NotificationsScreen() {
     const [showUnreadOnly, setShowUnreadOnly] = useState(false);
@@ -32,23 +30,12 @@ export function NotificationsScreen() {
             }),
     });
 
-    // Fetch notification stats
-    const {
-        data: statsData,
-        isLoading: statsLoading,
-        error: statsError,
-    } = useQuery({
-        queryKey: ["notification-stats"],
-        queryFn: () => NotificationsClient.getNotificationStats(),
-    });
-
     // Mark all as read mutation
     const markAllAsReadMutation = useMutation({
         mutationFn: NotificationsClient.markAllAsRead,
         onSuccess: () => {
             toast.success("All notifications marked as read");
             queryClient.invalidateQueries({ queryKey: ["notifications"] });
-            queryClient.invalidateQueries({ queryKey: ["notification-stats"] });
         },
         onError: (error) => {
             toast.error("Failed to mark notifications as read");
@@ -61,7 +48,6 @@ export function NotificationsScreen() {
         mutationFn: NotificationsClient.markAsRead,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["notifications"] });
-            queryClient.invalidateQueries({ queryKey: ["notification-stats"] });
         },
         onError: (error) => {
             toast.error("Failed to mark notification as read");
@@ -75,7 +61,6 @@ export function NotificationsScreen() {
         onSuccess: () => {
             toast.success("Notification deleted");
             queryClient.invalidateQueries({ queryKey: ["notifications"] });
-            queryClient.invalidateQueries({ queryKey: ["notification-stats"] });
         },
         onError: (error) => {
             toast.error("Failed to delete notification");
@@ -97,7 +82,6 @@ export function NotificationsScreen() {
 
     const handleRefresh = () => {
         refetchNotifications();
-        queryClient.invalidateQueries({ queryKey: ["notification-stats"] });
     };
 
     const handleToggleUnreadOnly = () => {
@@ -106,9 +90,8 @@ export function NotificationsScreen() {
     };
 
     const notifications = notificationsData?.data?.data || [];
-    const stats = statsData?.data;
 
-    if (notificationsError || statsError) {
+    if (notificationsError) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-gray-50">
                 <Card className="w-full max-w-md">
@@ -138,13 +121,6 @@ export function NotificationsScreen() {
                     </div>
                     <p className="text-gray-600">Stay updated with your booking notifications and important updates.</p>
                 </div>
-
-                {/* Stats */}
-                {stats && (
-                    <div className="mb-8">
-                        <StatsComponent stats={stats} isLoading={statsLoading} />
-                    </div>
-                )}
 
                 {/* Main Content */}
                 <div className="space-y-6">

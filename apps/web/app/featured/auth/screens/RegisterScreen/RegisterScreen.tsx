@@ -80,9 +80,9 @@ export function RegisterScreen() {
     };
 
     return (
-        <div id="page-layout" className="flex min-h-screen bg-gray-50">
+        <div id="page-layout" className="bg-background flex min-h-screen">
             {/* Left Side - Hero Section */}
-            <section id="hero-section" className="hidden bg-white lg:flex lg:flex-1">
+            <section id="hero-section" className="hidden lg:flex lg:flex-1">
                 <RegisterHeroSection />
             </section>
 

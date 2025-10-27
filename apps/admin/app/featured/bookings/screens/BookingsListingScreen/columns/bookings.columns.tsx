@@ -1,10 +1,11 @@
 "use client";
 
+import { PaymentBadge } from "@/app/shared/components/PaymentBadge";
 import { Booking } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@furever/ui/components/tooltip";
-import { ColumnDef, Row } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye } from "lucide-react";
 import Link from "next/link";
 
@@ -14,7 +15,7 @@ function BookingActionsCell({ booking }: { booking: Booking }) {
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button variant="outline" size="sm" asChild>
-                        <Link href={`/bookings/${booking.id}`}>
+                        <Link href={`/bookings/${booking.id}/view`}>
                             <Eye className="h-4 w-4" />
                         </Link>
                     </Button>
@@ -54,7 +55,7 @@ export const bookingsColumns: ColumnDef<Booking>[] = [
     {
         accessorKey: "user",
         header: "Customer",
-        cell: ({ row }: { row: Row<Booking> }) => {
+        cell: ({ row }) => {
             const booking = row.original;
             return (
                 <div>
@@ -67,7 +68,7 @@ export const bookingsColumns: ColumnDef<Booking>[] = [
     {
         accessorKey: "pet",
         header: "Pet",
-        cell: ({ row }: { row: Row<Booking> }) => {
+        cell: ({ row }) => {
             const booking = row.original;
             return (
                 <div>
@@ -80,7 +81,7 @@ export const bookingsColumns: ColumnDef<Booking>[] = [
     {
         accessorKey: "service",
         header: "Service",
-        cell: ({ row }: { row: Row<Booking> }) => {
+        cell: ({ row }) => {
             const booking = row.original;
             return (
                 <div>
@@ -118,6 +119,14 @@ export const bookingsColumns: ColumnDef<Booking>[] = [
         cell: ({ row }) => {
             const status = row.original.status;
             return <Badge variant={getStatusBadgeVariant(status)}>{status.charAt(0).toUpperCase() + status.slice(1)}</Badge>;
+        },
+    },
+    {
+        accessorKey: "payment_status",
+        header: "Payment Status",
+        cell: ({ row }) => {
+            const paymentStatus = row.original.payment_status;
+            return <PaymentBadge status={paymentStatus} />;
         },
     },
     {

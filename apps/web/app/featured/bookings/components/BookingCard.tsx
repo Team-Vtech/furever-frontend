@@ -1,8 +1,14 @@
-import { Booking } from "@furever/types";
+import { toastUtils } from "@/app/shared/utils/toast.utils";
+import { Booking, BookingStatus } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@furever/ui/components/dialog";
+import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Eye } from "lucide-react";
+import { Eye, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { BookingsClient } from "../clients/bookings.client";
 import { RescheduleBookingModal } from "../screens/BookingDetailsScreen/components/RescheduleBookingModal";
 
 interface BookingCardProps {
@@ -20,7 +26,46 @@ function generateProviderColor(name: string): string {
 }
 
 export function BookingCard({ booking }: BookingCardProps) {
+    const router = useRouter();
+    const [showCancelDialog, setShowCancelDialog] = useState(false);
+    const [isCancelling, setIsCancelling] = useState(false);
     const providerColor = generateProviderColor(booking.provider.business_name);
+
+    // Check if booking can be cancelled
+    const canCancelBooking = useMemo(() => {
+        const cancellableStatuses = [BookingStatus.PENDING, BookingStatus.CONFIRMED];
+        const cancellablePaymentStatuses = ["pending", "processing"];
+
+        return (
+            cancellableStatuses.includes(booking.status) ||
+            (booking.status === BookingStatus.PENDING && cancellablePaymentStatuses.includes(booking.payment_status))
+        );
+    }, [booking]);
+
+    // Cancel booking mutation
+    const cancelBookingMutation = useMutation({
+        mutationFn: (bookingId: number) => BookingsClient.cancelBooking(bookingId),
+        onSuccess: () => {
+            toastUtils.success.update("Booking", "Booking cancelled successfully!");
+            router.refresh();
+        },
+        onError: (error) => {
+            toastUtils.error.update("Booking", error);
+        },
+    });
+
+    // Handle cancel booking
+    const handleCancelBooking = async () => {
+        setIsCancelling(true);
+        try {
+            await cancelBookingMutation.mutateAsync(booking.id);
+        } catch (error) {
+            console.error("Cancel booking error:", error);
+        } finally {
+            setIsCancelling(false);
+            setShowCancelDialog(false);
+        }
+    };
 
     const getStatusColor = (status: Booking["status"]) => {
         switch (status) {
@@ -57,118 +102,150 @@ export function BookingCard({ booking }: BookingCardProps) {
     const isInProgress = booking.status === "in_progress";
 
     return (
-        <div className="h-fit rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md">
-            {/* Header */}
-            <div className="mb-4 flex items-start justify-between">
-                <div className="flex-1">
-                    <h3 className="font-nunito mb-1 text-lg font-semibold text-gray-900">{booking.service.name}</h3>
-                    <p className="font-nunito text-sm text-gray-600">{booking.provider.business_name}</p>
-                </div>
+        <>
+            <div className="h-fit rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md">
+                {/* Header */}
+                <div className="mb-4 flex items-start justify-between">
+                    <div className="flex-1">
+                        <h3 className="font-nunito mb-1 text-lg font-semibold text-gray-900">{booking.service.name}</h3>
+                        <p className="font-nunito text-sm text-gray-600">{booking.provider.business_name}</p>
+                    </div>
 
-                {/* Provider Avatar */}
-                <div
-                    className={`ml-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2`}
-                    style={{
-                        backgroundColor: providerColor + "20",
-                        borderColor: providerColor,
-                    }}
-                >
+                    {/* Provider Avatar */}
                     <div
-                        className="flex h-full w-full items-center justify-center rounded-full text-lg font-semibold text-white"
-                        style={{ backgroundColor: providerColor }}
+                        className={`ml-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2`}
+                        style={{
+                            backgroundColor: providerColor + "20",
+                            borderColor: providerColor,
+                        }}
                     >
-                        {booking.provider.business_name.charAt(0)}
+                        <div
+                            className="flex h-full w-full items-center justify-center rounded-full text-lg font-semibold text-white"
+                            style={{ backgroundColor: providerColor }}
+                        >
+                            {booking.provider.business_name.charAt(0)}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Pet Info */}
-            <div className="mb-4 rounded-lg bg-gray-50 p-3">
-                <p className="font-nunito text-sm text-gray-600">
-                    Pet: {booking.pet.name} ({booking.pet.pet_breed?.name || "Mixed"})
-                </p>
-            </div>
-
-            {/* Status Badge */}
-            <div className="mb-4 flex items-center justify-between">
-                <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${getStatusColor(booking.status)}`}>
-                    {booking.status.charAt(0).toUpperCase() + booking.status.slice(1).replace("_", " ")}
-                </span>
-            </div>
-
-            {/* Date and Time */}
-            <div className="mb-4 flex items-center text-gray-600">
-                <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                </svg>
-                <span className="font-nunito text-sm">
-                    {formatDate(booking.booking_date)} • {formatTime(booking.booking_time)}
-                </span>
-            </div>
-
-            {/* Price Info */}
-            <div className="mb-6 flex items-center justify-between rounded-lg bg-purple-50 p-3">
-                <span className="text-sm font-medium text-gray-600">Total Price:</span>
-                <span className="text-lg font-semibold text-purple-600">${booking.total_price}</span>
-            </div>
-
-            {/* Action Buttons */}
-            {(isConfirmed || isPending || isInProgress) && (
-                <div className="flex flex-col gap-2 sm:flex-row">
-                    <Button
-                        asChild
-                        className="flex flex-1 items-center justify-center rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700"
-                    >
-                        <Link href={`/bookings/${booking.id}`}>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Details
-                        </Link>
-                    </Button>
-
-                    {(isConfirmed || isPending) && (
-                        <RescheduleBookingModal
-                            booking={booking}
-                            currentDate={booking.booking_date}
-                            currentTime={booking.booking_time}
-                            serviceDuration={booking.service.duration_minutes}
-                        >
-                            <button className="flex flex-1 items-center justify-center rounded-md border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 transition-colors hover:bg-purple-100">
-                                <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
-                                Reschedule
-                            </button>
-                        </RescheduleBookingModal>
-                    )}
+                {/* Pet Info */}
+                <div className="mb-4 rounded-lg bg-gray-50 p-3">
+                    <p className="font-nunito text-sm text-gray-600">
+                        Pet: {booking.pet.name} ({booking.pet.pet_breed?.name || "Mixed"})
+                    </p>
                 </div>
-            )}
 
-            {isCompleted && (
-                <div className="flex flex-col gap-2 sm:flex-row">
-                    <button className="flex flex-1 items-center justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200">
-                        View Details
-                    </button>
-                    <button className="flex flex-1 items-center justify-center rounded-md border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 transition-colors hover:bg-purple-100">
+                {/* Status Badge */}
+                <div className="mb-4 flex items-center justify-between">
+                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${getStatusColor(booking.status)}`}>
+                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1).replace("_", " ")}
+                    </span>
+                </div>
+
+                {/* Date and Time */}
+                <div className="mb-4 flex items-center text-gray-600">
+                    <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                    </svg>
+                    <span className="font-nunito text-sm">
+                        {formatDate(booking.booking_date)} • {formatTime(booking.booking_time)}
+                    </span>
+                </div>
+
+                {/* Price Info */}
+                <div className="mb-6 flex items-center justify-between rounded-lg bg-purple-50 p-3">
+                    <span className="text-sm font-medium text-gray-600">Total Price:</span>
+                    <span className="text-lg font-semibold text-purple-600">${booking.total_price}</span>
+                </div>
+
+                {/* Action Buttons */}
+                {(isConfirmed || isPending || isInProgress) && (
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                        <Button
+                            asChild
+                            className="flex flex-1 items-center justify-center rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700"
+                        >
+                            <Link href={`/bookings/${booking.id}`}>
+                                <Eye className="mr-2 h-4 w-4" />
+                                View Details
+                            </Link>
+                        </Button>
+
+                        {(isConfirmed || isPending) && (
+                            <RescheduleBookingModal
+                                booking={booking}
+                                currentDate={booking.booking_date}
+                                currentTime={booking.booking_time}
+                                serviceDuration={booking.service.duration_minutes}
+                            >
+                                <button className="flex flex-1 items-center justify-center rounded-md border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 transition-colors hover:bg-purple-100">
+                                    <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    Reschedule
+                                </button>
+                            </RescheduleBookingModal>
+                        )}
+
+                        {canCancelBooking && (
+                            <button
+                                onClick={() => setShowCancelDialog(true)}
+                                className="flex flex-1 items-center justify-center rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-100"
+                            >
+                                <X className="mr-2 h-4 w-4" />
+                                Cancel
+                            </button>
+                        )}
+                    </div>
+                )}
+
+                {isCompleted && (
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                        <button className="flex flex-1 items-center justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200">
+                            View Details
+                        </button>
+                        <button className="flex flex-1 items-center justify-center rounded-md border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 transition-colors hover:bg-purple-100">
+                            Book Again
+                        </button>
+                    </div>
+                )}
+
+                {isCancelled && (
+                    <button className="flex w-full items-center justify-center rounded-md border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 transition-colors hover:bg-purple-100">
                         Book Again
                     </button>
-                </div>
-            )}
+                )}
+            </div>
 
-            {isCancelled && (
-                <button className="flex w-full items-center justify-center rounded-md border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 transition-colors hover:bg-purple-100">
-                    Book Again
-                </button>
-            )}
-        </div>
+            <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center">
+                            <X className="mr-2 h-5 w-5 text-red-600" />
+                            Cancel Booking
+                        </DialogTitle>
+                        <DialogDescription>Are you sure you want to cancel this booking? This action cannot be undone.</DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setShowCancelDialog(false)} disabled={isCancelling}>
+                            Keep Booking
+                        </Button>
+                        <Button variant="destructive" onClick={handleCancelBooking} disabled={isCancelling}>
+                            {isCancelling ? "Cancelling..." : "Cancel Booking"}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 }

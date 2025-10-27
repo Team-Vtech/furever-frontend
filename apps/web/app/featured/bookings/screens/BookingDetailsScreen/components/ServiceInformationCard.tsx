@@ -46,8 +46,8 @@ export function ServiceInformationCard({ service, provider, bookingDate, booking
                     <p className="text-gray-600">{provider.business_name}</p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div className="flex items-center text-gray-600">
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2 text-gray-600">
                         <Calendar className="mr-2 h-4 w-4" />
                         <span className="text-sm">{formatDate(bookingDate)}</span>
                     </div>

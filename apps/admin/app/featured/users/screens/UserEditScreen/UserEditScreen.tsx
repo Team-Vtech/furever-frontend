@@ -4,9 +4,8 @@ import { Authorize } from "@/app/shared/components/Authorize/Authorize";
 import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { Provider, Role, User } from "@furever/types";
-import { useRouter } from "next/navigation";
 import { UserFormValues } from "../../../../(routes)/api/users/users.schema";
-import { CreateUserForm } from "../../containers/CreateUserForm";
+import { UserForm } from "../../containers/UserForm/UserForm";
 import { useEditUserScreenState } from "./hooks/useEditUserScreenState";
 
 interface UserEditScreenProps {
@@ -16,7 +15,6 @@ interface UserEditScreenProps {
 }
 
 export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) {
-    const router = useRouter();
     const { deleteUser, isDeletingUser, isUpdatingUser, updateUser, error, isError } = useEditUserScreenState();
 
     const handleSubmit = async (data: UserFormValues) => {
@@ -24,10 +22,6 @@ export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) 
             id: user.id,
             data,
         });
-    };
-
-    const handleCancel = () => {
-        router.push("/users");
     };
 
     const handleDelete = async (id: number) => {
@@ -52,10 +46,9 @@ export function UserEditScreen({ user, roles, providers }: UserEditScreenProps) 
             }
         >
             <div className="rounded-lg border bg-white p-6">
-                <CreateUserForm
+                <UserForm
                     user={user}
                     onSubmit={handleSubmit}
-                    onCancel={handleCancel}
                     isLoading={isUpdatingUser}
                     roles={roles}
                     error={error}

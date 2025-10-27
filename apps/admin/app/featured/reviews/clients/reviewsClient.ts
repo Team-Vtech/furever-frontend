@@ -14,23 +14,23 @@ export const ReviewsClient = {
             PaginatedJsonResponse<{
                 data: ReviewBooking[];
             }>
-        >("/api/booking-reviews", {
+        >("/api/reviews", {
             params: new URLSearchParams(queryKey[1]),
         });
     },
     async getReview(id: number) {
-        return await client().get<ReviewBooking>(`/api/booking-reviews/${id}`);
+        return await client().get<ReviewBooking>(`/api/reviews/${id}`);
     },
 
     async createReview(data: Partial<Omit<ReviewBooking, "id" | "user_id" | "created_at" | "updated_at">>) {
-        await client().post<ReviewBooking>("/api/booking-reviews", data);
+        await client().post<ReviewBooking>("/api/reviews", data);
     },
     async updateReview({ id, data }: { id: number; data: Partial<Omit<ReviewBooking, "id" | "user_id" | "created_at" | "updated_at">> }) {
-        await client().patch<ReviewBooking>(`/api/booking-reviews/${id}`, data);
+        await client().patch<ReviewBooking>(`/api/reviews/${id}`, data);
     },
 
     async deleteReview(id: number) {
-        await client().delete<void>(`/api/booking-reviews/${id}`);
+        await client().delete<void>(`/api/reviews/${id}`);
     },
     async getReviewStats() {
         return await client().get<
@@ -50,6 +50,6 @@ export const ReviewsClient = {
                     count: number;
                 }[];
             }>
-        >("/api//booking-reviews/statistics");
+        >("/api//reviews/statistics");
     },
 };

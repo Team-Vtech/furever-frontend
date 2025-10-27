@@ -328,6 +328,16 @@ export type Service = {
     updated_at: string;
 };
 
+export enum PaymentStatus {
+    COMPLETED = "completed",
+    PENDING = "pending",
+    PROCESSING = "processing",
+    FAILED = "failed",
+    REFUNDED = "refunded",
+    CANCELLED = "cancelled",
+    UNKNOWN = "unknown",
+}
+
 export type Booking = {
     id: number;
     user_id: number;
@@ -340,6 +350,7 @@ export type Booking = {
     addons_total_cost: string;
     total_price: string;
     status: BookingStatus;
+    payment_status: PaymentStatus;
     notes?: string;
     user: User;
     pet: Pet;
@@ -486,5 +497,6 @@ export interface Transaction {
     currency: string;
     billed_at: string;
     created_at: string;
+    payment_method: PaymentStatus;
     booking: Booking;
 }

@@ -1,7 +1,14 @@
 import { JsonResponse, ServiceType } from "@furever/types";
+import { Metadata } from "next";
 import { HomePageScreen } from "../featured/home/screens/HomeScreen/HomeScreen";
 import { MainLayout } from "../shared/components/MainLayout";
 import { server } from "../shared/utils/http.server.utils";
+
+export const metadata: Metadata = {
+    title: "Furever - Pet Care Services",
+    description:
+        "Connect with trusted pet care professionals and provide the best care for your furry friends. Find vets, groomers, walkers, and more.",
+};
 
 export default async function HomePage() {
     const serviceTypes = await getServicesTypes();

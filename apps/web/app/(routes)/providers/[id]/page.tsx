@@ -2,8 +2,14 @@ import { ProviderProfileScreen } from "@/app/featured/providers/screens/Provider
 import { MainLayout } from "@/app/shared/components/MainLayout";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, Provider } from "@furever/types";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+    title: "Provider Profile | Furever",
+    description: "View provider profile, services, reviews, and book appointments with trusted pet care professionals.",
+};
 
 interface ProviderPageProps {
     params: Promise<{

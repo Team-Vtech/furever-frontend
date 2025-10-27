@@ -18,13 +18,12 @@ const IGNORE_PATHS = [
     "/auth/session",
     "/images",
     "/favicon.ico",
-    "/auth/forgot-password",
-    "/auth/reset-password",
     "/api",
     "/login", // Pet parent login
     "/register", // Pet parent register
     "/forgot-password", // Pet parent forgot password
     "/api",
+    "/reset-password",
 ];
 const result = NextAuth({
     providers: [
@@ -68,6 +67,7 @@ const result = NextAuth({
                     };
                 } catch (error) {
                     console.error("Auth error:", error);
+                    console.log(error.response?.data);
                     return null;
                 }
             },

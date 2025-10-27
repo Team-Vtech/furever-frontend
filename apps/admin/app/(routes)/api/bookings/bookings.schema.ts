@@ -92,7 +92,7 @@ export function getBookingDefaultValues(booking?: Booking): BookingFormValues {
         provider_id: booking?.provider_id || 0,
         service_id: booking?.service_id || 0,
         booking_date: format(booking?.booking_date ?? new Date(), "yyyy-MM-dd") || "",
-        booking_time: format(booking?.booking_time ?? "", "HH:mm") || "",
+        booking_time: format(booking?.booking_time ?? new Date(), "HH:mm") || "",
         status: booking?.status || "pending",
         notes: booking?.notes || "",
         addon_ids: booking?.booking_addons.map((addon) => addon.service_addon_id) || [],

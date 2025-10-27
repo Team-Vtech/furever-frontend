@@ -1,4 +1,4 @@
-import { ForgotPasswordScreen } from "@/app/featured/password/screens/ForgotPasswordScreen/ForgotPasswordScreen";
+import { ForgotPasswordScreen } from "@/app/featured/auth/screens/ForgotPasswordScreen/ForgotPasswordScreen";
 import { Metadata } from "next";
 import { Suspense } from "react";
 

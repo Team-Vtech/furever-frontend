@@ -18,10 +18,10 @@ import { useForm } from "react-hook-form";
 import { ProvidersClient } from "../../explore/clients/providers.client";
 import { PetsClient } from "../../pets/clients/pets.client";
 import { ServicesClient } from "../../services/clients/services.client";
+import { TimeSlotsClient } from "../clients/time-slots.client";
 import { WorkingHoursCalendar } from "../components/WorkingHoursCalendar";
 import { useCreateBookingMutation } from "../hooks/useBookings";
 import { BookingFormValues, bookingSchema } from "../types/booking.types";
-import { generateTimeSlots, isTimeSlotAvailable } from "../utils/time-slots.utils";
 
 interface BookingFormContainerProps {
     provider?: Provider | null;
@@ -150,26 +150,25 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
         }
     };
 
-    // Generate available time slots based on selected date, working hours, and service duration
-    const availableTimeSlots = useMemo(() => {
-        const dateToUse = selectedDate || (watch("booking_date") ? new Date(watch("booking_date")) : null);
+    // Fetch available time slots from API
+    const dateToUse = selectedDate || (watch("booking_date") ? new Date(watch("booking_date")) : null);
+    const formattedDate = dateToUse ? format(dateToUse, "yyyy-MM-dd") : null;
 
-        if (!dateToUse || !currentProvider?.working_hours || !selectedService?.duration_minutes) {
-            return [];
-        }
-
-        const timeSlots = generateTimeSlots(dateToUse, currentProvider.working_hours, selectedService.duration_minutes);
-
-        // Filter out past time slots for today
-        return timeSlots.filter((slot) => isTimeSlotAvailable(slot.value, dateToUse));
-    }, [selectedDate, watch("booking_date"), currentProvider?.working_hours, selectedService?.duration_minutes]);
+    const { data: availableTimeSlots = { available_slots: [], all_slots: [], date: "", day_of_week: "" }, isLoading: isLoadingTimeSlots } = useQuery({
+        queryKey: ["time-slots", watchedProviderId, watchedServiceId, formattedDate],
+        queryFn: () =>
+            TimeSlotsClient.getAvailableTimeSlots({
+                provider_id: watchedProviderId,
+                service_id: watchedServiceId,
+                date: formattedDate!,
+            }),
+        select: (data) => data.data,
+        enabled: !!watchedProviderId && !!watchedServiceId && !!formattedDate,
+    });
+    console.log(availableTimeSlots, "availableTimeSlots");
 
     const onSubmit = async (data: BookingFormValues) => {
-        createBookingMutation.mutate(data, {
-            onSuccess: () => {
-                router.push("/bookings/success");
-            },
-        });
+        createBookingMutation.mutate(data);
     };
 
     useEffect(() => {
@@ -186,6 +185,11 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedService, refetchUserPets]);
+
+    // Reset booking time when date changes (since we fetch new time slots from API)
+    useEffect(() => {
+        setValue("booking_time", "");
+    }, [formattedDate, setValue]);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -477,25 +481,31 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                         <Label htmlFor="booking_time" className="text-sm font-medium text-gray-700">
                                             Available Times *
                                         </Label>
-                                        <SelectInput
-                                            name="booking_time"
-                                            control={control}
-                                            disabled={(!selectedDate && !watch("booking_date")) || availableTimeSlots.length === 0}
-                                            options={availableTimeSlots.map((slot) => ({
-                                                value: slot.value,
-                                                label: slot.label,
-                                            }))}
-                                            placeholder={
-                                                !selectedDate && !watch("booking_date")
-                                                    ? "Please select a date first"
-                                                    : availableTimeSlots.length === 0
-                                                      ? "No available times for this date"
-                                                      : "Select time"
-                                            }
-                                            className="mt-1 w-full"
-                                        />
+                                        {isLoadingTimeSlots ? (
+                                            <Skeleton className="mt-1 h-10 w-full rounded-md" />
+                                        ) : (
+                                            <SelectInput
+                                                name="booking_time"
+                                                control={control}
+                                                disabled={
+                                                    (!selectedDate && !watch("booking_date")) || availableTimeSlots.available_slots.length === 0
+                                                }
+                                                options={availableTimeSlots.available_slots.map((slot) => ({
+                                                    value: slot.start_time,
+                                                    label: `${slot.start_time} - ${slot.end_time}`,
+                                                }))}
+                                                placeholder={
+                                                    !selectedDate && !watch("booking_date")
+                                                        ? "Please select a date first"
+                                                        : availableTimeSlots.available_slots.length === 0
+                                                          ? "No available times for this date"
+                                                          : "Select time"
+                                                }
+                                                className="mt-1 w-full"
+                                            />
+                                        )}
                                         {errors.booking_time && <p className="mt-1 text-sm text-red-600">{errors.booking_time.message}</p>}
-                                        {selectedService && availableTimeSlots.length > 0 && (
+                                        {selectedService && availableTimeSlots.available_slots.length > 0 && (
                                             <p className="mt-2 text-xs text-gray-500">
                                                 Times shown are start times. Your {selectedService.duration_minutes}-minute service will end at the
                                                 displayed end time.

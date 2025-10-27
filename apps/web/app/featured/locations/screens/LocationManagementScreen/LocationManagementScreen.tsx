@@ -4,9 +4,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@furever/ui/co
 import { useState } from "react";
 import { toast } from "sonner";
 import { LocationFormValues } from "../../../../(routes)/api/locations/locations.schema";
-import { LocationForm } from "../../components/LocationForm";
-import { LocationsList } from "../../components/LocationsList";
-import { useCreateLocationMutation, useDeleteLocationMutation, useLocationsQuery, useUpdateLocationMutation } from "../../hooks/use-locations-query";
+import { LocationForm } from "../../../locations/components/LocationForm";
+import { LocationsList } from "../../../locations/components/LocationsList";
+import {
+    useCreateLocationMutation,
+    useDeleteLocationMutation,
+    useLocationsQuery,
+    useUpdateLocationMutation,
+} from "../../../settings/hooks/use-locations-query";
 
 export default function LocationManagementScreen() {
     const [isFormOpen, setIsFormOpen] = useState(false);

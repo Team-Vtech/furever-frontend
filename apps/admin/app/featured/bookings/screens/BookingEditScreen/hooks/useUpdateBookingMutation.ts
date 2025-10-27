@@ -11,7 +11,7 @@ export function useUpdateBookingMutation() {
         mutationFn: BookingsClient.updateBooking,
         onSuccess: () => {
             toastUtils.success.update("Booking");
-            queryClient.invalidateQueries({ queryKey: ["bookings"] });
+            queryClient.invalidateQueries({ predicate: (query) => query.queryKey[0] === "list-bookings" });
             router.push("/bookings");
         },
         onError: () => {

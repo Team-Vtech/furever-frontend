@@ -1,3 +1,4 @@
+import { CheckoutEventsPaymentMethodTypes } from "@paddle/paddle-js";
 import { z } from "zod";
 
 // Schema for checkout success request
@@ -16,6 +17,7 @@ export const checkoutSuccessRequestSchema = z.object({
         email: z.string().email("Valid email is required"),
     }),
     bookingId: z.number().int().positive("Booking ID must be a positive integer"),
+    payment_method: z.nativeEnum(CheckoutEventsPaymentMethodTypes),
 });
 
 // Type inference for TypeScript

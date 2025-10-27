@@ -10,7 +10,7 @@ function CertificateActionsCell({ certificate }: { certificate: Certificate }) {
     return (
         <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
-                <Link href={`/certificates/${certificate.id}`}>
+                <Link href={`/certificates/${certificate.id}/edit`}>
                     <Edit className="mr-2 h-4 w-4" />
                     Edit
                 </Link>

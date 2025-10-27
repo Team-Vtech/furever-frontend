@@ -4,23 +4,28 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { BookingsClient } from "../clients/bookings.client";
 import { BOOKING_QUERY_KEYS } from "../constants";
-import { BookingFormValues } from "../types/booking.types";
 
 export function useCreateBookingMutation() {
     const queryClient = useQueryClient();
+    const router = useRouter();
 
-    return useMutation({
-        mutationFn: (data: BookingFormValues) => BookingsClient.createBooking(data),
-        onSuccess: () => {
+    const mutation = useMutation({
+        mutationFn: BookingsClient.createBooking,
+        onSuccess: (data) => {
             // Invalidate and refetch bookings list
             queryClient.invalidateQueries({ queryKey: BOOKING_QUERY_KEYS.bookings });
             toast.success("Booking created successfully!");
+            router.push(`/bookings/${data.data.id}#payment`);
         },
         onError: (error: any) => {
             console.error("Failed to create booking:", error);
             toast.error(error.response?.data?.message || "Failed to create booking. Please try again.");
         },
     });
+
+    return {
+        ...mutation,
+    };
 }
 
 export function useCheckoutSuccessMutation() {
@@ -37,7 +42,6 @@ export function useCheckoutSuccessMutation() {
             queryClient.invalidateQueries({ queryKey: BOOKING_QUERY_KEYS.bookings });
             queryClient.invalidateQueries({ queryKey: [`booking-${variables.bookingId}`] });
             toast.success("Payment processed successfully!");
-            router.push(`/bookings/${variables.bookingId}`);
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.message || "Failed to process payment. Please contact support.");

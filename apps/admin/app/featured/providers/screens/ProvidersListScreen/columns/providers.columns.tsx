@@ -4,7 +4,7 @@ import { ProviderStatusBadge } from "@/app/shared/components/StatusBadge/Provide
 import { Provider } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@furever/ui/components/tooltip";
-import { ColumnDef, Row } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye } from "lucide-react";
 import Link from "next/link";
 
@@ -14,7 +14,7 @@ function ProviderActionsCell({ provider }: { provider: Provider }) {
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button variant="outline" asChild>
-                        <Link href={`/providers/${provider.id}`}>
+                        <Link href={`/providers/${provider.id}/view`}>
                             <Eye className="h-4 w-4" />
                         </Link>
                     </Button>
@@ -39,7 +39,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     {
         accessorKey: "business_name",
         header: "Business Name",
-        cell: ({ row }: { row: Row<Provider> }) => {
+        cell: ({ row }) => {
             const provider = row.original;
             return <div className="font-medium">{provider.business_name}</div>;
         },
@@ -47,7 +47,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     {
         accessorKey: "contact_person_name",
         header: "Contact Person",
-        cell: ({ row }: { row: Row<Provider> }) => {
+        cell: ({ row }) => {
             const provider = row.original;
             return <div>{provider.contact_person_name}</div>;
         },
@@ -55,7 +55,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     {
         accessorKey: "email",
         header: "Email",
-        cell: ({ row }: { row: Row<Provider> }) => {
+        cell: ({ row }) => {
             const email = row.getValue("email") as string;
             return <div className="text-muted-foreground text-sm">{email}</div>;
         },
@@ -63,7 +63,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     {
         accessorKey: "phone_number",
         header: "Phone",
-        cell: ({ row }: { row: Row<Provider> }) => {
+        cell: ({ row }) => {
             const phone = row.getValue("phone_number") as string;
             return <div className="text-sm">{phone}</div>;
         },
@@ -93,7 +93,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     {
         accessorKey: "created_at",
         header: "Created At",
-        cell: ({ row }: { row: Row<Provider> }) => {
+        cell: ({ row }) => {
             const createdAt = row.getValue("created_at") as string;
             return <div className="text-muted-foreground text-sm">{new Date(createdAt).toLocaleDateString()}</div>;
         },
@@ -101,7 +101,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     {
         id: "actions",
         header: "Actions",
-        cell: ({ row }: { row: Row<Provider> }) => {
+        cell: ({ row }) => {
             const provider = row.original;
             return <ProviderActionsCell provider={provider} />;
         },

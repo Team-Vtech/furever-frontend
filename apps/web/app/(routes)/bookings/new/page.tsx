@@ -1,6 +1,12 @@
 import { NewBookingScreen } from "@/app/featured/bookings/screens/NewBookingScreen/NewBookingScreen";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { JsonResponse, Provider, Service } from "@furever/types";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Book Service | Furever",
+    description: "Book a pet care service with trusted professionals. Schedule appointments for your furry friends.",
+};
 
 export default async function NewBookingPage({ searchParams }: { searchParams: Promise<{ provider_id?: number; service_id?: number }> }) {
     const { provider_id, service_id } = await searchParams;

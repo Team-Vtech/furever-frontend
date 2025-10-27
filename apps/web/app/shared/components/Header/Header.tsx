@@ -102,6 +102,13 @@ export function Header() {
                         {/* Notifications */}
                         <NotificationDropdown />
 
+                        {/* Become a Provider Button - Only show for authenticated users */}
+                        {session?.user && (
+                            <Button variant="outline" size="sm" asChild>
+                                <Link href="/provider-register">Become a Provider</Link>
+                            </Button>
+                        )}
+
                         {/* User Authentication */}
                         {status === "loading" ? (
                             <div className="h-8 w-8 animate-pulse rounded-full bg-gray-200" />
