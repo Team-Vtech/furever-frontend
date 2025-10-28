@@ -1,6 +1,6 @@
 import { Booking } from "@furever/types";
 import { format } from "date-fns";
-import { CalendarEvent } from "../components/AddToCalendar";
+import { CalendarEvent } from "../components/AddToCalendar/AddToCalendar";
 
 /**
  * Converts a booking object to a calendar event

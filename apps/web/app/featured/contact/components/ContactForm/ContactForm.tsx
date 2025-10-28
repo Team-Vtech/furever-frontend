@@ -5,10 +5,9 @@ import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@furever/ui/components/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
+import { useContactMutation } from "../../hooks/use-contact.hooks";
 
 // Contact form validation schema
 const contactFormSchema = z.object({
@@ -30,7 +29,7 @@ const defaultValues: ContactFormValues = {
 };
 
 export function ContactForm() {
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const contactMutation = useContactMutation();
 
     const {
         control,
@@ -43,29 +42,11 @@ export function ContactForm() {
     });
 
     const onSubmit = async (data: ContactFormValues) => {
-        setIsSubmitting(true);
         try {
-            const response = await fetch("/api/contact", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                toast.success(result.message || "Thank you for contacting us! We'll get back to you soon.");
-                reset();
-            } else {
-                toast.error(result.message || "Failed to send message. Please try again.");
-            }
+            await contactMutation.mutateAsync(data);
+            reset();
         } catch (error) {
             console.error("Contact form error:", error);
-            toast.error("Failed to send message. Please try again.");
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
@@ -88,8 +69,8 @@ export function ContactForm() {
 
                     <TextAreaInput control={control} name="message" label="Message" placeholder="Tell us how we can help you..." rows={6} required />
 
-                    <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700" disabled={isSubmitting}>
-                        {isSubmitting ? "Sending..." : "Send Message"}
+                    <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700" disabled={contactMutation.isPending}>
+                        {contactMutation.isPending ? "Sending..." : "Send Message"}
                     </Button>
                 </form>
             </CardContent>

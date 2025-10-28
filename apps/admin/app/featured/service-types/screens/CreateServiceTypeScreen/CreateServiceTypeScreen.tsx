@@ -3,8 +3,8 @@
 import { ServiceTypeFormValues } from "@/app/(routes)/api/service-types/schema";
 import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { useRouter } from "next/navigation";
-import { ServiceTypeForm } from "../components/ServiceTypeForm";
-import { useCreateServiceTypeMutation } from "../hooks/useServiceTypeQueries";
+import { ServiceTypeForm } from "../../components/ServiceTypeForm/ServiceTypeForm";
+import { useCreateServiceTypeMutation } from "../../hooks/useServiceTypeQueries";
 
 export function CreateServiceTypeScreen() {
     const router = useRouter();

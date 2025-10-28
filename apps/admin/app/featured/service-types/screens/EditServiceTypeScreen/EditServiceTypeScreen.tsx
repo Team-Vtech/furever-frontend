@@ -5,8 +5,8 @@ import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { ServiceType } from "@furever/types";
 import { useRouter } from "next/navigation";
-import { ServiceTypeForm } from "../components/ServiceTypeForm";
-import { useUpdateServiceTypeMutation } from "../hooks/useServiceTypeQueries";
+import { ServiceTypeForm } from "../../components/ServiceTypeForm/ServiceTypeForm";
+import { useUpdateServiceTypeMutation } from "../../hooks/useServiceTypeQueries";
 
 interface EditServiceTypeScreenProps {
     serviceType: ServiceType;

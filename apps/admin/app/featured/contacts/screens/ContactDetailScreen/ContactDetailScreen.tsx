@@ -1,5 +1,6 @@
 "use client";
 
+import { Contact } from "@furever/types/index";
 import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@furever/ui/components/card";
@@ -7,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Calendar, Mail, MessageSquare, Phone } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Contact, ContactsClient } from "../../clients/contacts.client";
+import { ContactsClient } from "../../clients/contacts.client";
 
 interface ContactDetailScreenProps {
     contact: Contact;
