@@ -5,13 +5,13 @@ import { FormProvider, useForm } from "react-hook-form";
 import { getServiceDefaultValues, ServiceFormValues, serviceSchema } from "../../../(routes)/api/services/services.schema";
 
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
-import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
+import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup/CheckboxGroup";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
-import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia";
+import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia/UploadGalleryMedia";
 import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
 import { Addon, GeneralStatus, PetType, Provider, Service, ServiceType } from "@furever/types";
-import { AddonsSection } from "../components/AddonsSection";
+import { AddonsSection } from "../components/AddonsSection/AddonsSection";
 
 interface ServiceFormProps {
     service?: Service;

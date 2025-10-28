@@ -10,7 +10,7 @@ import { PasswordInput } from "@/app/shared/components/PasswordInput/PasswordInp
 import { PhoneInput } from "@/app/shared/components/PhoneInput/PhoneInput";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
-import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia";
+import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia/UploadGalleryMedia";
 import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
 import { Certificate, User } from "@furever/types";
 import { Button } from "@furever/ui/components/button";

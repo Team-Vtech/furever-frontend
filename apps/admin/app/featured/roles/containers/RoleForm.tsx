@@ -1,7 +1,7 @@
 "use client";
 
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
-import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
+import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup/CheckboxGroup";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Permission, Role } from "@furever/types";
 import { Button } from "@furever/ui/components/button";

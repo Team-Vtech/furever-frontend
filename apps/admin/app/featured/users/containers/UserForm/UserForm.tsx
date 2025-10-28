@@ -10,12 +10,12 @@ import { useForm } from "react-hook-form";
 
 import { getUserDefaultValues, UserFormValues, userSchema } from "@/app/(routes)/api/users/users.schema";
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
-import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
+import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup/CheckboxGroup";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { Provider, Role, User } from "@furever/types";
 import { isAxiosError } from "axios";
 import { useEffect } from "react";
-import { USER_STATUS_OPTIONS } from "../../constant";
+import { USER_STATUS_OPTIONS } from "../../constants";
 
 interface UserFormProps {
     user?: User;

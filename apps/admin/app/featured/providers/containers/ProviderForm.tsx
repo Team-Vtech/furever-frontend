@@ -13,7 +13,7 @@ import { ContactInformationSection } from "../components/ContactInformationSecti
 import { LocationInformationSection } from "../components/LocationInformationSection";
 import { ProfileMediaSection } from "../components/ProfileMediaSection";
 import { WorkingHoursSection } from "../components/WorkingHoursSection";
-import { PROVIDER_STATUS_OPTIONS } from "../constant";
+import { PROVIDER_STATUS_OPTIONS } from "../constants";
 
 interface ProviderFormProps {
     provider?: Provider;

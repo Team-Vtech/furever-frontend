@@ -1,9 +1,9 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
+import { ListingErrorState } from "@/app/shared/components/ListingErrorState/ListingErrorState";
 
-import { providersColumns } from "./columns/providers.columns";
+import { providersColumns } from "./columns/ProvidersColumns";
 import { useProvidersListScreenState } from "./hooks/useProvidersListScreenState";
 
 export function ProvidersListScreen() {

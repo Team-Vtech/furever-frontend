@@ -1,1 +1,1 @@
-export * from "./CheckboxGroup";
+export { CheckboxGroup, type CheckboxOption } from "./CheckboxGroup";

@@ -4,7 +4,7 @@ import { PetTypesClient } from "@/app/featured/pet-types/clients/pet-types.clien
 import { ProvidersClient } from "@/app/featured/providers/clients/providers.client";
 import { ServiceTypesClient } from "@/app/featured/service-types/clients/service-types.client";
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { servicesColumns } from "./columns/services.columns";
+import { servicesColumns } from "./columns/ServicesColumns";
 import { useServicesListScreenState } from "./hooks/useServicesListScreenState";
 
 export function ServicesListScreen() {

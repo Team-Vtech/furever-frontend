@@ -59,7 +59,7 @@ export function usePaddlePayment({ booking, payment }: UsePaddlePaymentProps) {
         if (paddle) {
             if (payment && "is_paid" in payment && payment.is_paid) {
                 return;
-            } else if (payment && "pay_link" in payment && payment.pay_link) {
+            } else if (payment && "_ptxn" in payment && payment._ptxn) {
                 paddle?.Checkout.open({
                     settings: {
                         variant: "multi-page",

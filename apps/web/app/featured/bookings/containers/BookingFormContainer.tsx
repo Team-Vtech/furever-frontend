@@ -5,6 +5,7 @@ import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInp
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Pet, Provider, Service } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@furever/ui/components/dialog";
 import { Label } from "@furever/ui/components/label";
 import { Skeleton } from "@furever/ui/components/skeleton";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +18,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ProvidersClient } from "../../explore/clients/providers.client";
 import { PetsClient } from "../../pets/clients/pets.client";
+import { PetForm } from "../../pets/components/PetForm";
+import { useCreatePetMutation } from "../../pets/hooks/usePets";
+import { PetFormValues } from "../../pets/schemas/pet.schema";
 import { ServicesClient } from "../../services/clients/services.client";
 import { TimeSlotsClient } from "../clients/time-slots.client";
 import { WorkingHoursCalendar } from "../components/WorkingHoursCalendar";
@@ -31,6 +35,7 @@ interface BookingFormContainerProps {
 export function BookingFormContainer({ provider, service }: BookingFormContainerProps) {
     const router = useRouter();
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+    const [isPetFormOpen, setIsPetFormOpen] = useState(false);
 
     const {
         handleSubmit,
@@ -140,6 +145,9 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
     // Booking mutation
     const createBookingMutation = useCreateBookingMutation();
 
+    // Pet creation mutation
+    const { createPet, isCreating: isCreatingPet } = useCreatePetMutation();
+
     // Handle calendar date selection
     const handleDateSelect = (date: Date | undefined) => {
         setSelectedDate(date);
@@ -169,6 +177,26 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
 
     const onSubmit = async (data: BookingFormValues) => {
         createBookingMutation.mutate(data);
+    };
+
+    // Pet creation handlers
+    const handleAddPet = () => {
+        setIsPetFormOpen(true);
+    };
+
+    const handlePetFormSubmit = async (data: PetFormValues) => {
+        try {
+            await createPet(data);
+            setIsPetFormOpen(false);
+            // Refetch pets to update the list
+            refetchUserPets();
+        } catch (error) {
+            // Error handling is done in the mutation hook
+        }
+    };
+
+    const handlePetFormCancel = () => {
+        setIsPetFormOpen(false);
     };
 
     useEffect(() => {
@@ -430,10 +458,8 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                         <p className="mt-2 text-sm text-gray-600">
                                             You have no pets matching the selected service's pet :{" "}
                                             {selectedService?.pet_types.map((pt) => pt.name).join(", ")}. Please add a compatible pet first.{" "}
-                                            <Button asChild variant="link" size="sm">
-                                                <Link href="/pets#create-pet" className="text-purple-600 hover:text-purple-700">
-                                                    Add Pet
-                                                </Link>
+                                            <Button variant="link" size="sm" onClick={handleAddPet} className="text-purple-600 hover:text-purple-700">
+                                                Add Pet
                                             </Button>
                                         </p>
                                     )}
@@ -614,6 +640,16 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                     </div>
                 </div>
             </div>
+
+            {/* Pet Creation Modal */}
+            <Dialog open={isPetFormOpen} onOpenChange={setIsPetFormOpen}>
+                <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+                    <DialogHeader>
+                        <DialogTitle>Add New Pet</DialogTitle>
+                    </DialogHeader>
+                    <PetForm onSubmit={handlePetFormSubmit} onCancel={handlePetFormCancel} isLoading={isCreatingPet} />
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

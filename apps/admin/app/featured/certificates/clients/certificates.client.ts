@@ -1,7 +1,7 @@
 import { CertificateFormValues } from "@/app/(routes)/api/certificates/certificates.schema";
 import { client } from "@/app/shared/utils/http.client.utils";
 import { Certificate, JsonResponse, PaginatedJsonResponse } from "@furever/types";
-import { ENDPOINTS } from "../constant";
+import { ENDPOINTS } from "../constants";
 
 export const CertificatesClient = {
     async getCertificates({ queryKey }: { queryKey: string[] }) {

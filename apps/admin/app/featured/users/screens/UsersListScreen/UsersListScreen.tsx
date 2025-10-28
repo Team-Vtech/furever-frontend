@@ -1,12 +1,12 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
+import { ListingErrorState } from "@/app/shared/components/ListingErrorState/ListingErrorState";
 
 import { ProvidersClient } from "@/app/featured/providers/clients/providers.client";
 import { RolesClient } from "@/app/featured/roles/clients/roles.client";
 import { FilterConfig } from "@/app/shared/components/FiltersFactory/FiltersFactory";
-import { usersColumns } from "./columns/users.columns";
+import { usersColumns } from "./columns/UsersColumns";
 import { useUsersListScreenState } from "./hooks/useUsersListScreenState";
 
 const usersFilters: FilterConfig[] = [

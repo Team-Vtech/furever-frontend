@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { rolesColumns } from "./columns/roles.columns";
+import { rolesColumns } from "./columns/RolesColumns";
 import { useRolesListScreenState } from "./hooks/useRolesListScreenState";
 
 export function RolesListScreen() {

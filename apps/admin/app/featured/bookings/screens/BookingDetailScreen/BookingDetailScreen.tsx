@@ -1,6 +1,6 @@
 "use client";
 
-import { BookingPaymentModal } from "@/app/shared/components/BookingPaymentModal";
+import { BookingPaymentModal } from "@/app/shared/components/BookingPaymentModal/BookingPaymentModal";
 import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { Booking, BookingStatus } from "@furever/types";
 import { Badge } from "@furever/ui/components/badge";

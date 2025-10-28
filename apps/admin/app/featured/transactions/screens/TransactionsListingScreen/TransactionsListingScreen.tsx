@@ -2,9 +2,9 @@
 
 import { UsersClient } from "@/app/featured/users/clients/users.client";
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
+import { ListingErrorState } from "@/app/shared/components/ListingErrorState/ListingErrorState";
 import { useTransactionsListScreenState } from "../../hooks/useTransactionsListScreenState";
-import { transactionsColumns } from "./columns/transactions.columns";
+import { transactionsColumns } from "./columns/TransactionsColumns";
 
 export function TransactionsListingScreen() {
     const { data, pagination, isLoading, isError, refetch } = useTransactionsListScreenState();

@@ -1,6 +1,6 @@
 import { MediaObjectFormValues } from "@/app/(routes)/api/media-objects/schema";
 import { JsonResponse, MediaObject } from "@furever/types";
-import { MEDIA_ENDPOINTS } from "../constant";
+import { MEDIA_ENDPOINTS } from "../constants";
 import { client } from "./http.client.utils";
 
 export const MediaClient = {

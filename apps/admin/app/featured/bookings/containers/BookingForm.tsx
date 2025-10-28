@@ -1,7 +1,7 @@
 "use client";
 
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
-import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
+import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup/CheckboxGroup";
 import { DateInput } from "@/app/shared/components/DateInput/DateInput";
 import { SelectInput } from "@/app/shared/components/SelectInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";

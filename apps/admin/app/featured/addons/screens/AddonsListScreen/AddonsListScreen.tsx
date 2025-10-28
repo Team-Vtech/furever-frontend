@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { addonsColumns } from "./columns/addons.columns";
+import { addonsColumns } from "./columns/AddonsColumns";
 import { useAddonsListScreenState } from "./hooks/useAddonsListScreenState";
 
 export function AddonsListScreen() {

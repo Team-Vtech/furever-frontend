@@ -1,1 +1,0 @@
-export { UploadGalleryMedia } from "./UploadGalleryMedia";

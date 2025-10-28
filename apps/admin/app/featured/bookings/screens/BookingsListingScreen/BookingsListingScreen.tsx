@@ -4,8 +4,8 @@ import { ProvidersClient } from "@/app/featured/providers/clients/providers.clie
 import { ServicesClient } from "@/app/featured/services/clients/services.client";
 import { UsersClient } from "@/app/featured/users/clients/users.client";
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { ListingErrorState } from "@/app/shared/components/ListingErrorState";
-import { bookingsColumns } from "./columns/bookings.columns";
+import { ListingErrorState } from "@/app/shared/components/ListingErrorState/ListingErrorState";
+import { bookingsColumns } from "./columns/BookingsColumns";
 import { useBookingsListScreenState } from "./hooks/useBookingsListScreenState";
 
 export function BookingsListingScreen() {

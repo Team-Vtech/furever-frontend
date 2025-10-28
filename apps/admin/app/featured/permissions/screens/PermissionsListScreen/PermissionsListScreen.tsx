@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { permissionsColumns } from "./columns/permissions.columns";
+import { permissionsColumns } from "./columns/PermissionsColumns";
 import { usePermissionsListScreenState } from "./hooks/usePermissionsListScreenState";
 
 export function PermissionsListScreen() {

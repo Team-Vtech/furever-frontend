@@ -500,3 +500,16 @@ export interface Transaction {
     payment_method: PaymentStatus;
     booking: Booking;
 }
+
+export interface Contact {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    subject: string;
+    message: string;
+    status: string;
+    user: any;
+    created_at: string;
+    updated_at: string;
+}

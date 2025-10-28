@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { petTypeColumns } from "./columns/pet-type.columns";
+import { petTypeColumns } from "./columns/PetTypeColumns";
 import { usePetTypesListScreenState } from "./hooks/usePetTypesListScreenState";
 
 export function PetTypesListScreen() {

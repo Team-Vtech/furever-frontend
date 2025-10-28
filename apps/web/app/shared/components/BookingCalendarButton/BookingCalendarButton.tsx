@@ -1,6 +1,6 @@
 "use client";
 
-import { AddToCalendar } from "@/app/shared/components/AddToCalendar";
+import { AddToCalendar } from "@/app/shared/components/AddToCalendar/AddToCalendar";
 import { bookingToCalendarEvent } from "@/app/shared/utils/calendar.utils";
 import { Booking } from "@furever/types";
 

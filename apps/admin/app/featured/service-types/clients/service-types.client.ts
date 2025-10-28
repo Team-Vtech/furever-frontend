@@ -2,7 +2,7 @@ import { ServiceTypeFormValues } from "@/app/(routes)/api/service-types/schema";
 import { client } from "@/app/shared/utils/http.client.utils";
 import { JsonResponse, PaginatedJsonResponse } from "@furever/types/general";
 import { ServiceType } from "@furever/types/index";
-import { ENDPOINTS } from "../constant";
+import { ENDPOINTS } from "../constants";
 
 export const ServiceTypesClient = {
     async getServiceTypes({ queryKey }: { queryKey: string[] }) {

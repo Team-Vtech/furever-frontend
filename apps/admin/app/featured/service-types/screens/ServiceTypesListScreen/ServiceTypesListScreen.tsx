@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { serviceTypeColumns } from "./columns/service-type.columns";
+import { serviceTypeColumns } from "./columns/ServiceTypeColumns";
 import { useServiceTypesListScreenState } from "./hooks/useServiceTypesListScreenState";
 
 export function ServiceTypesListScreen() {

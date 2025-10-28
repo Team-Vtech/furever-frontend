@@ -1,4 +1,19 @@
-import { Award, BookOpen, Calendar, CreditCard, LayoutDashboard, Lock, PawPrint, Plus, Settings, Shield, Star, Users, Wrench } from "lucide-react";
+import {
+    Award,
+    BookOpen,
+    Calendar,
+    CreditCard,
+    LayoutDashboard,
+    Lock,
+    Mail,
+    PawPrint,
+    Plus,
+    Settings,
+    Shield,
+    Star,
+    Users,
+    Wrench,
+} from "lucide-react";
 import { NavigationGroup } from "./components/layout/dashboard-layout";
 
 export const APP_NAVIGATION_LINKS: NavigationGroup[] = [
@@ -48,6 +63,12 @@ export const APP_NAVIGATION_LINKS: NavigationGroup[] = [
                 href: "/transactions",
                 icon: CreditCard,
                 permissions: ["view transactions page"],
+            },
+            {
+                name: "Contacts",
+                href: "/contacts",
+                icon: Mail,
+                permissions: ["view contacts page"],
             },
         ],
     },

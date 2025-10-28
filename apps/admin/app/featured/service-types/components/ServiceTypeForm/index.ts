@@ -1,1 +1,0 @@
-export { ServiceTypeForm } from "./ServiceTypeForm";

@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/app/shared/components/DataTable/DataTable";
-import { certificatesColumns } from "./columns/certificates.columns";
+import { certificatesColumns } from "./columns/CertificatesColumns";
 import { useCertificatesListScreenState } from "./hooks/useCertificatesListScreenState";
 
 export function CertificatesListScreen() {

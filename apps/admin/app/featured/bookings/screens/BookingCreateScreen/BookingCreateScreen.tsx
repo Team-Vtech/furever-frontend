@@ -1,7 +1,7 @@
 "use client";
 
 import { BookingFormValues } from "@/app/(routes)/api/bookings/bookings.schema";
-import { BookingPaymentModal } from "@/app/shared/components/BookingPaymentModal";
+import { BookingPaymentModal } from "@/app/shared/components/BookingPaymentModal/BookingPaymentModal";
 import { Provider } from "@furever/types";
 import { BookingForm } from "../../containers/BookingForm";
 import { useCreateBookingMutation } from "./hooks/useCreateBookingMutation";

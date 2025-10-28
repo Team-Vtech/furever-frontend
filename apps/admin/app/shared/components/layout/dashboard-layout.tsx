@@ -4,7 +4,7 @@ import { FileText, Settings, Users } from "lucide-react"; // Added imports for U
 import type React from "react";
 
 import { Bell, ChevronDown, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@furever/ui/components/avatar";
 import { Badge } from "@furever/ui/components/badge";
@@ -22,6 +22,7 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuthPermissions } from "../../providers/PermissionsProvider";
 import { AppLogo } from "../AppLogo/AppLogo";
 import { Authorize } from "../Authorize/Authorize";
 import { Breadcrumbs } from "./breadcrumbs";
@@ -52,13 +53,22 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children, breadcrumbs, navigationGroups }: DashboardLayoutProps) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const { data: session } = useSession();
+    const { hasPermission } = useAuthPermissions();
     const pathname = usePathname();
+
     function isCurrent(href: string) {
         if (href === "/") {
             return pathname === href;
         }
         return pathname.startsWith(href);
     }
+
+    // Filter groups to only show those with visible items
+    const visibleGroups = useMemo(() => {
+        return navigationGroups.filter((group) => {
+            return group.items.some((item) => hasPermission(item.permissions || []));
+        });
+    }, [navigationGroups, hasPermission]);
     return (
         <div className="bg-background min-h-screen">
             {/* Mobile sidebar overlay */}
@@ -94,7 +104,7 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
 
                     {/* Navigation */}
                     <nav className="flex-1 space-y-6 px-4 py-6">
-                        {navigationGroups.map((group) => (
+                        {visibleGroups.map((group) => (
                             <div key={group.name}>
                                 <h3 className="text-sidebar-foreground/60 mb-2 px-3 text-xs font-semibold uppercase tracking-wider">{group.name}</h3>
                                 <div className="space-y-1">

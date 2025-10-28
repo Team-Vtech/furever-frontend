@@ -1,6 +1,6 @@
 "use client";
 
-import { BookingCalendarButton } from "@/app/shared/components/BookingCalendarButton";
+import { BookingCalendarButton } from "@/app/shared/components/BookingCalendarButton/BookingCalendarButton";
 import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { Booking, BookingStatus } from "@furever/types";
 import { Button } from "@furever/ui/components/button";

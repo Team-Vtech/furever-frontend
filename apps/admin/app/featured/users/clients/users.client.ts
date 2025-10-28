@@ -1,7 +1,7 @@
 import { client } from "@/app/shared/utils/http.client.utils";
 import { JsonResponse, PaginatedJsonResponse, Pet, User } from "@furever/types";
 import { UserFormValues } from "../../../(routes)/api/users/users.schema";
-import { ENDPOINTS } from "../constant";
+import { ENDPOINTS } from "../constants";
 
 export const UsersClient = {
     async getUsers({ queryKey }: { queryKey: string[] }) {

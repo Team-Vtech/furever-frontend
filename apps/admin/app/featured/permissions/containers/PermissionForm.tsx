@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 
 import { getPermissionDefaultValues, PermissionFormValues, permissionSchema } from "@/app/(routes)/api/permissions/permissions.schema";
 import { Authorize } from "@/app/shared/components/Authorize/Authorize";
-import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup";
+import { CheckboxGroup } from "@/app/shared/components/CheckboxGroup/CheckboxGroup";
 import { Permission } from "@furever/types";
 import { useEffect } from "react";
 import { useRoles } from "../hooks/use-permissions";

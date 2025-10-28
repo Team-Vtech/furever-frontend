@@ -4,7 +4,7 @@ import { SelectInput } from "@/app/shared/components/SelectInput/SelectInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
-import { usePetTypes } from "@/app/shared/hooks";
+import { usePetTypes } from "@/app/shared/hooks/usePetTypes";
 import { Pet } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Label } from "@furever/ui/components/label";

@@ -1,18 +1,16 @@
 "use client";
 
-import { BookingPaymentModal } from "@/app/shared/components/BookingPaymentModal";
+import { BookingPaymentModal } from "@/app/shared/components/BookingPaymentModal/BookingPaymentModal";
 import { Booking } from "@furever/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@furever/ui/components/card";
 import { useEffect, useState } from "react";
-import {
-    BookingActionsCard,
-    BookingHeader,
-    BookingSummaryCard,
-    CustomerInformationCard,
-    PetInformationCard,
-    ProviderInformationCard,
-    ServiceInformationCard,
-} from "./components";
+import { BookingActionsCard } from "./components/BookingActionsCard";
+import { BookingHeader } from "./components/BookingHeader";
+import { BookingSummaryCard } from "./components/BookingSummaryCard";
+import { CustomerInformationCard } from "./components/CustomerInformationCard";
+import { PetInformationCard } from "./components/PetInformationCard";
+import { ProviderInformationCard } from "./components/ProviderInformationCard";
+import { ServiceInformationCard } from "./components/ServiceInformationCard";
 
 interface BookingDetailsScreenProps {
     booking: Booking;
