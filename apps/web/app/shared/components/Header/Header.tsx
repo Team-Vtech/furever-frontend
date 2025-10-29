@@ -93,9 +93,6 @@ export function Header() {
                                 if (item.status === "authenticated" && !session?.user) {
                                     return null;
                                 }
-                                if (item.status === "any" && session?.user) {
-                                    return null;
-                                }
                                 return (
                                     <Link
                                         key={item.id}
