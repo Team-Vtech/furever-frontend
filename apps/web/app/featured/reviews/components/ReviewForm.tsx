@@ -26,7 +26,7 @@ interface ReviewFormProps {
     isLoading?: boolean;
 }
 
-export function ReviewForm({ bookingId, review, onSubmit, onCancel, isLoading = false }: ReviewFormProps) {
+export function ReviewForm({ review, onSubmit, onCancel, isLoading = false }: ReviewFormProps) {
     const [hoveredRating, setHoveredRating] = useState(0);
     const [selectedRating, setSelectedRating] = useState(review?.rating || 0);
 

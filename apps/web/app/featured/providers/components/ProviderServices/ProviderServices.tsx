@@ -2,7 +2,8 @@
 
 import { Service } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
-import { ChevronRight, PawPrint } from "lucide-react";
+import { PawPrint } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ServiceImageCarousel } from "../ServiceImageCarousel/ServiceImageCarousel";
 
@@ -12,6 +13,7 @@ interface ProviderServicesProps {
 }
 
 export function ProviderServices({ services, providerId }: ProviderServicesProps) {
+    const { status } = useSession();
     // Helper function to format duration
     const formatDuration = (minutes: number) => {
         if (minutes < 60) {
@@ -28,16 +30,6 @@ export function ProviderServices({ services, providerId }: ProviderServicesProps
     return (
         <div className="mb-12">
             <h2 className="mb-8 text-3xl font-bold text-gray-900">Our Services</h2>
-
-            {/* Services Filter */}
-            {services.length > 0 && (
-                <div className="mb-8 border-b border-gray-200">
-                    <div className="flex items-center justify-between">
-                        <h3 className="text-xl font-semibold text-gray-900">{services[0]?.service_types?.[0]?.name || "Services"}</h3>
-                        <ChevronRight className="h-5 w-5 text-gray-400" />
-                    </div>
-                </div>
-            )}
 
             {/* Service Cards */}
             {services.length > 0 ? (
@@ -87,10 +79,12 @@ export function ProviderServices({ services, providerId }: ProviderServicesProps
                                     <div className="space-y-2">
                                         {service.addons.map((addon) => (
                                             <label key={addon.id} className="flex items-center text-sm text-gray-600">
-                                                <input
-                                                    type="checkbox"
-                                                    className="mr-3 h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                                                />
+                                                {status === "authenticated" ? (
+                                                    <input
+                                                        type="checkbox"
+                                                        className="mr-3 h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                                    />
+                                                ) : null}
                                                 {addon.addon.name} (+${parseFloat(addon.price).toFixed(2)})
                                             </label>
                                         ))}
@@ -105,11 +99,13 @@ export function ProviderServices({ services, providerId }: ProviderServicesProps
                                 </div>
                             )}
 
-                            <div className="border-t border-gray-200 pt-4">
-                                <Link href={`/bookings/new?provider_id=${providerId}&service_id=${service.id}`}>
-                                    <Button className="w-full bg-purple-600 hover:bg-purple-700">Book this service</Button>
-                                </Link>
-                            </div>
+                            {status === "authenticated" && (
+                                <div className="border-t border-gray-200 pt-4">
+                                    <Link href={`/bookings/new?provider_id=${providerId}&service_id=${service.id}`}>
+                                        <Button className="w-full bg-purple-600 hover:bg-purple-700">Book this service</Button>
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

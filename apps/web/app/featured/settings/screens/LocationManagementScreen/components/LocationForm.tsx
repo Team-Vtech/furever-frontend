@@ -19,13 +19,7 @@ export type LocationFormProps = {
 export function LocationForm({ location, onSubmit, onCancel, isLoading }: LocationFormProps) {
     const defaultValues = getLocationDefaultValues(location);
 
-    const {
-        handleSubmit,
-        control,
-        setValue,
-        watch,
-        formState: { errors },
-    } = useForm<LocationFormValues>({
+    const { handleSubmit, control, setValue, watch } = useForm<LocationFormValues>({
         resolver: zodResolver(locationSchema),
         defaultValues,
     });

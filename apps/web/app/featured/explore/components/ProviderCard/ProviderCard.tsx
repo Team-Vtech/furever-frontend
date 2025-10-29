@@ -12,14 +12,6 @@ export type ProviderCardProps = {
 };
 
 export function ProviderCard({ provider }: ProviderCardProps) {
-    const serviceImage = provider.media_object
-        ? process.env.NEXT_PUBLIC_IMAGE_URL + provider.media_object?.file_path
-        : "/images/provider-image-2321d9.png";
-
-    const avatarImage = provider.media_object
-        ? process.env.NEXT_PUBLIC_IMAGE_URL + provider.media_object?.file_path
-        : "/images/provider-avatar-3c1daa.png";
-
     const serviceTypes = provider.services?.flatMap((service) => service.service_types?.map((st) => st.name) || []) || ["Grooming", "Spa Day"];
     return (
         <Card className="flex w-full max-w-sm flex-col justify-between overflow-hidden bg-white p-0 shadow-md transition-shadow duration-200 hover:shadow-lg">

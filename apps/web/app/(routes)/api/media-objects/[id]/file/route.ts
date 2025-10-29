@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
         }
 
         // First get the media object info to get the backend file path
-        const mediaResponse = await (await server()).get(`/admin/media-objects/${id}`);
+        const mediaResponse = await (await server()).get(`/media-objects/${id}`);
 
         if (!mediaResponse.data || !mediaResponse.data.data) {
             return NextResponse.json({ error: "Media not found" }, { status: 404 });

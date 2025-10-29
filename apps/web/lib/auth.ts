@@ -24,6 +24,15 @@ const IGNORE_PATHS = [
     "/forgot-password", // Pet parent forgot password
     "/api",
     "/reset-password",
+    "/privacy-policy",
+    "/terms-conditions",
+    "/cancellation-refund",
+    "/about",
+    "/",
+    "/contact",
+    "/explore",
+    "/provider-register",
+    "/provider-login",
 ];
 const result = NextAuth({
     providers: [

@@ -50,7 +50,7 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
             toast.success("Review submitted successfully!");
             queryClient.invalidateQueries({ queryKey: ["reviews", bookingId] });
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to submit review");
         },
     });
@@ -63,7 +63,7 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
             queryClient.invalidateQueries({ queryKey: ["reviews", bookingId] });
             setEditingReview(null);
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to update review");
         },
     });
@@ -75,7 +75,7 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
             toast.success("Review deleted successfully!");
             queryClient.invalidateQueries({ queryKey: ["reviews", bookingId] });
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to delete review");
         },
     });
@@ -296,7 +296,6 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
                         canDeleteReview={canDeleteReview}
                         onEdit={handleEditReview}
                         onDelete={handleDeleteReview}
-                        onCreateReview={handleCreateReview}
                         bookingId={bookingId}
                         onSubmitReview={handleCreateReview}
                         onCancelReview={() => setEditingReview(null)}

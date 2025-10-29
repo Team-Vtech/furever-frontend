@@ -132,6 +132,8 @@
   --color-electric-violet-900: oklch(35.1% 0.224 300.0);
   --color-electric-violet-950: oklch(26.0% 0.192 300.0);
 
+  --spacing-section: 4rem;
+
 }
 
 
@@ -142,4 +144,30 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
 }

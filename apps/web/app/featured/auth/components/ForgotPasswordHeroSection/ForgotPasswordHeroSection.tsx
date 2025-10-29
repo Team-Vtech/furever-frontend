@@ -1,25 +1,5 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-
-const AUTH_IMAGES: { src: string; alt: string }[] = [
-    {
-        src: "/images/auth/image-1.jpg",
-        alt: "Pet care illustration",
-    },
-    {
-        src: "/images/auth/image-2.jpg",
-        alt: "Pet care illustration",
-    },
-    {
-        src: "/images/auth/image-3.jpg",
-        alt: "Pet care illustration",
-    },
-    {
-        src: "/images/auth/image-4.jpg",
-        alt: "Pet care illustration",
-    },
-];
 
 type AuthPagesHeroSectionProps = {
     title: string;
@@ -27,23 +7,10 @@ type AuthPagesHeroSectionProps = {
 };
 
 export function AuthPagesHeroSection({ description, title }: AuthPagesHeroSectionProps) {
-    const [currentImage, setCurrentImage] = useState<string>(AUTH_IMAGES[0]?.src || "");
-    const [currentAlt, setCurrentAlt] = useState<string>(AUTH_IMAGES[0]?.alt || "");
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % AUTH_IMAGES.length);
-            setCurrentImage(AUTH_IMAGES[currentIndex]?.src || "");
-            setCurrentAlt(AUTH_IMAGES[currentIndex]?.alt || "");
-        }, 3000);
-        return () => interval && clearInterval(interval);
-    }, [currentIndex]);
-
     return (
         <div className="relative flex h-full w-full flex-col items-center justify-center bg-[#F5FAF5] text-center">
             <div className="relative h-full w-full">
-                <Image src={currentImage} alt={currentAlt} fill className="mx-auto object-cover" />
+                <Image src="/images/login.png" alt="Forgot Password Hero Image" fill className="mx-auto bg-cover bg-center" />
                 <div className="absolute bottom-0 left-0 right-0 h-full w-full bg-gradient-to-t from-black/80 to-transparent" />
             </div>
 

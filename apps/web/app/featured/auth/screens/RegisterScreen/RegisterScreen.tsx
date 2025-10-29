@@ -2,10 +2,11 @@
 
 import { RegisterFormValues } from "@/app/(routes)/api/auth/register/register.schema";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-import { RegisterHeroSection } from "../../components/RegisterHeroSection/RegisterHeroSection";
-import { RegisterContainer } from "../../containers/RegisterContainer";
+import { AuthPagesHeroSection } from "../../components/ForgotPasswordHeroSection/ForgotPasswordHeroSection";
+import { RegisterForm } from "../../components/RegisterForm/RegisterForm";
 import { useRegisterMutation } from "../../hooks/use-auth.hooks";
 
 export function RegisterScreen() {
@@ -54,19 +55,6 @@ export function RegisterScreen() {
         }
     };
 
-    const handleAppleSignIn = async () => {
-        setIsLoading(true);
-        try {
-            // Apple sign-in would be implemented here
-            // For now, we'll show an error as it's not configured
-            setError("Apple sign-in is not available at the moment.");
-        } catch {
-            setError("Apple sign-in failed. Please try again.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     const handleFacebookSignIn = async () => {
         setIsLoading(true);
         try {
@@ -80,21 +68,21 @@ export function RegisterScreen() {
     };
 
     return (
-        <div id="page-layout" className="bg-background flex min-h-screen">
-            {/* Left Side - Hero Section */}
+        <div id="page-layout" className="bg-background flex min-h-screen flex-row">
             <section id="hero-section" className="hidden lg:flex lg:flex-1">
-                <RegisterHeroSection />
+                <AuthPagesHeroSection title="Create Your Account" description="Join Furever to provide the best care for your pet." />
             </section>
 
-            {/* Right Side - Register Form */}
-            <main id="register-form-section" className="flex flex-1 items-center justify-center px-8 py-12 lg:w-[500px] lg:flex-none">
-                <div className="w-full max-w-[400px]">
+            <main id="register-form-section" className="flex flex-1 flex-col items-center justify-center px-8">
+                <div className="mb-10 flex flex-col items-center justify-center gap-4">
+                    <Image src="/images/logo.png" alt="Logo" width={100} height={100} />
+                </div>
+                <div className="w-full max-w-xl">
                     <Suspense>
-                        <RegisterContainer
+                        <RegisterForm
                             onSubmit={handleSubmit}
                             onSignIn={handleSignIn}
                             onGoogleSignIn={handleGoogleSignIn}
-                            onAppleSignIn={handleAppleSignIn}
                             onFacebookSignIn={handleFacebookSignIn}
                             isLoading={isLoading}
                             error={error}

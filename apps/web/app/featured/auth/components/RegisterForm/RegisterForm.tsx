@@ -8,7 +8,6 @@ import { Button } from "@furever/ui/components/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { AppleButton } from "../AppleButton";
 import { FacebookButton } from "../FacebookButton";
 import { GoogleButton } from "../GoogleButton";
 
@@ -16,13 +15,12 @@ interface RegisterFormProps {
     onSubmit: (data: RegisterFormValues) => void;
     onSignIn: () => void;
     onGoogleSignIn: () => void;
-    onAppleSignIn: () => void;
     onFacebookSignIn: () => void;
     isLoading?: boolean;
     error?: string;
 }
 
-export function RegisterForm({ onSubmit, onSignIn, onGoogleSignIn, onAppleSignIn, onFacebookSignIn, isLoading = false, error }: RegisterFormProps) {
+export function RegisterForm({ onSubmit, onSignIn, onGoogleSignIn, onFacebookSignIn, isLoading = false, error }: RegisterFormProps) {
     const {
         control,
         handleSubmit,
@@ -34,7 +32,7 @@ export function RegisterForm({ onSubmit, onSignIn, onGoogleSignIn, onAppleSignIn
     });
 
     return (
-        <div className="w-full space-y-4 rounded-xl bg-white p-6 shadow-lg">
+        <div className="flex flex-col gap-4">
             {/* Header */}
             <div className="space-y-2 text-center">
                 <h2 className="font-nunito text-[24px] font-bold leading-tight text-[#171A1F]">Create Your Account</h2>
@@ -44,7 +42,6 @@ export function RegisterForm({ onSubmit, onSignIn, onGoogleSignIn, onAppleSignIn
             {/* Social Login Buttons - Moved to top */}
             <div className="flex justify-center gap-3">
                 <GoogleButton onClick={onGoogleSignIn} disabled={isLoading} />
-                <AppleButton onClick={onAppleSignIn} disabled={isLoading} />
                 <FacebookButton onClick={onFacebookSignIn} disabled={isLoading} />
             </div>
 

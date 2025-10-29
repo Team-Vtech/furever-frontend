@@ -112,9 +112,7 @@ export function generateTimeSlots(
 
         while (currentMinutes + serviceDurationMinutes <= endMinutes) {
             const startTimeStr = minutesToTime(currentMinutes);
-            const endTimeStr = minutesToTime(currentMinutes + serviceDurationMinutes);
 
-            // Convert to user-friendly format for display
             const startDate = setMinutes(setHours(new Date(), Math.floor(currentMinutes / 60)), currentMinutes % 60);
             const endDate = addMinutes(startDate, serviceDurationMinutes);
 

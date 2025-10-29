@@ -30,7 +30,6 @@ export function useCreateBookingMutation() {
 
 export function useCheckoutSuccessMutation() {
     const queryClient = useQueryClient();
-    const router = useRouter();
     const {
         mutateAsync: checkoutSuccess,
         isPending,

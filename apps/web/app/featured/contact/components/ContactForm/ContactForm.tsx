@@ -1,5 +1,6 @@
 "use client";
 
+import { PhoneInput } from "@/app/shared/components/PhoneInput/PhoneInput";
 import { TextAreaInput } from "@/app/shared/components/TextAreaInput/TextAreaInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
@@ -63,7 +64,7 @@ export function ContactForm() {
                         <TextInput control={control} name="email" type="email" label="Email Address" placeholder="Enter your email" required />
                     </div>
 
-                    <TextInput control={control} name="phone" type="tel" label="Phone Number" placeholder="Enter your phone number (optional)" />
+                    <PhoneInput control={control} name="phone" label="Phone Number" placeholder="Enter your phone number (optional)" />
 
                     <TextInput control={control} name="subject" label="Subject" placeholder="What is this about?" required />
 

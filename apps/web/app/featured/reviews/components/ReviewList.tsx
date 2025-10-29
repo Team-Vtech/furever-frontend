@@ -17,9 +17,8 @@ interface ReviewListProps {
     canDeleteReview?: (review: Review) => boolean;
     onEdit?: (review: Review) => void;
     onDelete?: (reviewId: number) => void;
-    onCreateReview?: (data: CreateReviewRequest) => Promise<void>;
     bookingId?: string | number;
-    onSubmitReview?: (data: any) => Promise<void>;
+    onSubmitReview?: (data: CreateReviewRequest) => Promise<void>;
     onCancelReview?: () => void;
     isSubmittingReview?: boolean;
 }
@@ -32,7 +31,6 @@ export function ReviewList({
     canDeleteReview,
     onEdit,
     onDelete,
-    onCreateReview,
     bookingId,
     onSubmitReview,
     onCancelReview,

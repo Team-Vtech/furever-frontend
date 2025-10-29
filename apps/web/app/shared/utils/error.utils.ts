@@ -4,6 +4,7 @@ import { ZodError } from "zod";
 
 export function FiveHundredError(error: unknown) {
     if (isAxiosError(error)) {
+        console.error(error.response?.data);
         return NextResponse.json(error.response?.data, { status: error.response?.status });
     }
     return NextResponse.json(

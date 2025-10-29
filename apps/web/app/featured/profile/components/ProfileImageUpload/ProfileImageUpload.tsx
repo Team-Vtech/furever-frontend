@@ -64,7 +64,7 @@ export function ProfileImageUpload({ user, onImageUpdate, className }: ProfileIm
 
             // Notify parent component
             onImageUpdate?.(mediaId);
-        } catch (error) {
+        } catch {
             setError("Failed to upload image. Please try again.");
             setPreviewUrl(null);
         }

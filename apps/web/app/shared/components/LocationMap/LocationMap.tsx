@@ -11,7 +11,7 @@ interface LocationMapProps {
     address?: string;
 }
 
-export function LocationMap({ latitude, longitude, onLocationChange, address }: LocationMapProps) {
+export function LocationMap({ latitude, longitude, onLocationChange }: LocationMapProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [manualLatitude, setManualLatitude] = useState<string>(latitude?.toString() || "");

@@ -1,5 +1,4 @@
 import { ServiceType } from "@furever/types";
-import { ProviderCTA } from "../../../providers/components/ProviderCTA/ProviderCTA";
 import { FeaturedProviders } from "../../components/FeaturedProvider";
 import { HeroSection } from "../../components/HeroSection";
 import { HowItWorks } from "../../components/HowItWorks";
@@ -16,7 +15,6 @@ export function HomePageScreen({ serviceTypes }: HomePageScreenProps) {
             <HeroSection serviceTypes={serviceTypes} />
             <ServicesSection serviceTypes={serviceTypes} />
             <FeaturedProviders />
-            <ProviderCTA />
             <HowItWorks />
             <Testimonials />
         </>

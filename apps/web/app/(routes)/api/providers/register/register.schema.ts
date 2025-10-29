@@ -12,7 +12,7 @@ export const locationSchema = z.object({
 
 export const workingHoursSchema = z.array(
     z.object({
-        day_of_week: z.number().min(0).max(6, "Day of week must be between 0-6"),
+        day_of_week: z.string().min(1, "Day of week is required"),
         start_time: z.string().min(1, "Start time is required"),
         end_time: z.string().min(1, "End time is required"),
         is_closed: z.boolean(),
@@ -85,13 +85,13 @@ export const getProviderRegistrationDefaultValues = (user?: {
     gallery_media_object_ids: [],
     certificates: [],
     working_hours: [
-        { day_of_week: 1, start_time: "09:00", end_time: "17:00", is_closed: false },
-        { day_of_week: 2, start_time: "09:00", end_time: "17:00", is_closed: false },
-        { day_of_week: 3, start_time: "09:00", end_time: "17:00", is_closed: false },
-        { day_of_week: 4, start_time: "09:00", end_time: "17:00", is_closed: false },
-        { day_of_week: 5, start_time: "09:00", end_time: "17:00", is_closed: false },
-        { day_of_week: 6, start_time: "09:00", end_time: "15:00", is_closed: false },
-        { day_of_week: 0, start_time: "10:00", end_time: "14:00", is_closed: true },
+        { day_of_week: "monday", start_time: "09:00", end_time: "17:00", is_closed: false },
+        { day_of_week: "tuesday", start_time: "09:00", end_time: "17:00", is_closed: false },
+        { day_of_week: "wednesday", start_time: "09:00", end_time: "17:00", is_closed: false },
+        { day_of_week: "thursday", start_time: "09:00", end_time: "17:00", is_closed: false },
+        { day_of_week: "friday", start_time: "09:00", end_time: "17:00", is_closed: false },
+        { day_of_week: "saturday", start_time: "09:00", end_time: "15:00", is_closed: false },
+        { day_of_week: "sunday", start_time: "10:00", end_time: "14:00", is_closed: true },
     ],
     user_name: user?.name || "",
     user_email: user?.email || "",

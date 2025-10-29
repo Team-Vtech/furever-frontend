@@ -20,18 +20,18 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
     const [filters, setFilters] = useState<Record<string, string>>({});
     return (
         <section className="from-secondary to-background relative overflow-hidden bg-gradient-to-b">
-            <div className="absolute inset-0 bg-[url('/images/happy-pets-dogs-cats-pattern.jpg')] bg-cover bg-center opacity-5" />
+            <div className="absolute inset-0 bg-[url('/images/hero.svg')] bg-cover bg-center opacity-50" />
 
             <div className="container relative mx-auto py-20 md:py-32">
-                <div className="mx-auto max-w-3xl text-center">
+                <div className="mx-auto max-w-4xl text-center">
                     <h1 className="mb-6 text-balance text-4xl font-bold tracking-tight md:text-6xl">{"Loving pet care in your neighborhood"}</h1>
                     <p className="text-muted-foreground mb-10 text-pretty text-lg md:text-xl">
                         {"Book trusted pet care providers and services for your furry family members"}
                     </p>
 
-                    <div className="bg-card rounded-2xl border p-6 shadow-xl md:p-8">
-                        <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-                            <div className="space-y-2">
+                    <div className="bg-card rounded-2xl border px-8 shadow-xl md:py-4">
+                        <div className="mb-4 flex flex-row items-end gap-4">
+                            <div className="flex-1 space-y-2">
                                 <Label className="text-sm font-medium">Service Type</Label>
                                 <Select
                                     defaultValue="all"
@@ -40,7 +40,7 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
                                         setFilters((prev) => ({ ...prev, service_type: String(value) }));
                                     }}
                                 >
-                                    <SelectTrigger>
+                                    <SelectTrigger className="w-full">
                                         <SelectValue placeholder="Select service type" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -53,7 +53,7 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="space-y-2">
+                            <div className="flex-1 space-y-2">
                                 <Label className="text-sm font-medium">Location</Label>
                                 <div className="relative">
                                     <MapPin className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
@@ -64,7 +64,7 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
                                     />
                                 </div>
                             </div>
-                            <div className="space-y-2">
+                            <div className="flex-1 space-y-2">
                                 <Label className="text-sm font-medium">Date</Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -86,35 +86,17 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
                                                 }
                                             }}
                                             disabled={(date) => date < new Date()}
-                                            initialFocus
                                         />
                                     </PopoverContent>
                                 </Popover>
                             </div>
+                            <Button className="flex-1" asChild>
+                                <Link href={"/explore?" + new URLSearchParams(filters).toString()}>
+                                    <Search className="mr-2 h-5 w-5" />
+                                    Find Providers
+                                </Link>
+                            </Button>
                         </div>
-
-                        <Button size="lg" className="w-full" asChild>
-                            <Link href={"/explore?" + new URLSearchParams(filters).toString()}>
-                                <Search className="mr-2 h-5 w-5" />
-                                Find Providers
-                            </Link>
-                        </Button>
-                    </div>
-
-                    <div className="text-muted-foreground mt-8 flex items-center justify-center gap-2 text-sm">
-                        <div className="flex -space-x-2">
-                            {[1, 2, 3, 4].map((i) => (
-                                <div
-                                    key={i}
-                                    className="border-background bg-muted h-8 w-8 rounded-full border-2"
-                                    style={{
-                                        backgroundImage: `url('/pet-owner---i-.jpg')`,
-                                        backgroundSize: "cover",
-                                    }}
-                                />
-                            ))}
-                        </div>
-                        <span>{"Trusted by 50,000+ pet owners"}</span>
                     </div>
                 </div>
             </div>

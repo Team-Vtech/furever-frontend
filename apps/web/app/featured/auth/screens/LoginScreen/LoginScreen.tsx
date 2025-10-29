@@ -1,9 +1,10 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
-import { LoginHeroSection } from "../../components/LoginHeroSection";
+import { AuthPagesHeroSection } from "../../components/ForgotPasswordHeroSection/ForgotPasswordHeroSection";
 import { LoginForm } from "../../containers/LoginForm";
 import { LoginFormData } from "../../utils/auth.schemas";
 
@@ -64,15 +65,21 @@ export function LoginScreen() {
     };
 
     return (
-        <div id="page-layout" className="flex min-h-screen bg-gray-50">
+        <div id="page-layout" className="bg-background flex min-h-screen flex-row">
             {/* Left Side - Hero Section */}
             <section id="hero-section" className="hidden lg:flex lg:flex-1">
-                <LoginHeroSection />
+                <AuthPagesHeroSection
+                    title="Your Pet's Best Life Starts Here"
+                    description="Manage bookings, health records, and connect with trusted pet services."
+                />
             </section>
 
             {/* Right Side - Login Form */}
-            <main id="login-form-section" className="flex flex-1 items-center justify-center px-8 py-12 lg:w-[700px] lg:flex-none">
-                <div className="w-full max-w-[500px]">
+            <main id="login-form-section" className="flex flex-1 flex-col items-center justify-center px-8 py-12">
+                <div className="mb-10 flex flex-col items-center justify-center gap-4">
+                    <Image src="/images/logo.png" alt="Logo" width={100} height={100} />
+                </div>
+                <div className="w-full max-w-lg">
                     <Suspense>
                         <LoginForm
                             onSubmit={handleSubmit}

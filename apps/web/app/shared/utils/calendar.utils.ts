@@ -15,7 +15,7 @@ export function bookingToCalendarEvent(booking: Booking): CalendarEvent {
         `Provider: ${booking.provider.business_name}`,
         `Pet: ${booking.pet.name}`,
         `Duration: ${booking.service.duration_minutes} minutes`,
-        `Total: $${parseFloat(booking.total_price || "0").toFixed(2)}`,
+        `Total: $${parseFloat(booking.total_price ?? "0").toFixed(2)}`,
         booking.notes ? `Notes: ${booking.notes}` : "",
         "",
         "Booked via Furever - Pet Care Services",
@@ -24,9 +24,7 @@ export function bookingToCalendarEvent(booking: Booking): CalendarEvent {
         .join("\n");
 
     const providerLocation = booking.provider.location;
-    const location =
-        `${providerLocation.address} ${providerLocation.city} ${providerLocation.state} ${providerLocation.postal_code}` ||
-        booking.provider.business_name;
+    const location = `${providerLocation.address} ${providerLocation.city} ${providerLocation.state} ${providerLocation.postal_code}`;
 
     return {
         title: `Pet Care Appointment - ${booking.service.name}`,

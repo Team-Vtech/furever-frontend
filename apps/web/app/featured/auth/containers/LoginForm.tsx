@@ -33,7 +33,7 @@ export function LoginForm({ onSubmit, onGoogleSignIn, onFacebookSignIn, isLoadin
     });
 
     return (
-        <div className="w-full space-y-4 rounded-xl bg-white p-6 shadow-lg">
+        <div className="flex flex-col gap-4">
             {/* Header */}
             <div className="space-y-2 text-center">
                 <h2 className="font-nunito text-[24px] font-bold leading-tight text-[#171A1F]">Welcome Back!</h2>

@@ -25,16 +25,16 @@ export function FeaturedProviders() {
 
     if (isLoading) {
         return (
-            <section className="bg-secondary/30 py-20 md:py-28">
+            <section className="py-section bg-secondary/30">
                 <div className="container mx-auto">
-                    <div className="mb-16 text-center">
+                    <div className="mb-6 text-center">
                         <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">{"Meet trusted pet care providers"}</h2>
                         <p className="text-muted-foreground mx-auto max-w-2xl text-pretty text-lg">
                             {"Experienced, background-checked providers who will treat your pets like family"}
                         </p>
                     </div>
 
-                    <div className="mb-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                         {[...Array(3)].map((_, i) => (
                             <Card key={i} className="overflow-hidden">
                                 <Skeleton className="h-64 w-full" />
@@ -73,16 +73,16 @@ export function FeaturedProviders() {
     }
 
     return (
-        <section className="bg-secondary/30 py-20 md:py-28">
+        <section className="py-section bg-secondary/30">
             <div className="container mx-auto">
-                <div className="mb-16 text-center">
+                <div className="mb-6 text-center">
                     <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">{"Meet trusted pet care providers"}</h2>
                     <p className="text-muted-foreground mx-auto max-w-2xl text-pretty text-lg">
                         {"Experienced, background-checked providers who will treat your pets like family"}
                     </p>
                 </div>
 
-                <div className="mb-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {providers.length === 0 ? (
                         <div className="col-span-full py-12 text-center">
                             <p className="text-muted-foreground">No providers available at the moment.</p>
@@ -140,7 +140,7 @@ export function FeaturedProviders() {
                     )}
                 </div>
 
-                <div className="text-center">
+                <div className="mt-4 text-center">
                     <Button size="lg" variant="outline" asChild>
                         <Link href="/explore">View All Providers</Link>
                     </Button>

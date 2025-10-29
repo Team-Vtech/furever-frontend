@@ -46,7 +46,7 @@ export function ProviderRegistrationScreen({ certificates }: { certificates: Cer
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
             <ProviderRegistrationContainer
                 user={session?.user ?? undefined}
                 onSubmit={handleSubmit}
@@ -54,6 +54,47 @@ export function ProviderRegistrationScreen({ certificates }: { certificates: Cer
                 error={error}
                 certificates={certificates}
             />
+            {/* Why Furever Section */}
+            <section className="mt-16">
+                <div className="container mx-auto">
+                    <div className="mb-8 text-center">
+                        <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Why Furever</h2>
+                        <p className="mt-2 text-gray-600">We help pet parents connect with trustworthy providers and make caring for pets simple.</p>
+                    </div>
+
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-2xl">
+                                <span role="img" aria-label="trust">
+                                    🔒
+                                </span>
+                            </div>
+                            <h3 className="mb-1 text-lg font-semibold text-gray-900">Trust & Safety</h3>
+                            <p className="text-sm text-gray-600">Robust verification and reviews help ensure safe, reliable pet care experiences.</p>
+                        </div>
+
+                        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-2xl">
+                                <span role="img" aria-label="verified">
+                                    ⭐
+                                </span>
+                            </div>
+                            <h3 className="mb-1 text-lg font-semibold text-gray-900">Verified Providers</h3>
+                            <p className="text-sm text-gray-600">Showcase certifications and credentials so pet parents can book with confidence.</p>
+                        </div>
+
+                        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-2xl">
+                                <span role="img" aria-label="seamless">
+                                    🐾
+                                </span>
+                            </div>
+                            <h3 className="mb-1 text-lg font-semibold text-gray-900">Seamless Booking</h3>
+                            <p className="text-sm text-gray-600">Streamlined profiles, messaging, and scheduling make it easy to get started.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }

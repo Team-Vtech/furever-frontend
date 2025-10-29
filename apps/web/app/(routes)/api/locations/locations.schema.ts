@@ -1,3 +1,4 @@
+import { UserSettingsLocation } from "@furever/types";
 import { z } from "zod";
 
 export const locationSchema = z.object({
@@ -14,7 +15,7 @@ export const updateLocationSchema = locationSchema.partial();
 
 export type LocationFormValues = z.infer<typeof locationSchema>;
 
-export function getLocationDefaultValues(location?: any): LocationFormValues {
+export function getLocationDefaultValues(location?: UserSettingsLocation): LocationFormValues {
     return {
         title: location?.title || "",
         street: location?.street || "",

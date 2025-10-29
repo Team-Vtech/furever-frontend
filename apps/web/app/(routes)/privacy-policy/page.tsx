@@ -186,27 +186,6 @@ export default function PrivacyPolicyPage() {
                                 </p>
                             </div>
                         </section>
-
-                        <section className="mb-8">
-                            <h2 className="mb-4 text-2xl font-semibold text-gray-900">11. Contact Us</h2>
-                            <div className="space-y-4 text-gray-700">
-                                <p>If you have any questions about this Privacy Policy or our privacy practices, please contact us:</p>
-                                <div className="rounded-lg bg-gray-50 p-6">
-                                    <p>
-                                        <strong>Email:</strong> privacy@furever.com
-                                    </p>
-                                    <p>
-                                        <strong>Phone:</strong> 1-800-FUREVER (1-800-387-3837)
-                                    </p>
-                                    <p>
-                                        <strong>Address:</strong> Furever Privacy Team, 123 Pet Care Ave, Pet City, PC 12345
-                                    </p>
-                                    <p>
-                                        <strong>Data Protection Officer:</strong> dpo@furever.com
-                                    </p>
-                                </div>
-                            </div>
-                        </section>
                     </div>
                 </div>
             </div>

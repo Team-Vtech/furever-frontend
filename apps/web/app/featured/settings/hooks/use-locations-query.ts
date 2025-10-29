@@ -1,4 +1,6 @@
+import { JsonResponse } from "@furever/types/src/general";
 import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { LocationFormValues } from "../../../(routes)/api/locations/locations.schema";
@@ -12,7 +14,7 @@ export function useCreateLocationMutation() {
             toast.success(response.message || "Location created successfully");
             router.refresh();
         },
-        onError: (error: any) => {
+        onError: (error: AxiosError<JsonResponse<void>>) => {
             toast.error(error.response?.data?.message || "Failed to create location");
         },
     });
@@ -25,11 +27,11 @@ export function useUpdateLocationMutation() {
 
     const { mutate: updateLocation, isPending: isUpdating } = useMutation({
         mutationFn: ({ id, data }: { id: number; data: Partial<LocationFormValues> }) => LocationsClient.updateLocation({ id, data }),
-        onSuccess: (response, variables) => {
+        onSuccess: (response) => {
             toast.success(response.message || "Location updated successfully");
             router.refresh();
         },
-        onError: (error: any) => {
+        onError: (error: AxiosError<JsonResponse<void>>) => {
             toast.error(error.response?.data?.message || "Failed to update location");
         },
     });
@@ -46,7 +48,7 @@ export function useDeleteLocationMutation() {
             toast.success(response.message || "Location deleted successfully");
             router.refresh();
         },
-        onError: (error: any) => {
+        onError: (error: AxiosError<JsonResponse<void>>) => {
             toast.error(error.response?.data?.message || "Failed to delete location");
         },
     });

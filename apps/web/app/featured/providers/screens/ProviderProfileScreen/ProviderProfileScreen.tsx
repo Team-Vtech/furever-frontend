@@ -3,6 +3,7 @@
 import { Provider } from "@furever/types";
 import { Button } from "@furever/ui/components/button";
 import { Award, ChevronRight, Clock, MapPin, MessageCircle, PawPrint, Phone, Star } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -14,6 +15,7 @@ interface ProviderProfileScreenProps {
 }
 
 export function ProviderProfileScreen({ provider }: ProviderProfileScreenProps) {
+    const { status } = useSession();
     // Tab state management
     const [activeTab, setActiveTab] = useState<"overview" | "services">("overview");
 
@@ -76,13 +78,17 @@ export function ProviderProfileScreen({ provider }: ProviderProfileScreenProps) 
                             Home
                         </Link>
                         <ChevronRight className="h-4 w-4 text-gray-400" />
-                        <Link
-                            href={`/bookings/new?provider_id=${provider.id}`}
-                            className="rounded border border-gray-300 px-3 py-1 text-gray-600 hover:bg-gray-50"
-                        >
-                            Book a Service
-                        </Link>
-                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                        {status === "authenticated" ? (
+                            <>
+                                <Link
+                                    href={`/bookings/new?provider_id=${provider.id}`}
+                                    className="rounded border border-gray-300 px-3 py-1 text-gray-600 hover:bg-gray-50"
+                                >
+                                    Book a Service
+                                </Link>
+                                <ChevronRight className="h-4 w-4 text-gray-400" />
+                            </>
+                        ) : null}
                         <span className="font-medium text-gray-900">{provider.business_name}</span>
                     </nav>
                 </div>

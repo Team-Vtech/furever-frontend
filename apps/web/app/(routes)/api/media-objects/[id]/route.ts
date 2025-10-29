@@ -11,7 +11,7 @@ interface RouteContext {
 export async function GET(request: NextRequest, { params }: RouteContext) {
     const { id } = await params;
     try {
-        const response = await (await server()).get(`/admin/media-objects/${id}`);
+        const response = await (await server()).get(`/media-objects/${id}`);
 
         return NextResponse.json(response.data);
     } catch (error) {
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 export async function DELETE(request: NextRequest, { params }: RouteContext) {
     const { id } = await params;
     try {
-        const response = await (await server()).delete(`/admin/media-objects/${id}`);
+        const response = await (await server()).delete(`/media-objects/${id}`);
 
         return NextResponse.json(response.data);
     } catch (error) {

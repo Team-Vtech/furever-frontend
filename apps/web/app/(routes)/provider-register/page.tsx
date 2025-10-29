@@ -1,3 +1,4 @@
+import { MainLayout } from "@/app/shared/components/MainLayout";
 import { server } from "@/app/shared/utils/http.server.utils";
 import { Certificate, JsonResponse } from "@furever/types";
 import { Metadata } from "next";
@@ -12,15 +13,17 @@ export const metadata: Metadata = {
 export default async function ProviderRegisterPage() {
     const certificates = await getCertificates();
     return (
-        <Suspense
-            fallback={
-                <div className="flex min-h-screen items-center justify-center bg-gray-50">
-                    <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
-                </div>
-            }
-        >
-            <ProviderRegistrationScreen certificates={certificates ?? []} />
-        </Suspense>
+        <MainLayout>
+            <Suspense
+                fallback={
+                    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+                        <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-blue-600"></div>
+                    </div>
+                }
+            >
+                <ProviderRegistrationScreen certificates={certificates ?? []} />
+            </Suspense>
+        </MainLayout>
     );
 }
 async function getCertificates() {

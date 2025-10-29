@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         // Proxy request to backend API
         const response = await (
             await server()
-        ).post("/admin/media-objects", backendFormData, {
+        ).post("/media-objects", backendFormData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },

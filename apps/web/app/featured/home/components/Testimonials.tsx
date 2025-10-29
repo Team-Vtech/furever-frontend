@@ -20,7 +20,7 @@ const testimonials = [
 
 export function Testimonials() {
     return (
-        <section className="bg-secondary/30 py-20 md:py-28">
+        <section className="py-section bg-secondary/30">
             <div className="container mx-auto">
                 <div className="mb-16 text-center">
                     <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">{"What pet owners are saying"}</h2>

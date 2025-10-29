@@ -43,7 +43,7 @@ export default function LocationManagementScreen({ locations }: LocationManageme
                         setIsFormOpen(false);
                         setEditingLocation(undefined);
                     },
-                    onError: (error: any) => {
+                    onError: (error) => {
                         toast.error(error.response?.data?.message || "Failed to update location");
                     },
                 },
@@ -53,7 +53,7 @@ export default function LocationManagementScreen({ locations }: LocationManageme
                 onSuccess: () => {
                     setIsFormOpen(false);
                 },
-                onError: (error: any) => {
+                onError: (error) => {
                     toast.error(error.response?.data?.message || "Failed to create location");
                 },
             });

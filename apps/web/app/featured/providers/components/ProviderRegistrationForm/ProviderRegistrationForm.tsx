@@ -28,13 +28,13 @@ interface ProviderRegistrationFormProps {
 }
 
 const DAYS_OF_WEEK = [
-    { value: 0, label: "Sunday" },
-    { value: 1, label: "Monday" },
-    { value: 2, label: "Tuesday" },
-    { value: 3, label: "Wednesday" },
-    { value: 4, label: "Thursday" },
-    { value: 5, label: "Friday" },
-    { value: 6, label: "Saturday" },
+    { value: "sunday", label: "Sunday" },
+    { value: "monday", label: "Monday" },
+    { value: "tuesday", label: "Tuesday" },
+    { value: "wednesday", label: "Wednesday" },
+    { value: "thursday", label: "Thursday" },
+    { value: "friday", label: "Friday" },
+    { value: "saturday", label: "Saturday" },
 ];
 
 // Removed SERVICE_TYPES as they're not in the new API schema
@@ -49,13 +49,7 @@ export function ProviderRegistrationForm({ user, onSubmit, isLoading = false, er
         mode: "onChange",
     });
 
-    const {
-        control,
-        handleSubmit,
-        formState: { errors, isValid },
-        watch,
-        setValue,
-    } = methods;
+    const { control, handleSubmit, watch, setValue } = methods;
 
     const handleLocationChange = (latitude: number, longitude: number) => {
         setValue("location.latitude", latitude);
@@ -195,7 +189,9 @@ export function ProviderRegistrationForm({ user, onSubmit, isLoading = false, er
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    onClick={() => appendWorkingHour({ day_of_week: 1, start_time: "09:00", end_time: "17:00", is_closed: false })}
+                                    onClick={() =>
+                                        appendWorkingHour({ day_of_week: "monday", start_time: "09:00", end_time: "17:00", is_closed: false })
+                                    }
                                 >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Working Hours

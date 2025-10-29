@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const response = await api.get<JsonResponse<UserSettingsLocation>>(`/user/locations/${id}`);
 
         return NextResponse.json(response.data);
-    } catch (error: any) {
+    } catch (error) {
         return FiveHundredError(error);
     }
 }
@@ -41,7 +41,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         const response = await api.put<JsonResponse<UserSettingsLocation>>(`/settings/locations/${id}`, body);
 
         return NextResponse.json(response.data);
-    } catch (error: any) {
+    } catch (error) {
         return FiveHundredError(error);
     }
 }
