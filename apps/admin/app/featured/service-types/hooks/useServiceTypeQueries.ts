@@ -1,6 +1,9 @@
 import { ServiceTypeFormValues } from "@/app/(routes)/api/service-types/schema";
 import { toastUtils } from "@/app/shared/utils/toast.utils";
+import { JsonResponse } from "@furever/types/index";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { ServiceTypesClient } from "../clients/service-types.client";
 
 const QUERY_KEYS = {
@@ -55,15 +58,17 @@ export function useUpdateServiceTypeMutation() {
 
 export function useDeleteServiceTypeMutation() {
     const queryClient = useQueryClient();
-
-    return useMutation({
+    const router = useRouter();
+    const { mutateAsync: deleteServiceType, isPending: isDeleting } = useMutation({
         mutationFn: ServiceTypesClient.deleteServiceType,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: QUERY_KEYS.serviceTypes });
             toastUtils.success.delete("Service type deleted successfully");
+            router.push("/service-types");
         },
-        onError: () => {
-            toastUtils.error.delete("Service type");
+        onError: (error: AxiosError<JsonResponse<void>>) => {
+            toastUtils.error.delete("Service type", error.response?.data?.message);
         },
     });
+    return { deleteServiceType, isDeleting };
 }

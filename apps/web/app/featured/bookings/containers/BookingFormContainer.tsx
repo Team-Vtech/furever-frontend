@@ -128,7 +128,7 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
         const addonTotal = selectedAddons.reduce((total: number, bookingAddon) => {
             const serviceAddon = selectedService.addons?.find((addon) => addon.id === bookingAddon.service_addon_id);
             if (serviceAddon) {
-                return total + parseFloat(serviceAddon.price || "0") * bookingAddon.quantity;
+                return total + parseFloat(serviceAddon.price || "0");
             }
             return total;
         }, 0);
@@ -312,7 +312,7 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                             options={
                                                 services?.map((service: Service) => ({
                                                     value: service.id,
-                                                    label: `${service.name} - $${service.price}`,
+                                                    label: `${service.name} - ₹${service.price}`,
                                                 })) || []
                                             }
                                             placeholder={!watchedProviderId ? "Please select a provider first" : "Choose a service"}
@@ -374,7 +374,6 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                                                             ...currentAddons,
                                                                             {
                                                                                 service_addon_id: serviceAddon.id,
-                                                                                quantity: 1,
                                                                             },
                                                                         ]);
                                                                     } else {
@@ -398,30 +397,6 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                                                 <DollarSign className="h-4 w-4" />
                                                                 {serviceAddon.price}
                                                             </div>
-                                                            {isSelected && (
-                                                                <div className="mt-2 flex items-center space-x-2">
-                                                                    <Label className="text-xs text-gray-600">Qty:</Label>
-                                                                    <input
-                                                                        type="number"
-                                                                        min="1"
-                                                                        max="10"
-                                                                        value={existingAddon?.quantity || 1}
-                                                                        onChange={(e) => {
-                                                                            const quantity = parseInt(e.target.value, 10);
-                                                                            if (quantity > 0 && quantity <= 10) {
-                                                                                const currentAddons = watch("addons") || [];
-                                                                                const updatedAddons = currentAddons.map((addon) =>
-                                                                                    addon.service_addon_id === serviceAddon.id
-                                                                                        ? { ...addon, quantity }
-                                                                                        : addon,
-                                                                                );
-                                                                                setValue("addons", updatedAddons);
-                                                                            }
-                                                                        }}
-                                                                        className="w-16 rounded border border-gray-300 px-2 py-1 text-center text-sm"
-                                                                    />
-                                                                </div>
-                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -592,7 +567,7 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                             </div>
                                             <div className="flex justify-between">
                                                 <span className="text-sm text-gray-600">Base Price:</span>
-                                                <span className="text-sm font-medium">${selectedService.price}</span>
+                                                <span className="text-sm font-medium">₹{selectedService.price}</span>
                                             </div>
 
                                             {/* Show selected addons */}
@@ -608,14 +583,12 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
 
                                                             if (!serviceAddon) return null;
 
-                                                            const totalPrice = parseFloat(serviceAddon.price || "0") * bookingAddon.quantity;
+                                                            const totalPrice = parseFloat(serviceAddon.price || "0");
 
                                                             return (
                                                                 <div key={bookingAddon.service_addon_id} className="flex justify-between">
-                                                                    <span className="text-sm text-gray-600">
-                                                                        + {serviceAddon.addon.name} (x{bookingAddon.quantity})
-                                                                    </span>
-                                                                    <span className="text-sm font-medium">${totalPrice.toFixed(2)}</span>
+                                                                    <span className="text-sm text-gray-600">+ {serviceAddon.addon.name}</span>
+                                                                    <span className="text-sm font-medium">₹{totalPrice.toFixed(2)}</span>
                                                                 </div>
                                                             );
                                                         })}
@@ -626,7 +599,7 @@ export function BookingFormContainer({ provider, service }: BookingFormContainer
                                             <hr className="my-3" />
                                             <div className="flex justify-between">
                                                 <span className="text-base font-semibold">Total:</span>
-                                                <span className="text-base font-semibold text-purple-600">${calculateTotal()}</span>
+                                                <span className="text-base font-semibold text-purple-600">₹{calculateTotal()}</span>
                                             </div>
                                         </>
                                     )}

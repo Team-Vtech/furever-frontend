@@ -160,7 +160,7 @@ export function BookingCard({ booking }: BookingCardProps) {
                 {/* Price Info */}
                 <div className="mb-6 flex items-center justify-between rounded-lg bg-purple-50 p-3">
                     <span className="text-sm font-medium text-gray-600">Total Price:</span>
-                    <span className="text-lg font-semibold text-purple-600">${booking.total_price}</span>
+                    <span className="text-lg font-semibold text-purple-600">₹{booking.total_price}</span>
                 </div>
 
                 {/* Action Buttons */}

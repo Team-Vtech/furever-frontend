@@ -66,11 +66,7 @@ export function LoginForm({ onSubmit, onForgotPassword, onCreateAccount, isLoadi
 
                 {/* Remember Me and Forgot Password */}
                 <div className="flex items-center justify-between">
-                    <Button
-                        type="button"
-                        onClick={onForgotPassword}
-                        className="font-quicksand text-[14px] font-medium text-[#9A87FF] hover:underline"
-                    >
+                    <Button type="button" onClick={onForgotPassword}>
                         Forgot Password?
                     </Button>
                 </div>
@@ -87,19 +83,6 @@ export function LoginForm({ onSubmit, onForgotPassword, onCreateAccount, isLoadi
                     {isLoading ? "Logging in..." : "Log In"}
                 </Button>
             </form>
-
-            {/* Create Account Section */}
-            <div className="space-y-4 text-center">
-                <div className="h-[16px] border-t border-[#FFFFFF]"></div>
-                <p className="font-quicksand text-[14px] text-[#565D6D]">Don&apos;t have an account?</p>
-                <Button
-                    variant="outline"
-                    onClick={onCreateAccount}
-                    className="font-quicksand h-[36px] w-[125px] rounded-[6px] border-transparent bg-transparent text-[14px] font-medium text-[#9A87FF] transition-colors hover:bg-[#9A87FF] hover:text-white"
-                >
-                    Create Account
-                </Button>
-            </div>
         </div>
     );
 }

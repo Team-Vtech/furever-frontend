@@ -269,7 +269,7 @@ export function ReviewBookingScreen({ bookingId }: ReviewBookingScreenProps) {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm text-gray-500">Total Amount</p>
-                                    <p className="text-2xl font-bold text-green-600">${booking.total_price}</p>
+                                    <p className="text-2xl font-bold text-green-600">₹{booking.total_price}</p>
                                 </div>
                                 <Badge variant="secondary" className="bg-green-100 text-green-800">
                                     {booking.status}

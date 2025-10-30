@@ -1,12 +1,14 @@
 "use client";
 
 import { ServiceTypeFormValues } from "@/app/(routes)/api/service-types/schema";
+import { Authorize } from "@/app/shared/components/Authorize/Authorize";
+import { DeleteRecordDialog } from "@/app/shared/components/DeleteRecordDialog/DeleteRecordDialog";
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { toastUtils } from "@/app/shared/utils/toast.utils";
 import { ServiceType } from "@furever/types";
 import { useRouter } from "next/navigation";
 import { ServiceTypeForm } from "../../components/ServiceTypeForm/ServiceTypeForm";
-import { useUpdateServiceTypeMutation } from "../../hooks/useServiceTypeQueries";
+import { useDeleteServiceTypeMutation, useUpdateServiceTypeMutation } from "../../hooks/useServiceTypeQueries";
 
 interface EditServiceTypeScreenProps {
     serviceType: ServiceType;
@@ -16,6 +18,7 @@ export function EditServiceTypeScreen({ serviceType }: EditServiceTypeScreenProp
     const router = useRouter();
 
     const updateServiceTypeMutation = useUpdateServiceTypeMutation();
+    const { deleteServiceType, isDeleting } = useDeleteServiceTypeMutation();
 
     const handleSubmit = async (data: ServiceTypeFormValues) => {
         try {
@@ -33,6 +36,16 @@ export function EditServiceTypeScreen({ serviceType }: EditServiceTypeScreenProp
         <PageLayout
             title={`Edit Service Type: ${serviceType.name}`}
             breadcrumbs={[{ label: "Service Types", href: "/service-types" }, { label: `Edit ${serviceType.name}` }]}
+            actions={
+                <Authorize permissions={["delete any service types"]}>
+                    <DeleteRecordDialog
+                        recordId={serviceType.id}
+                        recordName={serviceType.name}
+                        onDelete={deleteServiceType}
+                        isDeleting={isDeleting}
+                    />
+                </Authorize>
+            }
         >
             <ServiceTypeForm serviceType={serviceType} onSubmit={handleSubmit} isLoading={updateServiceTypeMutation.isPending} />
         </PageLayout>

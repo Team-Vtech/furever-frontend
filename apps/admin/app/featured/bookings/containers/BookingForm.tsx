@@ -393,7 +393,7 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                 options={
                                     services?.map((service) => ({
                                         value: service.id,
-                                        label: `${service.name} - $${service.price}`,
+                                        label: `${service.name} - ₹${service.price}`,
                                     })) ?? []
                                 }
                                 placeholder="Select service"
@@ -435,7 +435,7 @@ export function BookingForm({ booking, onSubmit, onCancel, isLoading, providers 
                                 options={
                                     serviceById?.addons?.map((addon) => ({
                                         value: addon.id,
-                                        label: `${addon.addon.name} - $${addon.price}`,
+                                        label: `${addon.addon.name} - ₹${addon.price}`,
                                     })) ?? []
                                 }
                                 className="mt-1 w-full"
@@ -496,7 +496,7 @@ function renderBookingSummary(service: Service, selectedAddonIds: number[] | und
                     <span className="font-medium">Service:</span> {service.name}
                 </p>
                 <p>
-                    <span className="font-medium">Price:</span> ${service.price}
+                    <span className="font-medium">Price:</span> ₹{service.price}
                 </p>
                 <p>
                     <span className="font-medium">Duration:</span> {service.duration_minutes} minutes
@@ -508,7 +508,7 @@ function renderBookingSummary(service: Service, selectedAddonIds: number[] | und
                             {selectedAddons.length > 0 ? (
                                 selectedAddons.map((addon) => (
                                     <li key={addon.addon.id}>
-                                        {addon.addon.name} - ${addon.price}
+                                        {addon.addon.name} - ₹{addon.price}
                                     </li>
                                 ))
                             ) : (
@@ -518,7 +518,7 @@ function renderBookingSummary(service: Service, selectedAddonIds: number[] | und
                     </div>
                 )}
                 <div className="mt-2 border-t pt-2">
-                    <p className="text-lg font-semibold">Total: ${totalPrice}</p>
+                    <p className="text-lg font-semibold">Total: ₹{totalPrice}</p>
                 </div>
             </div>
         </div>

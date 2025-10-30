@@ -86,7 +86,7 @@ export const bookingsColumns: ColumnDef<Booking>[] = [
             return (
                 <div>
                     <div className="font-medium">{booking.service.name}</div>
-                    <div className="text-muted-foreground text-sm">${Number(booking.service.price).toFixed(2)}</div>
+                    <div className="text-muted-foreground text-sm">₹{Number(booking.service.price).toFixed(2)}</div>
                 </div>
             );
         },
@@ -110,7 +110,7 @@ export const bookingsColumns: ColumnDef<Booking>[] = [
         accessorKey: "totalPrice",
         header: "Total Price",
         cell: ({ row }) => {
-            return <div className="font-medium">${Number(row.original.total_price).toFixed(2)}</div>;
+            return <div className="font-medium">₹{Number(row.original.total_price).toFixed(2)}</div>;
         },
     },
     {

@@ -8,6 +8,7 @@ import GoogleProvider from "next-auth/providers/google";
 const IGNORE_PATHS = [
     "/_next",
     "/api",
+    "_next/image",
     "/manifest.json",
     "/manifest.webmanifest",
     "/auth/login",

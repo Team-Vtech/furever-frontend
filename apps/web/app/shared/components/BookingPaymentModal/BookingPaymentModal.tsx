@@ -74,7 +74,7 @@ export function BookingPaymentModal({ open, onOpenChange, booking, onKeepAsBooki
                                 </p>
                                 <div className="mt-2 border-t pt-2">
                                     <p className="font-semibold text-gray-900">
-                                        <span className="font-medium">Total:</span> ${parseFloat(booking.total_price || "0").toFixed(2)}
+                                        <span className="font-medium">Total:</span> ₹{parseFloat(booking.total_price || "0").toFixed(2)}
                                     </p>
                                 </div>
                             </div>

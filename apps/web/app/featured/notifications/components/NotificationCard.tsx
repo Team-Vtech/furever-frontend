@@ -136,7 +136,7 @@ export function NotificationCard({ notification, onMarkAsRead, onDelete }: Notif
                             {notification.data.total_price && (
                                 <div className="flex items-center gap-2">
                                     <DollarSign className="h-4 w-4 text-gray-400" />
-                                    <span className="text-gray-600">${notification.data.total_price}</span>
+                                    <span className="text-gray-600">₹{notification.data.total_price}</span>
                                 </div>
                             )}
                         </div>

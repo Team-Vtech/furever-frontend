@@ -219,7 +219,7 @@ export function ServicesTable({ className }: ServicesTableProps) {
                                             {service.category}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="font-medium">${service.price}</TableCell>
+                                    <TableCell className="font-medium">₹{service.price}</TableCell>
                                     <TableCell>
                                         {service.duration >= 60
                                             ? `${Math.floor(service.duration / 60)}h ${service.duration % 60}m`
@@ -231,7 +231,7 @@ export function ServicesTable({ className }: ServicesTableProps) {
                                         </Badge>
                                     </TableCell>
                                     <TableCell>{service.bookingsCount}</TableCell>
-                                    <TableCell className="font-medium">${service.revenue.toLocaleString()}</TableCell>
+                                    <TableCell className="font-medium">₹{service.revenue.toLocaleString()}</TableCell>
                                     <TableCell>
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
@@ -283,7 +283,7 @@ export function ServicesTable({ className }: ServicesTableProps) {
                         <div className="text-muted-foreground text-sm">Total Bookings</div>
                     </div>
                     <div className="bg-muted rounded-lg p-4 text-center">
-                        <div className="text-2xl font-bold">${filteredServices.reduce((sum, s) => sum + s.revenue, 0).toLocaleString()}</div>
+                        <div className="text-2xl font-bold">₹{filteredServices.reduce((sum, s) => sum + s.revenue, 0).toLocaleString()}</div>
                         <div className="text-muted-foreground text-sm">Total Revenue</div>
                     </div>
                 </div>

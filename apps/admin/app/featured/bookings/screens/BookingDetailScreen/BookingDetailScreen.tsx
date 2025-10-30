@@ -126,7 +126,7 @@ export function BookingDetailScreen({ booking }: BookingDetailScreenProps) {
                                 <DollarSign className="h-4 w-4 text-gray-500" />
                                 <div>
                                     <span className="text-sm font-medium text-gray-500">Amount</span>
-                                    <p className="text-sm font-medium">${Number(booking.total_price).toFixed(2)}</p>
+                                    <p className="text-sm font-medium">₹{Number(booking.total_price).toFixed(2)}</p>
                                 </div>
                             </div>
 
@@ -255,7 +255,7 @@ export function BookingDetailScreen({ booking }: BookingDetailScreenProps) {
                             <div className="border-t pt-3">
                                 <div className="flex justify-between">
                                     <span className="font-semibold">Total Amount</span>
-                                    <span className="text-lg font-bold">${Number(booking.total_price).toFixed(2)}</span>
+                                    <span className="text-lg font-bold">₹{Number(booking.total_price).toFixed(2)}</span>
                                 </div>
                             </div>
                         </CardContent>

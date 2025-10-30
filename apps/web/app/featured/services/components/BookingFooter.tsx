@@ -51,15 +51,15 @@ export function BookingFooter({ service }: BookingFooterProps) {
                     <div className="space-y-2 border-t border-gray-200 pt-4">
                         <div className="flex justify-between text-sm">
                             <span className="text-gray-600">Service (2 hours)</span>
-                            <span className="text-gray-900">$75.00</span>
+                            <span className="text-gray-900">₹75.00</span>
                         </div>
                         <div className="flex justify-between text-sm">
                             <span className="text-gray-600">Platform fee</span>
-                            <span className="text-gray-900">$3.75</span>
+                            <span className="text-gray-900">₹3.75</span>
                         </div>
                         <div className="flex justify-between border-t border-gray-200 pt-2">
                             <span className="font-semibold text-gray-900">Total</span>
-                            <span className="font-semibold text-gray-900">$78.75</span>
+                            <span className="font-semibold text-gray-900">₹78.75</span>
                         </div>
                     </div>
 
@@ -81,7 +81,7 @@ export function BookingFooter({ service }: BookingFooterProps) {
                     {/* Total Price */}
                     <div>
                         <p className="text-sm text-gray-500">Total Price (2 hours)</p>
-                        <p className="text-xl font-bold text-gray-900">$78.75</p>
+                        <p className="text-xl font-bold text-gray-900">₹78.75</p>
                     </div>
 
                     {/* Book Now Button */}

@@ -216,7 +216,7 @@ export function AppointmentsTable({ className }: AppointmentsTableProps) {
                                             {appointment.status}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="font-medium">${appointment.price}</TableCell>
+                                    <TableCell className="font-medium">₹{appointment.price}</TableCell>
                                     <TableCell>
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>

@@ -26,10 +26,23 @@ export function UploadMedia<T extends FieldValues>({ control, name, rules, media
         mediaObject?.file_path ? process.env.NEXT_PUBLIC_IMAGE_URL + mediaObject.file_path : null,
     );
     const [media, setMedia] = useState<MediaObject | null>(mediaObject || null);
+    const [sizeError, setSizeError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
+            if (file.size > 2 * 1024 * 1024) {
+                setSizeError("File size must be less than 2 MB");
+                setSelectedFile(null);
+                setPreviewUrl(null);
+                field.onChange(0);
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                }
+                return;
+            }
+
+            setSizeError(null);
             setSelectedFile(file);
 
             // Create preview URL
@@ -46,8 +59,6 @@ export function UploadMedia<T extends FieldValues>({ control, name, rules, media
                 field.onChange(mediaId);
                 setMedia(result.data);
             } catch (error) {
-                console.error("File upload failed:", error);
-                // Reset the file selection on error
                 setSelectedFile(null);
                 setPreviewUrl(null);
                 field.onChange(0);
@@ -119,6 +130,7 @@ export function UploadMedia<T extends FieldValues>({ control, name, rules, media
 
                 <Controller control={control} name={name} render={({ field }) => <input type="hidden" {...field} />} />
             </div>
+            {sizeError && <p className="text-sm text-red-600">{sizeError}</p>}
             {fieldState.error?.message && <p className="text-sm text-red-600">{fieldState.error.message}</p>}
         </div>
     );

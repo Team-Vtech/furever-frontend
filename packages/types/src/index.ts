@@ -39,7 +39,6 @@ export type BookingAddon = {
     id: number;
     booking_id: number;
     service_addon_id: number;
-    quantity: number;
     unit_price: string;
     total_price: string;
     service_addon: ServiceAddon;
@@ -227,6 +226,11 @@ export type WorkingHour = {
     is_closed: boolean;
     notes?: string;
 };
+export enum ProviderStatus {
+    PENDING = "pending",
+    APPROVED = "approved",
+    REJECTED = "rejected",
+}
 
 export type Provider = {
     id: number;
@@ -235,7 +239,7 @@ export type Provider = {
     email: string;
     phone_number: string;
     location: Location;
-    status: "pending" | "approved" | "rejected" | "inactive";
+    status: ProviderStatus;
     created_at: string;
     updated_at: string;
     provider_id: number;

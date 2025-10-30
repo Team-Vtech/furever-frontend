@@ -1,29 +1,17 @@
 "use client";
 
-import { FileText, Settings, Users } from "lucide-react"; // Added imports for Users, Settings, and FileText
 import type React from "react";
 
-import { Bell, ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@furever/ui/components/avatar";
-import { Badge } from "@furever/ui/components/badge";
 import { Button } from "@furever/ui/components/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@furever/ui/components/dropdown-menu";
 import { cn } from "@furever/ui/lib/utils";
-import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthPermissions } from "../../providers/PermissionsProvider";
-import { AppLogo } from "../AppLogo/AppLogo";
 import { Authorize } from "../Authorize/Authorize";
 import { Breadcrumbs } from "./breadcrumbs";
 
@@ -85,12 +73,9 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
                     {/* Logo */}
                     <div className="border-sidebar-border flex h-16 items-center justify-between border-b px-6">
                         <div className="flex items-center gap-2">
-                            <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
-                                <Image src="/logo.png" alt="Logo" width={24} height={24} />
+                            <div className="relative flex w-10 items-center justify-center rounded-lg">
+                                <img src="/logo/logo.png" alt="Logo" className="h-full w-full object-cover" />
                             </div>
-                            <span className="text-sidebar-foreground text-lg font-semibold">
-                                <AppLogo />
-                            </span>
                         </div>
                         <Button
                             variant="ghost"
@@ -152,86 +137,14 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
                         </div>
 
                         <div className="flex items-center gap-4">
-                            {/* Notifications */}
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="relative">
-                                        <Bell className="h-4 w-4" />
-                                        <Badge
-                                            variant="destructive"
-                                            className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs"
-                                        >
-                                            3
-                                        </Badge>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="w-80">
-                                    <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem className="flex flex-col items-start gap-1 p-4">
-                                        <div className="flex w-full items-center justify-between">
-                                            <span className="font-medium">Appointment Reminder</span>
-                                            <span className="text-muted-foreground text-xs">2m ago</span>
-                                        </div>
-                                        <span className="text-muted-foreground text-sm">Max (Golden Retriever) has a checkup at 3:00 PM</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="flex flex-col items-start gap-1 p-4">
-                                        <div className="flex w-full items-center justify-between">
-                                            <span className="font-medium">New Client Registration</span>
-                                            <span className="text-muted-foreground text-xs">1h ago</span>
-                                        </div>
-                                        <span className="text-muted-foreground text-sm">Emma Johnson registered with her cat Luna</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="flex flex-col items-start gap-1 p-4">
-                                        <div className="flex w-full items-center justify-between">
-                                            <span className="font-medium">Vaccination Due</span>
-                                            <span className="text-muted-foreground text-xs">3h ago</span>
-                                        </div>
-                                        <span className="text-muted-foreground text-sm">Buddy needs his annual vaccination next week</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-
                             {/* Profile dropdown */}
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="flex items-center gap-2 px-3">
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarImage src="/caring-vet.png" />
-                                            <AvatarFallback className="bg-primary text-primary-foreground">
-                                                {session?.user?.name?.charAt(0)}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <span className="hidden text-sm font-medium md:block">{session?.user?.name}</span>
-                                        <ChevronDown className="h-4 w-4" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="w-56">
-                                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
-                                        <Users className="mr-2 h-4 w-4" />
-                                        Profile
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <Settings className="mr-2 h-4 w-4" />
-                                        Settings
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <FileText className="mr-2 h-4 w-4" />
-                                        Billing
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem
-                                        className="text-destructive"
-                                        onClick={() => {
-                                            signOut({ callbackUrl: "/login" });
-                                        }}
-                                    >
-                                        Log out
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            <div className="flex items-center gap-2">
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage src={session?.user?.media_object?.file_url || undefined} />
+                                    <AvatarFallback className="bg-primary text-primary-foreground">{session?.user?.name?.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <span className="hidden text-sm font-medium md:block">{session?.user?.name}</span>
+                            </div>
                         </div>
                     </div>
                 </header>

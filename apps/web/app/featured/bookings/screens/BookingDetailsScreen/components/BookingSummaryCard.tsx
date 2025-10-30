@@ -54,7 +54,7 @@ export function BookingSummaryCard({ service, provider, pet, bookingDate, bookin
                 <div className="my-3 border-t border-gray-200"></div>
                 <div className="flex justify-between">
                     <span className="text-base font-semibold text-gray-900">Total:</span>
-                    <span className="text-lg font-bold text-purple-600">${totalPrice.toFixed(2)}</span>
+                    <span className="text-lg font-bold text-purple-600">₹{totalPrice.toFixed(2)}</span>
                 </div>
             </CardContent>
         </Card>

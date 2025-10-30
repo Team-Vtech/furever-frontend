@@ -80,7 +80,7 @@ export function Header() {
                     <div className="col-span-3">
                         <div className="flex flex-1 items-center">
                             <Link href="/" className="relative h-12 w-20 flex-shrink-0">
-                                <Image src="/images/image.png" alt="Furever Logo" fill />
+                                <Image src="/logo/logo.png" alt="Furever Logo" fill />
                             </Link>
                         </div>
                     </div>

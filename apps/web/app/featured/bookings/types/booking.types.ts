@@ -3,7 +3,6 @@ import { z } from "zod";
 // Schema for addon items in booking request
 export const bookingAddonSchema = z.object({
     service_addon_id: z.number().positive("Service addon ID is required"),
-    quantity: z.number().int().positive("Quantity must be a positive integer").max(10, "Quantity cannot exceed 10"),
 });
 
 export const bookingSchema = z.object({
@@ -33,7 +32,6 @@ export const bookingSchema = z.object({
     // Optional booking notes
     notes: z.string().max(1000, "Notes cannot exceed 1000 characters").optional().or(z.literal("")),
 
-    // Add-ons selection with service_addon_id and quantity
     addons: z.array(bookingAddonSchema).refine((addons) => {
         if (!addons || addons.length === 0) return true;
         // Check for duplicate addon IDs

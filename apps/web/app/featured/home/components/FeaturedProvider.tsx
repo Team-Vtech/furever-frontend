@@ -127,7 +127,7 @@ export function FeaturedProviders() {
 
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <span className="text-primary text-2xl font-bold">${provider.services?.[0]?.price || "Contact"}</span>
+                                            <span className="text-primary text-2xl font-bold">₹{provider.services?.[0]?.price || "Contact"}</span>
                                             <span className="text-muted-foreground text-sm">/service</span>
                                         </div>
                                         <Button asChild>

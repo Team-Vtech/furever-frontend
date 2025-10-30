@@ -4,7 +4,7 @@ import { HTMLAttributes } from "react";
 export function AppLogoIcon(props: HTMLAttributes<HTMLImageElement>) {
     return (
         <div {...props}>
-            <Image src="/images/logo.svg" alt="Logo" fill />
+            <Image src="/logo/logo.png" alt="Logo" fill />
         </div>
     );
 }

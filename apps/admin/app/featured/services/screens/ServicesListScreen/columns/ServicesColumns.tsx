@@ -59,7 +59,7 @@ export const servicesColumns: ColumnDef<Service>[] = [
         header: "Price",
         cell: ({ row }) => {
             const price = row.getValue("price");
-            return <div className="font-medium">${Number(price).toFixed(2)}</div>;
+            return <div className="font-medium">₹{Number(price).toFixed(2)}</div>;
         },
     },
     {

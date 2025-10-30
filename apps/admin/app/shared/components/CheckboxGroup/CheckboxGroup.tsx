@@ -48,33 +48,33 @@ export function CheckboxGroup<T extends FieldValues>(props: CheckboxGroupProps<T
     const containerClass = orientation === "horizontal" ? "flex flex-wrap gap-4" : "space-y-2";
 
     return (
-        <div className={`${containerClass} ${className || ""} flex flex-col justify-between`}>
+        <div className={`${containerClass} ${className || ""} flex flex-col justify-between gap-y-2`}>
             {label && (
                 <Label htmlFor={name} className="mb-1 flex gap-2 text-sm font-medium text-gray-700">
                     {label}
                     {required && <span className="text-red-600">*</span>}
                 </Label>
             )}
-            {options.map((option) => {
-                const isChecked = currentValues.includes(option.value);
-                const checkboxId = `${String(name)}_${String(option.value)}`;
-
-                return (
-                    <div key={String(option.value)} className="flex items-center space-x-2">
-                        <input
-                            type="checkbox"
-                            id={checkboxId}
-                            checked={isChecked}
-                            onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
-                            disabled={disabled || option.disabled}
-                            className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                        />
-                        <Label htmlFor={checkboxId} className="cursor-pointer text-sm font-medium text-gray-700">
-                            {option.label}
-                        </Label>
-                    </div>
-                );
-            })}
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+                {options.map((option) => {
+                    const isChecked = currentValues.includes(option.value);
+                    const checkboxId = `${String(name)}_${String(option.value)}`;
+                    return (
+                        <div key={String(option.value)} className="group col-span-1 flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                id={checkboxId}
+                                checked={isChecked}
+                                onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
+                                disabled={disabled || option.disabled}
+                            />
+                            <Label htmlFor={checkboxId} className="cursor-pointer text-sm font-medium text-gray-700 group-hover:text-purple-600">
+                                {option.label}
+                            </Label>
+                        </div>
+                    );
+                })}
+            </div>
             {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
         </div>
     );

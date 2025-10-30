@@ -3,7 +3,6 @@ import { z } from "zod";
 // Schema for addon items in booking request
 export const bookingAddonSchema = z.object({
     service_addon_id: z.number().positive("Service addon ID is required"),
-    quantity: z.number().int().positive("Quantity must be a positive integer").max(10, "Quantity cannot exceed 10"),
 });
 
 // Main booking request schema with comprehensive validation
@@ -41,7 +40,6 @@ export const storeBookingRequestSchema = z.object({
     // Notes validation - optional, max 1000 characters
     notes: z.string().max(1000, "Notes cannot exceed 1000 characters").optional().or(z.literal("")),
 
-    // Addons validation - optional array with service_addon_id and quantity validation
     addons: z
         .array(bookingAddonSchema)
         .optional()

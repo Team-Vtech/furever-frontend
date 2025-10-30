@@ -30,7 +30,7 @@ export default function CancellationRefundPage() {
                                         <strong>More than 24 hours before service:</strong> Full refund, no cancellation fee
                                     </li>
                                     <li>
-                                        <strong>12-24 hours before service:</strong> 50% refund, $10 cancellation fee
+                                        <strong>12-24 hours before service:</strong> 50% refund, ₹10 cancellation fee
                                     </li>
                                     <li>
                                         <strong>Less than 12 hours before service:</strong> No refund, full service charge applies

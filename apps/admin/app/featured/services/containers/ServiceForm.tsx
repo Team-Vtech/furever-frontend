@@ -11,6 +11,7 @@ import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia/UploadGalleryMedia";
 import { UploadMedia } from "@/app/shared/components/UploadMedia/UploadMedia";
 import { Addon, GeneralStatus, PetType, Provider, Service, ServiceType } from "@furever/types";
+import { Label } from "@furever/ui/components/label";
 import { AddonsSection } from "../components/AddonsSection/AddonsSection";
 
 interface ServiceFormProps {
@@ -76,12 +77,10 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
                     </div>
 
                     {/* Thumbnail Image */}
-                    <UploadMedia
-                        control={control}
-                        label="Thumbnail Image"
-                        name="thumbnail_media_object_id"
-                        mediaObject={service?.thumbnail_media_object}
-                    />
+                    <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-900">Thumbnail Image *</Label>
+                        <UploadMedia control={control} name="thumbnail_media_object_id" mediaObject={service?.thumbnail_media_object} />
+                    </div>
 
                     {/* Image Gallery */}
                     <UploadGalleryMedia
@@ -132,7 +131,6 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
                                 label="Service Types"
                                 required
                                 disabled={isLoading}
-                                className="grid grid-cols-2 gap-2 md:grid-cols-3"
                             />
                         </div>
                         <div>
@@ -145,7 +143,6 @@ export function ServiceForm({ service, onSubmit, isLoading, serviceTypes, petTyp
                                 }))}
                                 label="Pet Types"
                                 required
-                                className="grid grid-cols-2 gap-2 md:grid-cols-3"
                                 disabled={isLoading}
                             />
                         </div>

@@ -3,7 +3,6 @@
 import { PasswordInput } from "@/app/shared/components/PasswordInput/PasswordInput";
 import { TextInput } from "@/app/shared/components/TextInput/TextInput";
 import { Button } from "@furever/ui/components/button";
-import { Label } from "@furever/ui/components/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -20,16 +19,13 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onSubmit, onGoogleSignIn, onFacebookSignIn, isLoading = false, error }: LoginFormProps) {
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<LoginFormData>({
+    const { control, handleSubmit } = useForm<LoginFormData>({
         resolver: zodResolver(LoginFormSchema),
         defaultValues: {
             emailOrPhone: "",
             password: "",
         },
+        mode: "onChange",
     });
 
     return (
@@ -63,26 +59,16 @@ export function LoginForm({ onSubmit, onGoogleSignIn, onFacebookSignIn, isLoadin
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 {/* Email or Phone Field */}
-                <div className="space-y-2">
-                    <Label htmlFor="emailOrPhone" className="font-nunito text-[14px] font-medium text-[#171A1F]">
-                        Email or Phone
-                    </Label>
-                    <div className="relative">
-                        <TextInput type="text" control={control} name="emailOrPhone" placeholder="Enter your email or phone" />
-                    </div>
-                    {errors.emailOrPhone && <p className="mt-1 text-sm text-red-600">{errors.emailOrPhone.message}</p>}
-                </div>
+                <TextInput
+                    type="text"
+                    label="Email or Phone"
+                    required
+                    control={control}
+                    name="emailOrPhone"
+                    placeholder="Enter your email or phone"
+                />
 
-                {/* Password Field */}
-                <div className="space-y-2">
-                    <Label htmlFor="password" className="font-nunito text-[14px] font-medium text-[#171A1F]">
-                        Password
-                    </Label>
-                    <div className="relative">
-                        <PasswordInput id="password" name="password" control={control} placeholder="Enter your password" />
-                    </div>
-                    {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
-                </div>
+                <PasswordInput id="password" label="Password" required name="password" control={control} placeholder="Enter your password" />
 
                 {/* Login Button */}
                 <Button

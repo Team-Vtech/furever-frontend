@@ -50,8 +50,7 @@ export function LocationForm({ location, onSubmit, onCancel, isLoading }: Locati
             <TextInput control={control} name="street" label="Street Address *" placeholder="Enter your street address" />
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <TextInput control={control} name="area" label="Area/Neighborhood *" placeholder="e.g., Manhattan, Brooklyn" />
-
+                <TextInput control={control} name="area" label="Area/Neighborhood *" placeholder="e.g., Koramangala, Indiranagar" />
                 <TextInput control={control} name="city" label="City *" placeholder="Enter city name" />
             </div>
 

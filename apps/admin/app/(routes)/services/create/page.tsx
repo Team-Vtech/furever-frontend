@@ -1,6 +1,6 @@
 import { PageLayout } from "@/app/shared/components/PageLayout/PageLayout";
 import { server } from "@/app/shared/utils/http.server.utils";
-import { Addon, PaginatedJsonResponse, PetType, Provider, ServiceType } from "@furever/types";
+import { Addon, GeneralStatus, PaginatedJsonResponse, PetType, Provider, ProviderStatus, ServiceType } from "@furever/types";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -40,7 +40,11 @@ async function getServiceType() {
             PaginatedJsonResponse<{
                 data: ServiceType[];
             }>
-        >("/admin/service-types");
+        >("/admin/service-types", {
+            params: {
+                status: GeneralStatus.ACTIVE,
+            },
+        });
     } catch {
         return null;
     }
@@ -54,7 +58,11 @@ async function getPetTypes() {
             PaginatedJsonResponse<{
                 data: PetType[];
             }>
-        >("/admin/pet-types");
+        >("/admin/pet-types", {
+            params: {
+                status: GeneralStatus.ACTIVE,
+            },
+        });
     } catch {
         return null;
     }
@@ -68,7 +76,11 @@ async function getProviders() {
             PaginatedJsonResponse<{
                 data: Provider[];
             }>
-        >("/admin/providers");
+        >("/admin/providers", {
+            params: {
+                status: ProviderStatus.APPROVED,
+            },
+        });
     } catch {
         return null;
     }
@@ -82,7 +94,11 @@ async function getAddons() {
             PaginatedJsonResponse<{
                 data: Addon[];
             }>
-        >("/admin/addons");
+        >("/admin/addons", {
+            params: {
+                status: GeneralStatus.ACTIVE,
+            },
+        });
     } catch {
         return null;
     }

@@ -60,7 +60,7 @@ export function ServiceInformationCard({ service, provider, bookingDate, booking
                 <div className="rounded-lg bg-gray-50 p-4">
                     <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-600">Service Price:</span>
-                        <span className="text-lg font-semibold text-gray-900">${service.price}</span>
+                        <span className="text-lg font-semibold text-gray-900">₹{service.price}</span>
                     </div>
                     <div className="mt-2 flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-600">Duration:</span>
@@ -75,7 +75,7 @@ export function ServiceInformationCard({ service, provider, bookingDate, booking
                             {selectedAddons.map((addon) => (
                                 <div key={addon.id} className="flex items-center justify-between rounded-lg bg-gray-50 p-3">
                                     <span className="text-sm text-gray-700">{addon.addon.name}</span>
-                                    <span className="text-sm font-medium text-gray-900">${addon.price}</span>
+                                    <span className="text-sm font-medium text-gray-900">₹{addon.price}</span>
                                 </div>
                             ))}
                         </div>
@@ -86,7 +86,7 @@ export function ServiceInformationCard({ service, provider, bookingDate, booking
 
                 <div className="flex items-center justify-between rounded-lg bg-purple-50 p-4">
                     <span className="text-lg font-semibold text-gray-900">Total Price:</span>
-                    <span className="text-2xl font-bold text-purple-600">${totalPrice.toFixed(2)}</span>
+                    <span className="text-2xl font-bold text-purple-600">₹{totalPrice.toFixed(2)}</span>
                 </div>
             </CardContent>
         </Card>

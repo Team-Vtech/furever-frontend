@@ -68,7 +68,7 @@ export function ProviderServices({ services, providerId }: ProviderServicesProps
                             <div className="mb-4">
                                 <span className="text-sm font-medium text-gray-900">Pricing:</span>
                                 <div className="flex items-baseline space-x-2">
-                                    <span className="text-2xl font-bold text-purple-600">${parseFloat(service.price).toFixed(2)}</span>
+                                    <span className="text-2xl font-bold text-purple-600">₹{parseFloat(service.price).toFixed(2)}</span>
                                     <span className="text-sm text-gray-600">/ session</span>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@ export function ProviderServices({ services, providerId }: ProviderServicesProps
                                                         className="mr-3 h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                                                     />
                                                 ) : null}
-                                                {addon.addon.name} (+${parseFloat(addon.price).toFixed(2)})
+                                                {addon.addon.name} (+₹{parseFloat(addon.price).toFixed(2)})
                                             </label>
                                         ))}
                                     </div>
