@@ -87,7 +87,7 @@ export function Header() {
 
                     {/* Desktop Navigation */}
                     <nav className="col-span-1 lg:col-span-8">
-                        <div className="hidden items-center justify-center gap-y-2 lg:flex lg:gap-y-4">
+                        <div className="hidden items-center justify-center gap-x-2 pl-10 lg:flex lg:gap-x-4">
                             {navigationItems.map((item) => {
                                 const Icon = item.icon;
                                 if (item.status === "authenticated" && !session?.user) {

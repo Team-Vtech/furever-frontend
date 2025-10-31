@@ -1,7 +1,10 @@
 import { NewBookingScreen } from "@/app/featured/bookings/screens/NewBookingScreen/NewBookingScreen";
 import { server } from "@/app/shared/utils/http.server.utils";
+import { getSessionUser } from "@/lib/auth";
 import { JsonResponse, Provider, Service } from "@furever/types";
+import { isAxiosError } from "axios";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
     title: "Book Service | Furever",
@@ -10,6 +13,10 @@ export const metadata: Metadata = {
 
 export default async function NewBookingPage({ searchParams }: { searchParams: Promise<{ provider_id?: number; service_id?: number }> }) {
     const { provider_id, service_id } = await searchParams;
+    const session = await getSessionUser();
+    if (!session) {
+        redirect("/login");
+    }
     let provider: Provider | null = null;
     let service: Service | null = null;
     if (provider_id) {
@@ -44,6 +51,9 @@ async function getService(id: string): Promise<Service | null> {
         return response.data.data;
     } catch (error) {
         console.error("Failed to fetch service:", error);
+        if (isAxiosError(error)) {
+            console.error(error.response?.data);
+        }
         return null;
     }
 }
