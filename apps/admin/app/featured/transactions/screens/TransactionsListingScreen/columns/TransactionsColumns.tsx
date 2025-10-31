@@ -30,6 +30,14 @@ export const transactionsColumns: ColumnDef<Transaction>[] = [
         },
     },
     {
+        accessorKey: "provider",
+        header: "Provider",
+        cell: ({ row }) => {
+            const provider = row.original.booking.provider;
+            return <div className="font-medium">{provider?.business_name}</div>;
+        },
+    },
+    {
         accessorKey: "invoice_number",
         header: "Invoice Number",
         cell: ({ row }) => {
