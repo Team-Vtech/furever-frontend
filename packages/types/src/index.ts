@@ -245,7 +245,12 @@ export type Provider = {
     provider_id: number;
     media_object_id: number;
     media_object: MediaObject;
-    galleries: MediaObject[];
+    galleries: {
+        id: number;
+        media_object: MediaObject;
+        created_at: string;
+        updated_at: string;
+    }[];
     certificates: Array<ProviderCertificate>;
     working_hours?: Array<WorkingHour>;
     bookings?: Array<Booking>;

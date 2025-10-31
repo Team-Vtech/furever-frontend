@@ -7,34 +7,6 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { Control, FieldValues, Path, useController } from "react-hook-form";
 
-/**
- * UploadGalleryMedia Component
- *
- * A reusable component for uploading and managing multiple gallery images.
- * Integrates with react-hook-form and handles image upload, preview, and removal.
- *
- * @example
- * ```tsx
- * // In your form component:
- * import { UploadGalleryMedia } from "@/app/shared/components/UploadGalleryMedia";
- *
- * // Usage with react-hook-form:
- * <UploadGalleryMedia
- *   control={control}
- *   name="media_object_ids"
- *   label="Product Gallery"
- *   disabled={isLoading}
- *   initialImages={existingImages}
- * />
- *
- * // Form schema should include:
- * const schema = z.object({
- *   media_object_ids: z.array(z.number()).optional(),
- *   // ... other fields
- * });
- * ```
- */
-
 interface UploadGalleryMediaProps<T extends FieldValues> {
     control: Control<T>;
     name: Path<T>;

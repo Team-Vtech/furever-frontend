@@ -108,7 +108,7 @@ export function getProviderDefaultValues(provider?: Provider): ProviderFormValue
         email: provider?.email || "",
         phone_number: provider?.phone_number || "",
         media_object_id: provider?.media_object?.id || 0,
-        gallery_media_object_ids: [],
+        gallery_media_object_ids: provider?.galleries?.map((gallery) => gallery.media_object.id) || [],
         location: {
             id: provider?.location?.id?.toString() || "",
             address: provider?.location?.address || "",
@@ -130,54 +130,6 @@ export function getProviderDefaultValues(provider?: Provider): ProviderFormValue
                 media_object_id: cert.media_object?.id || undefined,
                 notes: cert.notes || "",
             })) || [],
-        working_hours: provider?.working_hours || [
-            {
-                day_of_week: "monday",
-                start_time: "09:00",
-                end_time: "17:00",
-                is_closed: false,
-                notes: "Regular hours",
-            },
-            {
-                day_of_week: "tuesday",
-                start_time: "09:00",
-                end_time: "17:00",
-                is_closed: false,
-                notes: "Regular hours",
-            },
-            {
-                day_of_week: "wednesday",
-                start_time: "09:00",
-                end_time: "17:00",
-                is_closed: false,
-                notes: "Regular hours",
-            },
-            {
-                day_of_week: "thursday",
-                start_time: "09:00",
-                end_time: "17:00",
-                is_closed: false,
-                notes: "Regular hours",
-            },
-            {
-                day_of_week: "friday",
-                start_time: "09:00",
-                end_time: "17:00",
-                is_closed: false,
-                notes: "Regular hours",
-            },
-            {
-                day_of_week: "saturday",
-                start_time: "10:00",
-                end_time: "15:00",
-                is_closed: false,
-                notes: "Weekend hours",
-            },
-            {
-                day_of_week: "sunday",
-                is_closed: true,
-                notes: "Closed on Sundays",
-            },
-        ],
+        working_hours: provider?.working_hours ?? [],
     };
 }

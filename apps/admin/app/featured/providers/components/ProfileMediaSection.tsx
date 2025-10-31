@@ -17,7 +17,13 @@ export function ProfileMediaSection({ control, provider, isLoading }: ProfileMed
             <h3 className="text-lg font-medium text-gray-900">Profile Image</h3>
             <div className="flex flex-col gap-4">
                 <UploadMedia control={control} name="media_object_id" mediaObject={provider?.media_object} />
-                <UploadGalleryMedia control={control} name="gallery_media_object_ids" label="Image Gallery" disabled={isLoading} initialImages={[]} />
+                <UploadGalleryMedia
+                    control={control}
+                    name="gallery_media_object_ids"
+                    label="Image Gallery"
+                    disabled={isLoading}
+                    initialImages={provider?.galleries?.map((gallery) => gallery.media_object) || []}
+                />
             </div>
         </div>
     );

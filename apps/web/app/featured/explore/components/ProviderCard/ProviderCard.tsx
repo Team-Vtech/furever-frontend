@@ -16,8 +16,7 @@ export function ProviderCard({ provider }: ProviderCardProps) {
     return (
         <Card className="flex w-full max-w-sm flex-col justify-between overflow-hidden bg-white p-0 shadow-md transition-shadow duration-200 hover:shadow-lg">
             <div>
-                <MediaImage mediaObject={provider.galleries[0]} wrapperClassName="h-[273px] w-full" className="object-cover" />
-
+                <MediaImage mediaObject={provider.galleries[0]?.media_object} wrapperClassName="h-[273px] w-full" className="object-cover" />
                 <div className="relative -mt-8 mb-4 ml-4">
                     <MediaImage
                         mediaObject={provider.media_object}
