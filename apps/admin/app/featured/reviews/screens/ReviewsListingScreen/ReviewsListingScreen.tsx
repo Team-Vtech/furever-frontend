@@ -49,6 +49,17 @@ export function ReviewsListingScreen() {
                         ),
                     },
                     {
+                        accessorKey: "provider",
+                        header: "Provider",
+                        cell: ({ row }) => (
+                            <div className="flex items-center gap-2">
+                                <Link href={`/providers/${row.original.booking.provider.id}/view`}>
+                                    <span>{row.original.booking.provider.business_name}</span>
+                                </Link>
+                            </div>
+                        ),
+                    },
+                    {
                         header: "Customer",
                         cell: ({ row }) => (
                             <div className="flex items-center gap-2">
@@ -72,11 +83,15 @@ export function ReviewsListingScreen() {
                     {
                         accessorKey: "review",
                         header: "Review",
-                        cell: ({ row }) => (
-                            <div className="flex items-center gap-2">
-                                <span>{row.original.comment}</span>
-                            </div>
-                        ),
+                        cell: ({ row }) => {
+                            const text = row.original.comment || "";
+                            const truncated = text.length > 60 ? text.slice(0, 57) + "..." : text;
+                            return (
+                                <div className="flex items-center gap-2">
+                                    <span title={text}>{truncated}</span>
+                                </div>
+                            );
+                        },
                     },
                     {
                         accessorKey: "rating",
@@ -84,6 +99,17 @@ export function ReviewsListingScreen() {
                         cell: ({ row }) => {
                             return <StarRating rating={row.original.rating} />;
                         },
+                    },
+                    {
+                        id: "actions",
+                        header: "Actions",
+                        cell: ({ row }) => (
+                            <div className="flex items-center gap-2">
+                                <Link className="text-primary underline" href={`/reviews/${row.original.id}/view`}>
+                                    View
+                                </Link>
+                            </div>
+                        ),
                     },
                 ]}
                 pagination={data?.pagination || undefined}
