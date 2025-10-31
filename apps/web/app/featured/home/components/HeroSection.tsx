@@ -30,8 +30,8 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
                     </p>
 
                     <div className="bg-card rounded-2xl border px-8 shadow-xl md:py-4">
-                        <div className="mb-4 flex flex-row items-end gap-4">
-                            <div className="flex-1 space-y-2">
+                        <div className="mb-4 flex flex-col items-start gap-4 gap-y-2 py-4 lg:flex-row lg:items-end lg:p-0">
+                            <div className="w-full flex-1 space-y-2">
                                 <Label className="text-sm font-medium">Service Type</Label>
                                 <Select
                                     defaultValue="all"
@@ -53,7 +53,7 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="flex-1 space-y-2">
+                            <div className="w-full flex-1 space-y-2">
                                 <Label className="text-sm font-medium">Location</Label>
                                 <div className="relative">
                                     <MapPin className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
@@ -64,7 +64,7 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
                                     />
                                 </div>
                             </div>
-                            <div className="flex-1 space-y-2">
+                            <div className="w-full flex-1 space-y-2">
                                 <Label className="text-sm font-medium">Date</Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -90,7 +90,7 @@ export function HeroSection({ serviceTypes = [] }: HeroSectionProps) {
                                     </PopoverContent>
                                 </Popover>
                             </div>
-                            <Button className="flex-1" asChild>
+                            <Button className="w-full flex-1" asChild>
                                 <Link href={"/explore?" + new URLSearchParams(filters).toString()}>
                                     <Search className="mr-2 h-5 w-5" />
                                     Find Providers

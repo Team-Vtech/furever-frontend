@@ -34,7 +34,7 @@ export function PasswordInput<T extends FieldValues>(props: PasswordInputProps<T
                     {inputProps.label} {isRequired && "*"}
                 </Label>
                 <div className="relative">
-                    <Input autoCapitalize="none" {...inputProps} {...field} />
+                    <Input autoCapitalize="none" type={showPassword ? "text" : "password"} {...inputProps} {...field} />
                     {showToggle && (
                         <Button
                             type="button"

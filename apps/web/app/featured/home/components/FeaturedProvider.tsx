@@ -89,7 +89,7 @@ export function FeaturedProviders() {
                         </div>
                     ) : (
                         providers.map((provider: Provider) => (
-                            <Card key={provider.id} className="overflow-hidden transition-shadow hover:shadow-lg">
+                            <Card key={provider.id} className="overflow-hidden pt-0 transition-shadow hover:shadow-lg">
                                 <div
                                     className="bg-muted h-64 bg-cover bg-center"
                                     style={{
@@ -131,7 +131,7 @@ export function FeaturedProviders() {
                                             <span className="text-muted-foreground text-sm">/service</span>
                                         </div>
                                         <Button asChild>
-                                            <Link href={`/providers/${provider.id}`}>View Profile</Link>
+                                            <Link href={`/providers/${provider.id}`}>View Provider</Link>
                                         </Button>
                                     </div>
                                 </CardContent>

@@ -21,7 +21,13 @@ export default async function HomePage() {
 
 async function getServicesTypes() {
     try {
-        const response = await (await server()).get<JsonResponse<ServiceType[]>>("/service-types");
+        const response = await (
+            await server()
+        ).get<JsonResponse<ServiceType[]>>("/service-types", {
+            params: {
+                limit: "all",
+            },
+        });
         return response.data.data;
     } catch (error) {
         console.error("Error fetching service types:", error);

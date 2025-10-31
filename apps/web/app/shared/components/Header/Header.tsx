@@ -77,7 +77,7 @@ export function Header() {
             <div className="container mx-auto">
                 <div className="grid grid-cols-12 items-center justify-between">
                     {/* Logo */}
-                    <div className="col-span-3">
+                    <div className="col-span-3 lg:col-span-1">
                         <div className="flex flex-1 items-center">
                             <Link href="/" className="relative h-12 w-20 flex-shrink-0">
                                 <Image src="/logo/logo.png" alt="Furever Logo" fill />
@@ -86,8 +86,8 @@ export function Header() {
                     </div>
 
                     {/* Desktop Navigation */}
-                    <nav className="col-span-1 lg:col-span-6">
-                        <div className="hidden items-center justify-center space-x-8 lg:flex">
+                    <nav className="col-span-1 lg:col-span-8">
+                        <div className="hidden items-center justify-center gap-y-2 lg:flex lg:gap-y-4">
                             {navigationItems.map((item) => {
                                 const Icon = item.icon;
                                 if (item.status === "authenticated" && !session?.user) {
@@ -116,8 +116,8 @@ export function Header() {
                     </nav>
 
                     {/* Right side actions */}
-                    <div className="col-span-2">
-                        <div className="flex flex-1 items-center gap-4">
+                    <div className="col-span-8 lg:col-span-3">
+                        <div className="flex flex-1 items-end justify-end gap-4 px-4 lg:items-center lg:justify-start lg:px-0">
                             {/* Notifications */}
                             {session?.user && <NotificationDropdown />}
 

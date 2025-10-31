@@ -1,23 +1,29 @@
-import { Calendar, Heart, Search } from "lucide-react";
+import { Calendar, PawPrint, Search, ShieldCheck } from "lucide-react";
 
 const steps = [
     {
         number: "1",
-        icon: Search,
-        title: "Search",
-        description: "Browse verified profiles of pet care providers in your area and read reviews from other pet owners.",
+        icon: PawPrint,
+        title: "Create Your Pet Profile",
+        description: "Add pet photo, vaccinations, allergies, and behavior notes for personalized care.",
     },
     {
         number: "2",
-        icon: Calendar,
-        title: "Book & Pay",
-        description: "Choose your dates and book instantly. Secure payment processing with our satisfaction guarantee.",
+        icon: Search,
+        title: "Explore Services & Providers",
+        description: "Discover local, vetted professionals with profiles, reviews, and detailed service offerings.",
     },
     {
         number: "3",
-        icon: Heart,
-        title: "Relax",
-        description: "Stay in touch with photo updates and messages. Your pets are in loving, trusted hands.",
+        icon: Calendar,
+        title: "Choose a Service",
+        description: "Select a service, timeslot, and add-ons tailored to your pet's needs.",
+    },
+    {
+        number: "4",
+        icon: ShieldCheck,
+        title: "Enjoy Peace of Mind",
+        description: "Trust our vetted providers and easily manage all your pet care in one place.",
     },
 ];
 
@@ -26,13 +32,13 @@ export function HowItWorks() {
         <section className="py-section">
             <div className="container mx-auto">
                 <div className="mb-16 text-center">
-                    <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">{"How PetCare works"}</h2>
+                    <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">{"How Furever works"}</h2>
                     <p className="text-muted-foreground mx-auto max-w-2xl text-pretty text-lg">
                         {"Finding trusted pet care is simple and stress-free"}
                     </p>
                 </div>
 
-                <div className="grid gap-12 md:grid-cols-3">
+                <div className="grid gap-12 md:grid-cols-4">
                     {steps.map((step) => (
                         <div key={step.number} className="text-center">
                             <div className="relative mb-6 inline-flex items-center justify-center">

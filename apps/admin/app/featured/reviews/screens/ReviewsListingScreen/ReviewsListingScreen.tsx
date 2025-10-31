@@ -70,6 +70,15 @@ export function ReviewsListingScreen() {
                         ),
                     },
                     {
+                        accessorKey: "review",
+                        header: "Review",
+                        cell: ({ row }) => (
+                            <div className="flex items-center gap-2">
+                                <span>{row.original.comment}</span>
+                            </div>
+                        ),
+                    },
+                    {
                         accessorKey: "rating",
                         header: "Rating",
                         cell: ({ row }) => {

@@ -2,13 +2,13 @@
 
 import type React from "react";
 
-import { Menu, X } from "lucide-react";
+import { LogOutIcon, Menu, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@furever/ui/components/avatar";
 import { Button } from "@furever/ui/components/button";
 import { cn } from "@furever/ui/lib/utils";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthPermissions } from "../../providers/PermissionsProvider";
@@ -57,6 +57,10 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
             return group.items.some((item) => hasPermission(item.permissions || []));
         });
     }, [navigationGroups, hasPermission]);
+
+    const handleLogout = () => {
+        signOut({ callbackUrl: "/login" });
+    };
     return (
         <div className="bg-background min-h-screen">
             {/* Mobile sidebar overlay */}
@@ -110,15 +114,11 @@ export function DashboardLayout({ children, breadcrumbs, navigationGroups }: Das
 
                     {/* User info */}
                     <div className="border-sidebar-border border-t p-4">
-                        <div className="flex items-center gap-3">
-                            <Avatar className="h-8 w-8">
-                                <AvatarImage src="/caring-vet.png" />
-                                <AvatarFallback className="bg-primary text-primary-foreground">{session?.user?.name?.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <div className="min-w-0 flex-1">
-                                <p className="text-sidebar-foreground truncate text-sm font-medium">{session?.user?.name}</p>
-                                <p className="text-sidebar-foreground/60 truncate text-xs">{session?.user?.email}</p>
-                            </div>
+                        <div className="flex items-center gap-2">
+                            <Button onClick={handleLogout} variant="destructive" size="lg" className="w-full">
+                                <LogOutIcon className="h-4 w-4" />
+                                Logout
+                            </Button>
                         </div>
                     </div>
                 </div>

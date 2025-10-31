@@ -15,10 +15,7 @@ const navigationLinks = [
     { label: "Contact", href: "/contact" },
 ];
 
-const providerLinks = [
-    { label: "Join as a Provider", href: "/provider-register" },
-    { label: "Provider Login", href: "/login" },
-];
+const providerLinks = [{ label: "Join as a Provider", href: "/provider-register" }];
 
 const legalLinks = [
     { label: "Privacy Policy", href: "/privacy-policy" },
@@ -87,6 +84,14 @@ export function Footer({ className }: FooterProps) {
                                     </Link>
                                 </li>
                             ))}
+                            <li>
+                                <a
+                                    href="https://furever-admin.yanalshoubaki.com/login"
+                                    className="text-sm opacity-80 transition-opacity duration-200 hover:opacity-100"
+                                >
+                                    Provider Login
+                                </a>
+                            </li>
                         </ul>
                     </div>
 

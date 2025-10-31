@@ -13,7 +13,7 @@ export function HomePageScreen({ serviceTypes }: HomePageScreenProps) {
     return (
         <>
             <HeroSection serviceTypes={serviceTypes} />
-            <ServicesSection serviceTypes={serviceTypes} />
+            <ServicesSection serviceTypes={serviceTypes.slice(0, 6)} />
             <FeaturedProviders />
             <HowItWorks />
             <Testimonials />
